@@ -70,4 +70,29 @@
   function catchError(error) {
     console.error('Error', error)
   }
+
+  function showSwal(title = 'รอสักครู่...') {
+    Swal.fire({ title: `${title}` })
+    Swal.showLoading()
+  }
+
+  function hideSwal(title) {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: `${title}`,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
+
+  function failSwal(title) {
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: `${title}`,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 </script>

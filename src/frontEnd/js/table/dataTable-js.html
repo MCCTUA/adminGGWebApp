@@ -7,17 +7,36 @@
      */
 
     try {
-      let { tableId, filterItem, rowIndex, hideColumns } = filterObject
+      let { tableId, filterItem, rowIndex, hideColumns, targetIndexShowImage } =
+        filterObject
       let editButtonIndex = res.headersAll.length
       let headers
       let filteredData
       let hideColumnsOptions = []
+      let targetShowImage = targetIndexShowImage.map((el) => {
+        return {
+          target: el,
+          render: (data) => {
+            if (data === '') {
+              return
+            } else {
+              return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
+            }
+          },
+        }
+      })
+
+      console.log('targetShowImage', targetShowImage)
+
       let options = {
         retrieve: true,
         responsive: true,
         destroy: true,
         order: [[0, 'desc']],
         pageLength: 25,
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
+        },
         columnDefs: [
           {
             defaultContent: '-',
@@ -28,6 +47,7 @@
             orderable: false,
             targets: 1, // Index of the column you want to toggle details on
           },
+          ...targetShowImage,
           {
             target: editButtonIndex - 2,
             render: (data) => {

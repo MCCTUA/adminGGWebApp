@@ -2,9 +2,12 @@
   function loadContactTable() {
     async function loadContactDataTable() {
       try {
+        showSwal()
+
         const tableExtraOptions = {
           tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
+          targetIndexShowImage: [3, 13],
         }
         const { data } = await googelScriptrun('getContactData')
         const { contact } = await googelScriptrun(
@@ -25,6 +28,8 @@
         const table = loaddDataTable(res, tableExtraOptions)
       } catch (error) {
         catchError(error)
+      } finally {
+        hideSwal('พร้อมใช้งาน')
       }
     }
     loadContactDataTable()

@@ -7,6 +7,7 @@ function getHeaderTableName(indentifier) {
             'รหัสลูกค้า',
             'ชื่อ-สกุล',
             'ชื่อเล่น',
+            'รูปไลน์ profile',
             'ชื่อ Line',
             'เบอร์มือถือหลัก',
             'เบอร์มือถือสำรอง',

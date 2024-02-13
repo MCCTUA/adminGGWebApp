@@ -1,0 +1,55 @@
+<script>
+  // Add form template
+  function appendForm(formName) {
+    let thisTemplate = document.getElementById(`${formName}FormTemplate`)
+    if (!thisTemplate) {
+      console.error(`Template for ${formName} form not found`)
+      return
+    }
+    // คัดลอก template content และนำมาวางใน DOM
+    let copyThisTemplate = thisTemplate.content.cloneNode(true)
+    document.querySelector('.modal-body').appendChild(copyThisTemplate)
+  }
+
+  function removeForm(formName) {
+    let thisTemplate = document.getElementById(`${formName}Form`)
+    thisTemplate.parentNode.removeChild(thisTemplate)
+  }
+
+  function submmitForm(formDataObj) {
+    event.preventDefault()
+    let formInput = new FormData(formDataObj)
+    let inputFields = Array.from(formInput.entries()).reduce(
+      (acc, [key, value]) => {
+        acc[key] = value
+        return acc
+      },
+      {}
+    )
+
+    function sendDataToServer() {
+      return new Promise((resolve, reject) => {
+        showSwal()
+        googelScriptrun('serverFormInput', formDataObj)
+          .then((result) => {
+            hideSwal('บันทึกข้อมูลสำเร็จ')
+            formDataObj.reset()
+            console.log('Success:', result)
+            resolve(result)
+          })
+          .catch((error) => {
+            failSwal('บันทึกข้อมูลไม่สำเร็จ')
+            catchError(error)
+            reject(error)
+          })
+      })
+    }
+    sendDataToServer()
+      .then(() => {
+        // document.getElementById(`${inputFields.formType}`).reset()
+      })
+      .catch((error) => {
+        console.log('error')
+      })
+  }
+</script>

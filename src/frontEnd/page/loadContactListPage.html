@@ -1,8 +1,52 @@
 <h4>contact table</h4>
-<table
-  id="contact-table"
-  class="table table-striped nowrap"
-  style="width: 100%"
->
-  <thead class="table-dark"></thead>
-</table>
+<div class="mb-3">
+  <!-- Button trigger modal -->
+  <button
+    type="button"
+    onclick="appendForm('contact')"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop"
+  >
+    เพิ่มข้อมูล
+  </button>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">
+            เพิ่มข้อมูล Contact
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Javascript Content -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <table
+    id="contact-table"
+    class="table table-striped nowrap"
+    style="width: 100%"
+  >
+    <thead class="table-dark"></thead>
+  </table>
+</div>
