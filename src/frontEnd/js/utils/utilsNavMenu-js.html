@@ -1,0 +1,25 @@
+<script>
+  /**
+   * ******************************************
+   * Nav Bar
+   * ******************************************
+   */
+
+  function activeTabChange(e) {
+    let navLinks = document.querySelectorAll('.nav-fill .nav-link')
+
+    navLinks.forEach(function (linkEl) {
+      linkEl.classList.remove('active')
+    })
+
+    e.target.classList.add('active')
+  }
+
+  //=========================================================
+
+  function navClickEventHandler(e) {
+    if (e.target.matches('.nav-link')) {
+      activeTabChange(e)
+    }
+  }
+</script>

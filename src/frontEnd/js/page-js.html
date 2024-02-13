@@ -1,0 +1,38 @@
+<script>
+    document
+    .getElementById('navigation')
+    .addEventListener('click', navClickEventHandler)
+
+    document
+    .getElementById('add-new-company')
+    .addEventListener('click', loadCompanyListPage)
+
+    document
+    .getElementById('add-new-contact')
+    .addEventListener('click', loadContactListPage)
+
+  //=========================================================
+
+
+  function loadCompanyListPage() {
+    loadPartialsContent({
+      func: 'loadCompanyListPage',
+    })
+  }
+
+  function loadContactListPage() {
+    loadPartialsContent({
+      func: 'loadContactListPage',
+      callback: loadContactTable
+    })
+  }    
+
+
+  /**
+   * ******************************************
+   * After DOM Content had loaded
+   * ******************************************
+   */
+  // Load Search Inquiry หลัง Dom Load เสร็จแล้ว
+  // document.addEventListener('DOMContentLoaded', loadInquirySearch)
+</script>

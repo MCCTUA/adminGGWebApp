@@ -1,0 +1,54 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <?!=include('frontEnd/pagePatial/header')?>
+    <!-- include css file -->
+    <?!=include('frontEnd/css/main-css')?>  
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col mt-5">
+          <nav id="navigation">
+            <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <div id="add-new-contact" class="nav-link active">
+                  contact
+                </div>
+              </li>
+              <li class="nav-item" role="presentation">
+                <div id="add-new-company" class="nav-link">
+                  Company
+                </div>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id='app'>
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="contact"
+                role="tabpanel"
+                aria-labelledby="contact-tab"
+              >
+                <h2>Contact Content</h2>
+                <p>This is the content of the contact tab.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <?!=include('frontEnd/js/table/dataTable-js')?>
+    <?!=include('frontEnd/js/table/loadContactTable-js')?>
+    <?!=include('frontEnd/js/utils/utilsNavMenu-js')?>
+    <?!=include('frontEnd/js/utils/utilsMain-js')?>
+    <?!=include('frontEnd/js/page-js')?>
+    <?!=include('frontEnd/pagePatial/footer')?>
+  </body>
+</html>

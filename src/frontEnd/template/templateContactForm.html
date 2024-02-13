@@ -1,0 +1,211 @@
+<template>
+  <h1> load contact list page </h1>
+  <form action="" id="submitContactForm" class="formInput">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput contactLineName"
+            id="contactLineName"
+            name="contactLineName"
+            placeholder="ชื่อ Line"
+          />
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control formInput mobileInput"
+            id="contactMobile1"
+            name="contactMobile1"
+            placeholder="เบอร์โทรศัพท์มือถือ 1"
+          />
+          <span class="error-message-mobile-0 text-danger"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control formInput"
+            id="contactNickName"
+            name="contactNickName"
+            placeholder="ชื่อเล่น"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control formInput"
+            id="contactName"
+            name="contactName"
+            placeholder="ชื่อ-นามสกุล"
+          />
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="mb-3">
+          <select class="form-select formInput" name="contactSex">
+            <option>เพศ</option>
+            <option value="man">ชาย</option>
+            <option value="women">หญิง</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="email"
+            class="form-control formInput"
+            id="contactEmail"
+            name="contactEmail"
+            placeholder="Email"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control formInput mobileInput"
+            id="contactMobile2"
+            name="contactMobile2"
+            placeholder="เบอร์โทรศัพท์มือถือ 2"
+          />
+          <span class="error-message-mobile-1 text-danger"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control formInput"
+            id="contactPosition"
+            name="contactPosition"
+            placeholder="ตำแหน่งงาน"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control formInput homeInput"
+            id="phone"
+            name="companyPhone1"
+            placeholder="เบอร์โทรสำนักงาน"
+          />
+          <span class="input-group-text">#</span>
+          <input
+            type="text"
+            class="form-control formInput"
+            id="ext"
+            name="extensionNo"
+            placeholder="เบอร์ต่อภายใน"
+          />
+        </div>
+        <span class="error-message-home-0 text-danger"></span>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3 autocomplete">
+        <input
+          type="text"
+          class="form-control formInput companyName"
+          name="companyName"
+          placeholder="ชื่อบริษัท (ถ้ามี)"
+        />
+        <ul class="autocomplete-keywords-sugguestion-area"></ul>
+      </div>
+      <div class="mb-3 form-check">
+        <input
+          type="radio"
+          class="form-check-input"
+          id="form-name"
+          name="formType"
+          value="contact"
+          checked
+        />
+        <label class="form-check-label" for="form-name"
+          >Contact Line Form</label
+        >
+      </div>
+    </div>
+    <button type="button" id="btnAddNewContact" class="btn btn-primary">
+      ตรวจสอบข้อมูล
+    </button>
+
+    <button
+      type="button"
+      id="cancelAddContactButton"
+      class="btn btn-danger cancelButton"
+      value="cancel"
+    >
+      ยกเลิก
+    </button>
+  </form>
+
+  <div
+    class="spinner-grow spinner"
+    style="width: 3rem; height: 3rem"
+    role="status"
+  >
+    <span class="visually-hidden">Loading...</span>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="contactFormModal"
+    tabindex="-1"
+    aria-labelledby="contactFormModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="contactFormModalLabel">
+            ตรวจสอบรายการผู้ติดต่อรายใหม่
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ul id="showInputSummaryArea"></ul>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            แก้ไข
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            data-formName="Contact"
+            onclick="submmitForm.bind(null, event, this)()"
+          >
+            บันทึกข้อมูล
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

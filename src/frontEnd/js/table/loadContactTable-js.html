@@ -1,0 +1,30 @@
+<script>
+  function loadContactTable() {
+    async function loadContactDataTable() {
+      try{
+        const tableExtraOptions = {
+          tableId : 'contact-table',
+          // hideColumns: [13, 14, 15, 16]
+        }
+        const {data} = await googelScriptrun('getContactData')
+        const {contact} = await googelScriptrun('getHeaderTableName', 'contact')
+        const columnLenght = data.shift().length - 4
+        const res = {}
+        let allData = data.slice(1)
+
+        if(columnLenght + 2 === contact.headerTableName.length) {
+          res.data = allData.map(row => row.slice(0, columnLenght))
+          res.headersAll = contact.headerTableName
+        } else {
+          console.log('header length not equal to data in column length')
+        }
+
+        const table = loaddDataTable(res, tableExtraOptions)
+        
+      } catch(error) {
+        catchError(error)
+      }
+    }
+    loadContactDataTable()
+  }
+</script>
