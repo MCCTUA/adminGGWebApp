@@ -1,18 +1,17 @@
 <script>
-    document
+  document
     .getElementById('navigation')
     .addEventListener('click', navClickEventHandler)
 
-    document
+  document
     .getElementById('add-new-company')
     .addEventListener('click', loadCompanyListPage)
 
-    document
+  document
     .getElementById('add-new-contact')
     .addEventListener('click', loadContactListPage)
 
   //=========================================================
-
 
   function loadCompanyListPage() {
     loadPartialsContent({
@@ -23,10 +22,9 @@
   function loadContactListPage() {
     loadPartialsContent({
       func: 'loadContactListPage',
-      callback: loadContactTable
+      callback: loadContactTable,
     })
-  }    
-
+  }
 
   /**
    * ******************************************

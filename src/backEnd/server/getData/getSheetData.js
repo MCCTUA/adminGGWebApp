@@ -1,7 +1,7 @@
 function getContactData() {
   const paramObj = {
     spreadSheetId: contactSpreadsheetId,
-    sheetName: contactSheet
+    sheetName: contactSheet,
   }
-return readDataDisplayValues(paramObj) 
+  return readDataDisplayValues(paramObj)
 }

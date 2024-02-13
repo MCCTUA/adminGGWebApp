@@ -20,33 +20,33 @@
         pageLength: 25,
         columnDefs: [
           {
-            "defaultContent": "-",
-            "targets": "_all"
+            defaultContent: '-',
+            targets: '_all',
           },
           {
             className: 'control',
             orderable: false,
             targets: 1, // Index of the column you want to toggle details on
-          },                
+          },
           {
-            target: editButtonIndex-2,
+            target: editButtonIndex - 2,
             render: (data) => {
-              return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`);
+              return (data = `<button class="btn btn-warning" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`)
             },
           },
           {
-            target: editButtonIndex-1,
+            target: editButtonIndex - 1,
             render: (data) => {
-              return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
+              return (data = `<button class="btn btn-danger" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
             },
           },
         ],
         dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
         buttons: [
           {
-            text: "เพิ่มข้อมูล",
+            text: 'เพิ่มข้อมูล',
             action: function (e, dt, node, config) {
-              $("#staticBackdrop").modal("show");
+              $('#staticBackdrop').modal('show')
               setForm('add', 'เพิ่มข้อมูล')
             },
           },
@@ -56,7 +56,7 @@
           // { extend: "pdf", className: "btn-info" },
           // { extend: "print", className: "btn-warning" },
         ],
-        lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],        
+        lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
       }
 
       console.log('filterItem', filterItem, 'hideColumns', hideColumns)
@@ -72,7 +72,6 @@
         return { title: header }
       })
 
-
       // Hide Columns ที่ต้องการ
       if (hideColumns) {
         hideColumnsOptions = hideColumns.map((el) => {
@@ -84,7 +83,7 @@
         })
         options.data = filteredData
         options.columns = headers
-        options.columnDefs = {...options.columnDefs, ...hideColumnsOptions}
+        options.columnDefs = { ...options.columnDefs, ...hideColumnsOptions }
       } else {
         options.data = filteredData
         options.columns = headers
@@ -103,5 +102,4 @@
     $('#targetFunc').val(target)
     $('.modal-title').text(title)
   }
-
 </script>

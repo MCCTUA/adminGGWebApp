@@ -4,7 +4,6 @@ Route.path = function (route, callback) {
 }
 
 function doGet(e) {
-
   // contact
   Route.path('contact', loadContactPage)
 

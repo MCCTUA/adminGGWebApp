@@ -19,7 +19,7 @@
       [options.func]()
   }
 
-    /**
+  /**
    * ******************************************
    * Check content had loaded
    * ******************************************
@@ -44,26 +44,26 @@
     })
   }
 
-    /**
+  /**
    * ******************************************
    * Promise google.script.run
    * ******************************************
-   */    
+   */
 
   function googelScriptrun(serverFunctionName, ...parameters) {
     return new Promise((resolve, reject) => {
       const runFunction = google.script.run
         .withSuccessHandler(resolve)
-        .withFailureHandler(reject);
+        .withFailureHandler(reject)
 
-      const runFunctionCall = runFunction[serverFunctionName];
+      const runFunctionCall = runFunction[serverFunctionName]
 
       if (parameters.length === 0) {
-        runFunctionCall();
+        runFunctionCall()
       } else {
-        runFunctionCall(...parameters);
+        runFunctionCall(...parameters)
       }
-    });
+    })
   }
 
   // catch error

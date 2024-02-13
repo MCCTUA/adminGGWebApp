@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <?!=include('frontEnd/pagePatial/header')?>
     <!-- include css file -->
-    <?!=include('frontEnd/css/main-css')?>  
+    <?!=include('frontEnd/css/main-css')?>
   </head>
   <body>
     <div class="container">
@@ -12,14 +12,10 @@
           <nav id="navigation">
             <ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
-                <div id="add-new-contact" class="nav-link active">
-                  contact
-                </div>
+                <div id="add-new-contact" class="nav-link active">contact</div>
               </li>
               <li class="nav-item" role="presentation">
-                <div id="add-new-company" class="nav-link">
-                  Company
-                </div>
+                <div id="add-new-company" class="nav-link">Company</div>
               </li>
             </ul>
           </nav>
@@ -27,7 +23,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <div id='app'>
+          <div id="app">
             <div class="tab-content" id="myTabContent">
               <div
                 class="tab-pane fade show active"
@@ -43,7 +39,7 @@
         </div>
       </div>
     </div>
-    
+
     <?!=include('frontEnd/js/table/dataTable-js')?>
     <?!=include('frontEnd/js/table/loadContactTable-js')?>
     <?!=include('frontEnd/js/utils/utilsNavMenu-js')?>
