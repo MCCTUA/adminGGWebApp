@@ -70,5 +70,11 @@ const productSpreadshhetId = '1YGSmE9XPckxW_hIc4EeP9CQqHsGO2AhypTTWEykld8I'
 const productCategorySheet = 'categoryId'
 
 /**
+ * Folder
+ */
+
+const contactUploadFolder = '1qGUjVnppLtD2gl4QSNiPt2mP5YOFOwOE'
+
+/**
  * CSS Color
  */
