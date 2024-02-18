@@ -66,8 +66,14 @@
           {
             text: 'เพิ่มข้อมูล',
             action: function (e, dt, node, config) {
-              $('#staticBackdrop').modal('show')
-              setForm('add', 'เพิ่มข้อมูล')
+              const modalId = document.getElementById('staticBackdrop')
+              const formModal = new bootstrap.Modal(modalId, {
+                keyboard: false,
+                backdrop: 'static',
+              })
+              formModal.show()
+              // $('#staticBackdrop').modal('show')
+              appendForm('contact')
             },
           },
           // { extend: "copy", className: "btn-success" },

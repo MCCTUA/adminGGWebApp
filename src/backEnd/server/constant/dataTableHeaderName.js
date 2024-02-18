@@ -27,19 +27,24 @@ function getHeaderTableName(indentifier) {
             'contactNickName',
             'contactLineProfileFile',
             'contactLineName',
-            'contactSex',
             'contactMobile1',
             'contactMobile2',
             'contactEmail',
+            'contactSex',
             'contactPosition',
             'companyPhone1',
             'extensionNo',
-            'companyName',
-            'contactDocumentFile',
             'contactNote',
-            'formType',
+            'contactDocumentFile',
+            'createAt',
           ],
         },
       }
+      break
+    case 'docControl':
+      return {
+        objKey: ['sequence', 'abbrDocCat', 'docFor', 'createAt'],
+      }
+      break
   }
 }

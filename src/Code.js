@@ -10,7 +10,9 @@ function doGet(e) {
   if (Route[e.parameters.v]) {
     return Route[e.parameters.v]()
   } else {
-    return HtmlService.createTemplateFromFile('home').evaluate()
+    return HtmlService.createTemplateFromFile(
+      'frontEnd/page/loadHomePage'
+    ).evaluate()
   }
 }
 

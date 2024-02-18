@@ -51,6 +51,7 @@ const contactInquiry = 'contactInquiry'
 const contactBuying = 'contactWon'
 const contactHistory = 'contactHistory'
 const contactMockUpSheet = 'contactMockup'
+const contactTest = 'contactTest'
 
 /**
  * Company Sheet

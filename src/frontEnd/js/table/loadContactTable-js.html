@@ -1,9 +1,8 @@
 <script>
-  function loadContactTable() {
+  function loadContactTable(updateDataTable = false) {
     async function loadContactDataTable() {
       try {
         showSwal()
-
         const tableExtraOptions = {
           tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
@@ -25,7 +24,12 @@
           console.log('header length not equal to data in column length')
         }
 
-        const table = loaddDataTable(res, tableExtraOptions)
+        if (!updateDataTable) {
+          const table = loaddDataTable(res, tableExtraOptions)
+        } else {
+          let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+          table.clear().rows.add(allData).draw()
+        }
       } catch (error) {
         catchError(error)
       } finally {

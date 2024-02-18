@@ -33,6 +33,11 @@
         googelScriptrun('serverFormInput', formDataObj)
           .then((result) => {
             hideSwal('บันทึกข้อมูลสำเร็จ')
+            const textareas = formDataObj.querySelectorAll('textarea')
+            // รีเซ็ตค่าใน textarea
+            textareas.forEach(textarea => {
+                textarea.textContent = ''; // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
+            });
             formDataObj.reset()
             console.log('Success:', result)
             resolve(result)
@@ -46,10 +51,12 @@
     }
     sendDataToServer()
       .then(() => {
-        // document.getElementById(`${inputFields.formType}`).reset()
+        $('#staticBackdrop').modal('hide')
+        removeForm('contact')
+        loadContactTable(true)
       })
       .catch((error) => {
-        console.log('error')
+        console.log('error', error)
       })
   }
 </script>
