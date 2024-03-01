@@ -18,8 +18,8 @@
 
   function submmitForm(formDataObj) {
     event.preventDefault()
+    let targetFunction = document.getElementById('targetFunc').value
     let formInput = new FormData(formDataObj)
-    console.log('form input value :', formInput)
     let inputFields = Array.from(formInput.entries()).reduce(
       (acc, [key, value]) => {
         acc[key] = value
@@ -28,37 +28,49 @@
       {}
     )
 
-    function sendDataToServer() {
-      return new Promise((resolve, reject) => {
-        showSwal()
-        googelScriptrun('serverFormInput', formDataObj)
-          .then((result) => {
-            hideSwal('บันทึกข้อมูลสำเร็จ')
-            const textareas = formDataObj.querySelectorAll('textarea')
-            // รีเซ็ตค่าใน textarea
-            textareas.forEach((textarea) => {
-              textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
-            })
-            formDataObj.reset()
-            console.log('Success:', result)
-            resolve(result)
+    console.log('input fields :', inputFields)
+
+    switch (targetFunction) {
+      case 'addData':
+        console.log('add data')
+        sendDataToServer(formDataObj)
+          .then(() => {
+            $('#staticBackdrop').modal('hide')
+            removeForm(inputFields.formType)
+            loadContactTable(true)
           })
           .catch((error) => {
-            failSwal('บันทึกข้อมูลไม่สำเร็จ')
-            catchError(error)
-            reject(error)
+            console.log('error', error)
           })
-      })
+        break
+
+      case 'editData':
+        console.log('edit data')
+        break
     }
-    sendDataToServer()
-      .then(() => {
-        $('#staticBackdrop').modal('hide')
-        removeForm('contact')
-        loadContactTable(true)
-      })
-      .catch((error) => {
-        console.log('error', error)
-      })
+  }
+
+  function sendDataToServer(formDataObj) {
+    return new Promise((resolve, reject) => {
+      showSwal()
+      googelScriptrun('serverFormInput', formDataObj)
+        .then((result) => {
+          hideSwal('บันทึกข้อมูลสำเร็จ')
+          const textareas = formDataObj.querySelectorAll('textarea')
+          // รีเซ็ตค่าใน textarea
+          textareas.forEach((textarea) => {
+            textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
+          })
+          formDataObj.reset()
+          console.log('Success:', result)
+          resolve(result)
+        })
+        .catch((error) => {
+          failSwal('บันทึกข้อมูลไม่สำเร็จ')
+          catchError(error)
+          reject(error)
+        })
+    })
   }
 
   function editData(el) {
@@ -94,7 +106,9 @@
         formInput.forEach((el, index) => {
           if (containsParameterKeyword(regexFile, el.name)) {
             previewDiv.forEach((div, index) => {
-              div.setAttribute('src', fileList[index])
+              if (fileList[index] !== undefined) {
+                div.setAttribute('src', fileList[index])
+              }
             })
           } else if (el.name === 'docId') {
             documentId.setAttribute('value', dataObj[`${formType}Id`])

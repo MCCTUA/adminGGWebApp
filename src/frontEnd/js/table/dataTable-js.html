@@ -9,6 +9,8 @@
     try {
       let { tableId, filterItem, rowIndex, hideColumns, targetIndexShowImage } =
         filterObject
+      const formType = tableId.split('-')[0]
+      console.log('form type :', formType)
       let editButtonIndex = res.headersAll.length
       let headers
       let filteredData
@@ -71,7 +73,8 @@
               })
               formModal.show()
               // $('#staticBackdrop').modal('show')
-              appendForm('contact')
+              appendForm(formType)
+              setFormFunction('addData', 'เพิ่มข้อมูล***')
             },
           },
           // { extend: "copy", className: "btn-success" },
