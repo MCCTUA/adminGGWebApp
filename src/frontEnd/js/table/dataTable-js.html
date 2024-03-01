@@ -1,5 +1,5 @@
 <script>
-  function loaddDataTable(res, filterObject) {
+  function loadDataTable(res, filterObject) {
     /**
      * res ต้องอยู่ในรูปแบบของ Object Array ดังนี้
      * res.data = [[],[]]
@@ -25,8 +25,6 @@
           },
         }
       })
-
-      console.log('targetShowImage', targetShowImage)
 
       let options = {
         retrieve: true,
@@ -115,7 +113,7 @@
         options.columns = headers
       }
       // ทำการสร้าง Table
-      return new DataTable(`#${tableId}`, options)
+      table = new DataTable(`#${tableId}`, options)
       return table
     } catch (error) {
       throw new Error(error)
@@ -123,9 +121,4 @@
   }
 
   //=========================================================
-
-  function setForm(target, title) {
-    $('#targetFunc').val(target)
-    $('.modal-title').text(title)
-  }
 </script>

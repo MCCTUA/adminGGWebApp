@@ -19,6 +19,7 @@
   function submmitForm(formDataObj) {
     event.preventDefault()
     let formInput = new FormData(formDataObj)
+    console.log('form input value :', formInput)
     let inputFields = Array.from(formInput.entries()).reduce(
       (acc, [key, value]) => {
         acc[key] = value
@@ -35,9 +36,9 @@
             hideSwal('บันทึกข้อมูลสำเร็จ')
             const textareas = formDataObj.querySelectorAll('textarea')
             // รีเซ็ตค่าใน textarea
-            textareas.forEach(textarea => {
-                textarea.textContent = ''; // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
-            });
+            textareas.forEach((textarea) => {
+              textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
+            })
             formDataObj.reset()
             console.log('Success:', result)
             resolve(result)
@@ -58,5 +59,74 @@
       .catch((error) => {
         console.log('error', error)
       })
+  }
+
+  function editData(el) {
+    try {
+      async function fillDataToInputForUpdate() {
+        let rowData = table.row(el.parentNode.parentNode).data()
+        const tableId = table.row(el.parentNode.parentNode.parentNode)
+          .context[0]['sTableId']
+        const formType = tableId.split('-')[0]
+
+        let { contact } = await googelScriptrun('getHeaderTableName', formType)
+        const dataObj = {}
+        const regexFile = /File/i
+        const fileList = []
+        const formModal = new bootstrap.Modal(
+          document.getElementById('staticBackdrop')
+        )
+        formModal.show()
+        appendForm(formType)
+        setFormFunction('editData', 'แก้ไขข้อมูล')
+        const formInput = document.querySelectorAll('.formInput')
+        const previewDiv = document.querySelectorAll('.preview')
+        const documentId = document.getElementById('docId')
+        // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
+        rowData.forEach((el, index) => {
+          dataObj[contact.objKey[index]] = el
+          if (startsWithHttps(el)) {
+            fileList.push(el)
+          }
+        })
+
+        // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
+        formInput.forEach((el, index) => {
+          if (containsParameterKeyword(regexFile, el.name)) {
+            previewDiv.forEach((div, index) => {
+              div.setAttribute('src', fileList[index])
+            })
+          } else if (el.name === 'docId') {
+            documentId.setAttribute('value', dataObj[`${formType}Id`])
+          } else if (dataObj[el.name] === undefined) {
+            el.value = ''
+          } else {
+            el.value = dataObj[el.name]
+          }
+        })
+      }
+      fillDataToInputForUpdate()
+    } catch (error) {
+      catchError()
+    }
+  }
+
+  function containsParameterKeyword(regex, name) {
+    return regex.test(name)
+  }
+
+  function startsWithHttps(value) {
+    return value.startsWith('https://')
+  }
+
+  function setFormFunction(functionName, modalTitle) {
+    const callFunction = document.getElementById('targetFunc')
+    const showModalTitle = document.querySelector('.modal-title')
+    callFunction.setAttribute('value', functionName)
+    showModalTitle.textContent = modalTitle
+  }
+
+  function preview(event) {
+    console.log('event : ', event)
   }
 </script>

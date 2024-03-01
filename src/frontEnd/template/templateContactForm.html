@@ -28,6 +28,8 @@
           class="form-control formInput contactLineProfileFile"
           name="contactLineProfileFile"
           id="contactLineProfileFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
           placeholder="รูป Line Profile"
         />
       </div>
@@ -132,6 +134,8 @@
             class="form-control formInput contactDocumentFile"
             name="contactDocumentFile"
             id="contactDocumentFile"
+            accept="application/pdf, image/*"
+            onchange="preview(event)"
           />
         </div>
       </div>
@@ -147,6 +151,14 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+    </div>
+    <div class="row">
       <div class="mb-3 form-check">
         <input
           type="radio"
@@ -159,6 +171,10 @@
         <label class="form-check-label" for="form-name"
           >Contact Line Form</label
         >
+      </div>
+      <div>
+        <input name="docId" , id="docId" class="formInput" hidden />
+        <input id="targetFunc" hidden />
       </div>
     </div>
     <div class="modal-footer">
