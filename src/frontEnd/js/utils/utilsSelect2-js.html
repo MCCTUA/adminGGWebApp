@@ -1,0 +1,63 @@
+<script>
+  /**
+   * ******************************************
+   * Select 2 Option function
+   * ******************************************
+   */
+
+  function getSelect2Opions(
+    select2Id,
+    data,
+    valueIndex,
+    textIndex,
+    placeholderText
+  ) {
+    const selectElement = document.getElementById(select2Id)
+
+    data.forEach((item) => {
+      let elemOption = document.createElement('option')
+      elemOption.value = item[valueIndex]
+      elemOption.text = item[textIndex]
+      selectElement.appendChild(elemOption)
+    })
+
+    $(`#${select2Id}`).select2({
+      theme: 'bootstrap-5',
+      width: $(this).data('width')
+        ? $(this).data('width')
+        : $(this).hasClass('w-100')
+        ? '100%'
+        : 'style',
+      placeholder: $(this).data('placeholder'),
+      dropdownParent: $('#staticBackdrop'),
+
+      // add new option -------
+      tags: true,
+      createTag: function (params) {
+        return {
+          id: params.term,
+          text: params.term,
+          newOption: true,
+        }
+      },
+      templateResult: function (data) {
+        var $result = $('<span></span>')
+
+        $result.text(data.text)
+
+        if (data.newOption) {
+          $result.append(' <em>(new)</em>')
+        }
+
+        return $result
+      },
+
+      placeholder: placeholderText,
+      language: {
+        noResults: function () {
+          return `<span class='text-danger'> ไม่พบข้อมูล </span>`
+        },
+      },
+    })
+  }
+</script>

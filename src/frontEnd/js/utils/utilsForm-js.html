@@ -9,6 +9,18 @@
     // คัดลอก template content และนำมาวางใน DOM
     let copyThisTemplate = thisTemplate.content.cloneNode(true)
     document.querySelector('.modal-body').appendChild(copyThisTemplate)
+    async function getData() {
+      const { data } = await googelScriptrun('getContactWithCompanyData')
+      const dataWithoutHeader = data.slice(1)
+      getSelect2Opions(
+        'companyNameSelect2',
+        dataWithoutHeader,
+        0,
+        2,
+        'กรุณาเลือกชื่อบริษัท'
+      )
+    }
+    getData()
   }
 
   function removeForm(formName) {
@@ -80,8 +92,13 @@
         const tableId = table.row(el.parentNode.parentNode.parentNode)
           .context[0]['sTableId']
         const formType = tableId.split('-')[0]
-
+        const contactId = rowData[0]
         let { contact } = await googelScriptrun('getHeaderTableName', formType)
+        let company = await googelScriptrun(
+          'getContactWithCompanyData',
+          contactId
+        )
+
         const dataObj = {}
         const regexFile = /File/i
         const fileList = []

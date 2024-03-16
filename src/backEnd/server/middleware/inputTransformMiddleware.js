@@ -10,6 +10,7 @@ function serverFormInput(formDataObj) {
 }
 
 function appendContactData(formDataObj) {
+  console.log('appendContactData -> form Data : ', formDataObj)
   const praramDataObj = {
     spreadSheetId: contactSpreadsheetId,
     sheetName: contactSheet,
@@ -48,10 +49,15 @@ function appendContactData(formDataObj) {
   }, {})
 
   keyOrder[mainKey].objKey.forEach((key) => {
+    console.log('key :', key)
     if (inputFields.hasOwnProperty(key)) {
-      sortedObj[key] = inputFields[key]
+      sortedObj[key] = inputFields[key] === 'เพศ' ? '' : inputFields[key]
+    } else {
+      sortedObj[key] = ''
     }
   })
+
+  console.log('sorted object : ', sortedObj)
 
   idInfo.docFor =
     inputFields.contactName === ''
