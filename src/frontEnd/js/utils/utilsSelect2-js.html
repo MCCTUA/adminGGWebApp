@@ -10,7 +10,8 @@
     data,
     valueIndex,
     textIndex,
-    placeholderText
+    placeholderText,
+    modalId
   ) {
     const selectElement = document.getElementById(select2Id)
 
@@ -29,7 +30,7 @@
         ? '100%'
         : 'style',
       placeholder: $(this).data('placeholder'),
-      dropdownParent: $('#staticBackdrop'),
+      dropdownParent: $(`#${modalId}`),
 
       // add new option -------
       tags: true,

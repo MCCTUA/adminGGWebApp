@@ -10,7 +10,6 @@ function serverFormInput(formDataObj) {
 }
 
 function appendContactData(formDataObj) {
-  console.log('appendContactData -> form Data : ', formDataObj)
   const praramDataObj = {
     spreadSheetId: contactSpreadsheetId,
     sheetName: contactSheet,
@@ -22,6 +21,10 @@ function appendContactData(formDataObj) {
   }
   const mainKey = formDataObj.formType
   let idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
+
+  let formDataObjKeys = Object.keys(formDataObj)
+
+  console.log('form data object keys : ', formDataObjKeys)
 
   const keyOrder = getHeaderTableName(mainKey)
   const keyDocControlOrder = getHeaderTableName('docControl')
@@ -47,6 +50,8 @@ function appendContactData(formDataObj) {
     }
     return acc
   }, {})
+
+  console.log('input fields : ', inputFields)
 
   keyOrder[mainKey].objKey.forEach((key) => {
     console.log('key :', key)

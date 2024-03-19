@@ -45,6 +45,7 @@ const inquiryHistory = 'inquiryHistory'
  */
 const contactSpreadsheetId = '1rtNrrktbE6gtW3TDrUoNOuGyNg3kfzoXByfZdhbAi7w'
 const contactSheet = 'contact'
+const touchPointList = 'touchPointList'
 const contactPhoneList = 'contactPhoneList'
 const contactEmailList = 'contactEmailList'
 const contactInquiry = 'contactInquiry'
@@ -58,11 +59,18 @@ const contactTest = 'contactTest'
  */
 const companySpreadsheetId = '1LMkHzPMQmEnOw6ChlqDe1zdvIo4QRwOZft9vtfJWyO4'
 const companySheet = 'company'
-const companyContactList = 'contactList'
 const companyInquiry = 'companyInquiry'
 const companyWon = 'companyWon'
 const companyPaymentScore = 'paymentScore'
 const companyHistory = 'companyHistory'
+
+/**
+ * touch point list Sheet
+ */
+
+const touchPointListSpreadsheetId =
+  '1sSNmw2rcj81pHZke_GIXgaACitqHGTCrTS7i6ctqnSI'
+const companyContactList = 'contactList'
 
 /**
  * Product Sheet

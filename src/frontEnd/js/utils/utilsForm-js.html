@@ -17,7 +17,8 @@
         dataWithoutHeader,
         0,
         2,
-        'กรุณาเลือกชื่อบริษัท'
+        'กรุณาเลือกชื่อบริษัท',
+        'staticBackdrop'
       )
     }
     getData()
@@ -32,15 +33,28 @@
     event.preventDefault()
     let targetFunction = document.getElementById('targetFunc').value
     let formInput = new FormData(formDataObj)
-    let inputFields = Array.from(formInput.entries()).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value
-        return acc
-      },
-      {}
-    )
+    // let inputFields = Array.from(formInput.entries()).reduce(
+    //   (acc, [key, value]) => {
+    //     acc[key] = value
+    //     return acc
+    //   },
+    //   {}
+    // )
 
-    console.log('input fields :', inputFields)
+    // // เพิ่มการเลือก select เข้าไปเพื่อให้สามารถดึงค่า companyName ได้
+    // let companyNameSelect = document.getElementById('companyNameSelect2');
+    // let companyName = companyNameSelect.options[companyNameSelect.selectedIndex].value;
+
+    // เพิ่มการดึงค่าที่ถูกเลือกจาก Select2 โดยใช้ jQuery
+    let companyName = $('#companyNameSelect2').val()
+    console.log('company name is : ', companyName)
+
+    // เพิ่มค่า companyName เข้าไปใน Object inputFields
+    let inputFields = {
+      ...Object.fromEntries(formInput),
+      companyName: companyName,
+    }
+    console.log('input fields with companyName:', inputFields)
 
     switch (targetFunction) {
       case 'addData':
