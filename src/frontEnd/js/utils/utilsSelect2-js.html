@@ -5,14 +5,7 @@
    * ******************************************
    */
 
-  function getSelect2Opions(
-    select2Id,
-    data,
-    valueIndex,
-    textIndex,
-    placeholderText,
-    modalId
-  ) {
+  function getSelect2Opions(select2Id, data, valueIndex, textIndex, modalId) {
     const selectElement = document.getElementById(select2Id)
 
     data.forEach((item) => {
@@ -52,8 +45,6 @@
 
         return $result
       },
-
-      placeholder: placeholderText,
       language: {
         noResults: function () {
           return `<span class='text-danger'> ไม่พบข้อมูล </span>`

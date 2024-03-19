@@ -11,13 +11,24 @@
     document.querySelector('.modal-body').appendChild(copyThisTemplate)
     async function getData() {
       const { data } = await googelScriptrun('getContactWithCompanyData')
+      const list = await googelScriptrun('getTochPointList')
+
       const dataWithoutHeader = data.slice(1)
+      const listWithoutHeader = list.slice(1)
+
       getSelect2Opions(
         'companyNameSelect2',
         dataWithoutHeader,
         0,
-        2,
-        'กรุณาเลือกชื่อบริษัท',
+        4,
+        'staticBackdrop'
+      )
+
+      getSelect2Opions(
+        'touchPointListSelect2',
+        listWithoutHeader,
+        0,
+        1,
         'staticBackdrop'
       )
     }

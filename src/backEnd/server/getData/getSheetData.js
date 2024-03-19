@@ -19,3 +19,13 @@ function getContactWithCompanyData(contactId) {
     return readDataDisplayValues(paramObj)
   }
 }
+
+function getTochPointList() {
+  const paramObj = {
+    spreadSheetId: touchPointListSpreadsheetId,
+    sheetName: touchPointList,
+  }
+
+  let { data: list } = readDataDisplayValues(paramObj)
+  return list
+}

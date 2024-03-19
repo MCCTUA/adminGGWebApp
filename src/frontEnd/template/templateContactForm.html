@@ -121,13 +121,15 @@
     </div>
     <div class="row">
       <div class="col-md mb-3 input-group">
-        <div class="input-group-text" id="numberOfCompanyName">1</div>
+        <div class="input-group-text" id="companyNameNumber">0</div>
         <select
           id="companyNameSelect2"
           class="form-select formInput"
           name="companyName"
           data-placeholder="เลือกชื่อบริษัท"
-        ></select>
+        >
+          <option value=""></option>
+        </select>
       </div>
       <div class="col-md mb-3">
         <input
@@ -138,6 +140,19 @@
           accept="application/pdf, image/*"
           onchange="preview(event)"
         />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <div class="input-group-text" id="touchPointListNumber">0</div>
+        <select
+          id="touchPointListSelect2"
+          class="form-select formInput"
+          name="touchPointList"
+          data-placeholder="เลือกชื่อ touch points"
+        >
+          <option value=""></option>
+        </select>
       </div>
     </div>
     <div class="row">
