@@ -6,6 +6,14 @@ function getContactData() {
   return readDataDisplayValues(paramObj)
 }
 
+function getCompanyData() {
+  const paramObj = {
+    spreadSheetId: companySpreadsheetId,
+    sheetName: companySheet,
+  }
+  return readDataDisplayValues(paramObj)
+}
+
 function getContactWithCompanyData(contactId) {
   const paramObj = {
     spreadSheetId: companySpreadsheetId,
@@ -26,7 +34,5 @@ function getTochPointList() {
     sheetName: touchPointList,
   }
 
-  let { data: list } = readDataDisplayValues(paramObj)
-  console.log(list)
-  return list
+  return readDataDisplayValues(paramObj)
 }

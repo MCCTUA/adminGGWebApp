@@ -1,6 +1,7 @@
 <script>
   // Add form template
   function appendForm(formName) {
+    console.log('append form working')
     let thisTemplate = document.getElementById(`${formName}FormTemplate`)
     if (!thisTemplate) {
       console.error(`Template for ${formName} form not found`)
@@ -9,40 +10,70 @@
     // คัดลอก template content และนำมาวางใน DOM
     let copyThisTemplate = thisTemplate.content.cloneNode(true)
     document.querySelector('.modal-body').appendChild(copyThisTemplate)
-    async function getData() {
-      const { data } = await googelScriptrun('getContactWithCompanyData')
-      const list = await googelScriptrun('getTochPointList')
 
-      const dataWithoutHeader = data.slice(1)
-      const listWithoutHeader = list.slice(1)
-
-      getSelect2Opions(
-        'companyNameSelect2',
-        dataWithoutHeader,
-        0,
-        4,
-        'staticBackdrop'
-      )
-
-      getSelect2Opions(
-        'touchPointListSelect2',
-        listWithoutHeader,
-        0,
-        1,
-        'staticBackdrop'
-      )
-      const selectedValues = [
-        '1',
-        'ggismo.com',
-        '2',
-        'ledonsale.com',
-        '3',
-        'geniusgismo',
-      ]
-      // กำหนดค่าให้กับ <select> element
-      $('#touchPointListSelect2').val(selectedValues).trigger('change')
+    const endpoints = {
+      getCompanyData: {
+        select2Id: 'companyNameSelect2',
+        valueIndex: 0,
+        textIndex: 4,
+      },
+      getTochPointList: {
+        select2Id: 'touchPointListSelect2',
+        valueIndex: 0,
+        textIndex: 1,
+      },
     }
-    getData()
+
+    console.log('endpoints :', endpoints)
+
+    getData(endpoints)
+  }
+
+  async function getData(endpointsSelect2Options) {
+    for (const [endpoint, config] of Object.entries(endpointsSelect2Options)) {
+      const { data } = await googelScriptrun(endpoint)
+      const dataWithoutHeader = data.slice(1)
+      getSelect2Opions(
+        config.select2Id,
+        dataWithoutHeader,
+        config.valueIndex,
+        config.textIndex,
+        'staticBackdrop'
+      )
+    }
+    // const { data } = await googelScriptrun('getCompanyData')
+    // const {data : list} = await googelScriptrun('getTochPointList')
+
+    // console.log('list', list)
+
+    // const dataWithoutHeader = data.slice(1)
+    // const listWithoutHeader = list.slice(1)
+
+    // getSelect2Opions(
+    //   'companyNameSelect2',
+    //   dataWithoutHeader,
+    //   0,
+    //   4,
+    //   'staticBackdrop'
+    // )
+
+    // getSelect2Opions(
+    //   'touchPointListSelect2',
+    //   listWithoutHeader,
+    //   0,
+    //   1,
+    //   'staticBackdrop'
+    // )
+    // const selectedValues = [
+    //   '1',
+    //   'ggismo.com',
+    //   '2',
+    //   'ledonsale.com',
+    //   '3',
+    //   'geniusgismo',
+    // ]
+    // // กำหนดค่าให้กับ <select> element
+    // $('#touchPointListSelect2').val(selectedValues).trigger('change')
   }
 
   function removeForm(formName) {
