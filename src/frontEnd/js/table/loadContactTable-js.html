@@ -6,9 +6,21 @@
         const tableExtraOptions = {
           tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
-          targetIndexShowImage: [3, 13],
+          targetIndexShowImage: [3, 15],
         }
         const { data } = await googelScriptrun('getContactData')
+        console.log('data', data)
+
+        // const dataModify = data.map(row => row.map((el, index) => {
+        //   if(index === 13){
+        //     console.log('13', el)
+        //     return String(el)
+        //   } else {
+        //     return el
+        //   }
+        // }))
+
+        console.log('dataModify loadContactTable loadContactDataTable:', data)
 
         const { contact } = await googelScriptrun(
           'getHeaderTableName',

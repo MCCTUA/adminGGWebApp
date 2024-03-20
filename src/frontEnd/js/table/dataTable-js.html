@@ -1,5 +1,5 @@
 <script>
-  function loadDataTable(res, filterObject) {
+  function loadDataTable(res, filterObject, endpointsSelect2Options) {
     /**
      * res ต้องอยู่ในรูปแบบของ Object Array ดังนี้
      * res.data = [[],[]]
@@ -73,7 +73,7 @@
               })
               formModal.show()
               // $('#staticBackdrop').modal('show')
-              appendForm(formType)
+              appendForm(formType, endpointsSelect2Options)
               setFormFunction('addData', 'เพิ่มข้อมูล***')
             },
           },

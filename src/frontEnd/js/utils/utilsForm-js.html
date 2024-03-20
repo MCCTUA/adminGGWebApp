@@ -1,7 +1,6 @@
 <script>
   // Add form template
   function appendForm(formName) {
-    console.log('append form working')
     let thisTemplate = document.getElementById(`${formName}FormTemplate`)
     if (!thisTemplate) {
       console.error(`Template for ${formName} form not found`)
@@ -11,69 +10,27 @@
     let copyThisTemplate = thisTemplate.content.cloneNode(true)
     document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-    const endpoints = {
-      getCompanyData: {
-        select2Id: 'companyNameSelect2',
-        valueIndex: 0,
-        textIndex: 4,
-      },
-      getTochPointList: {
-        select2Id: 'touchPointListSelect2',
-        valueIndex: 0,
-        textIndex: 1,
-      },
-    }
-
-    console.log('endpoints :', endpoints)
-
-    getData(endpoints)
+    getData(formName)
   }
 
-  async function getData(endpointsSelect2Options) {
-    for (const [endpoint, config] of Object.entries(endpointsSelect2Options)) {
+  async function getData(formName) {
+    const {
+      contact: { select2EndpointAndOptions },
+    } = await googelScriptrun('getHeaderTableName', formName)
+
+    for (const [endpoint, config] of Object.entries(
+      select2EndpointAndOptions
+    )) {
       const { data } = await googelScriptrun(endpoint)
       const dataWithoutHeader = data.slice(1)
       getSelect2Opions(
-        config.select2Id,
+        config?.select2Id,
         dataWithoutHeader,
-        config.valueIndex,
-        config.textIndex,
+        config?.valueIndex,
+        config?.textIndex,
         'staticBackdrop'
       )
     }
-    // const { data } = await googelScriptrun('getCompanyData')
-    // const {data : list} = await googelScriptrun('getTochPointList')
-
-    // console.log('list', list)
-
-    // const dataWithoutHeader = data.slice(1)
-    // const listWithoutHeader = list.slice(1)
-
-    // getSelect2Opions(
-    //   'companyNameSelect2',
-    //   dataWithoutHeader,
-    //   0,
-    //   4,
-    //   'staticBackdrop'
-    // )
-
-    // getSelect2Opions(
-    //   'touchPointListSelect2',
-    //   listWithoutHeader,
-    //   0,
-    //   1,
-    //   'staticBackdrop'
-    // )
-    // const selectedValues = [
-    //   '1',
-    //   'ggismo.com',
-    //   '2',
-    //   'ledonsale.com',
-    //   '3',
-    //   'geniusgismo',
-    // ]
-    // // กำหนดค่าให้กับ <select> element
-    // $('#touchPointListSelect2').val(selectedValues).trigger('change')
   }
 
   function removeForm(formName) {
@@ -85,28 +42,7 @@
     event.preventDefault()
     let targetFunction = document.getElementById('targetFunc').value
     let formInput = new FormData(formDataObj)
-    // let inputFields = Array.from(formInput.entries()).reduce(
-    //   (acc, [key, value]) => {
-    //     acc[key] = value
-    //     return acc
-    //   },
-    //   {}
-    // )
-
-    // // เพิ่มการเลือก select เข้าไปเพื่อให้สามารถดึงค่า companyName ได้
-    // let companyNameSelect = document.getElementById('companyNameSelect2');
-    // let companyName = companyNameSelect.options[companyNameSelect.selectedIndex].value;
-
-    // เพิ่มการดึงค่าที่ถูกเลือกจาก Select2 โดยใช้ jQuery
-    let companyName = $('#companyNameSelect2').val()
-    console.log('company name is : ', companyName)
-
-    // เพิ่มค่า companyName เข้าไปใน Object inputFields
-    let inputFields = {
-      ...Object.fromEntries(formInput),
-      companyName: companyName,
-    }
-    console.log('input fields with companyName:', inputFields)
+    let inputFields = Object.fromEntries(formInput)
 
     switch (targetFunction) {
       case 'addData':
@@ -172,6 +108,30 @@
           document.getElementById('staticBackdrop')
         )
         formModal.show()
+
+        // const selectedValues = [
+        //   '1',
+        //   'ggismo.com',
+        //   '2',
+        //   'ledonsale.com',
+        //   '3',
+        //   'geniusgismo',
+        // ]
+        // // กำหนดค่าให้กับ <select> element
+        // $('#touchPointListSelect2').val(selectedValues).trigger('change')
+        const endpointsSelect2Options = {
+          getCompanyData: {
+            select2Id: 'companyNameSelect2',
+            valueIndex: 0,
+            textIndex: 4,
+          },
+          getTochPointList: {
+            select2Id: 'touchPointListSelect2',
+            valueIndex: 0,
+            textIndex: 1,
+          },
+        }
+
         appendForm(formType)
         setFormFunction('editData', 'แก้ไขข้อมูล')
         const formInput = document.querySelectorAll('.formInput')

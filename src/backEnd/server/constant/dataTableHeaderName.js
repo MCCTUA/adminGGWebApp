@@ -17,7 +17,7 @@ function getHeaderTableName(indentifier) {
             'เบอร์บริษัท',
             'เบอร์ต่อภายใน',
             'รายชื่อบริษัท',
-            'รายชื่อ touch point',
+            'ช่องทางที่ลูกค้าติดต่อเข้ามา',
             'หมายเหตุ',
             'Upload เอกสาร',
             'แก้ไข',
@@ -37,11 +37,23 @@ function getHeaderTableName(indentifier) {
             'companyPhone1',
             'extensionNo',
             'companyName',
-            'toucPointList',
+            'touchPointList',
             'contactNote',
             'contactDocumentFile',
             'createAt',
           ],
+          select2EndpointAndOptions: {
+            getCompanyData: {
+              select2Id: 'companyNameSelect2',
+              valueIndex: 0,
+              textIndex: 4,
+            },
+            getTochPointList: {
+              select2Id: 'touchPointListSelect2',
+              valueIndex: 0,
+              textIndex: 1,
+            },
+          },
         },
       }
       break
