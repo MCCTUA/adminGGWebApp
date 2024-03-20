@@ -27,5 +27,6 @@ function getTochPointList() {
   }
 
   let { data: list } = readDataDisplayValues(paramObj)
+  console.log(list)
   return list
 }

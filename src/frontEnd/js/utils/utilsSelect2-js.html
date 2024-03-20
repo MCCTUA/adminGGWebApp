@@ -8,11 +8,20 @@
   function getSelect2Opions(select2Id, data, valueIndex, textIndex, modalId) {
     const selectElement = document.getElementById(select2Id)
 
+    // data.forEach((item) => {
+    //   let elemOption = document.createElement('option')
+    //   elemOption.value = item[valueIndex]
+    //   elemOption.text = item[textIndex]
+    //   selectElement.appendChild(elemOption)
+    // })
+
     data.forEach((item) => {
-      let elemOption = document.createElement('option')
-      elemOption.value = item[valueIndex]
-      elemOption.text = item[textIndex]
-      selectElement.appendChild(elemOption)
+      $(`#${select2Id}`).append(
+        $('<option>', {
+          value: item[valueIndex],
+          text: item[textIndex],
+        })
+      )
     })
 
     $(`#${select2Id}`).select2({
