@@ -11,17 +11,27 @@
         const { data } = await googelScriptrun('getContactData')
         const { data: compantyData } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
-        console.log('data', data)
-        console.log('compantyData', compantyData)
-        console.log('touchPoint', touchPoint)
 
         const dataModify = data.slice(1).map((row) =>
           row.map((el, index) => {
             if (index === 12 && el !== '') {
-              console.log('12', el)
-              return String(el)
+              const companyList = []
+              const indexCompanyArray = compantyData.findIndex(
+                (item) => item[0] === el
+              )
+              companyList.push(compantyData[indexCompanyArray][4])
+              row[index] = companyList.join(', ')
             } else if (index === 13 && el !== '') {
-              console.log('13', el)
+              const touchPointList = []
+              const touchPointArray = el.split(', ')
+              touchPointArray.map((touchPointId) =>
+                touchPoint.map((point, index) => {
+                  if (point[0] === touchPointId) {
+                    touchPointList.push(touchPoint[index][1])
+                  }
+                })
+              )
+              row[index] = touchPointList.join(', ')
             } else {
               return el
             }
