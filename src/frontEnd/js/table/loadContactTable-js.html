@@ -9,18 +9,24 @@
           targetIndexShowImage: [3, 15],
         }
         const { data } = await googelScriptrun('getContactData')
+        const { data: compantyData } = await googelScriptrun('getCompanyData')
+        const { data: touchPoint } = await googelScriptrun('getTochPointList')
         console.log('data', data)
+        console.log('compantyData', compantyData)
+        console.log('touchPoint', touchPoint)
 
-        // const dataModify = data.map(row => row.map((el, index) => {
-        //   if(index === 13){
-        //     console.log('13', el)
-        //     return String(el)
-        //   } else {
-        //     return el
-        //   }
-        // }))
-
-        console.log('dataModify loadContactTable loadContactDataTable:', data)
+        const dataModify = data.slice(1).map((row) =>
+          row.map((el, index) => {
+            if (index === 12 && el !== '') {
+              console.log('12', el)
+              return String(el)
+            } else if (index === 13 && el !== '') {
+              console.log('13', el)
+            } else {
+              return el
+            }
+          })
+        )
 
         const { contact } = await googelScriptrun(
           'getHeaderTableName',

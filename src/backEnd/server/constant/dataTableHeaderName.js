@@ -54,6 +54,27 @@ function getHeaderTableName(indentifier) {
               textIndex: 1,
             },
           },
+          paramsObj: {
+            praramDataObj: {
+              spreadSheetId: contactSpreadsheetId,
+              sheetName: contactSheet,
+            },
+            paramsDocIdObj: {
+              spreadSheetId: controlDocumentSpreadsheetId,
+              sheetName: controlDocument2024Sheet,
+            },
+            paramsComapanyObj: {
+              spreadSheetId: companySpreadsheetId,
+              sheetName: companySheet,
+            },
+            paramsTouchPointsObj: {
+              spreadSheetId: touchPointListSpreadsheetId,
+              sheetName: touchPointList,
+            },
+            paramsContactFolder: {
+              folderName: contactUploadFolder,
+            },
+          },
         },
       }
       break

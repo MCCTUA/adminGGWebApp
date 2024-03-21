@@ -1,3 +1,10 @@
+/**
+ * name : serverFormInput
+ * type : function
+ * parameter : formDataObj
+ * task : รับข้อมูลจาก HTML Form
+ */
+
 function serverFormInput(formDataObj) {
   try {
     // console.log('serverFormInput :', formDataObj)
@@ -9,27 +16,24 @@ function serverFormInput(formDataObj) {
   }
 }
 
+/**
+ * Save Data ลง Google Sheet
+ */
+
 function appendContactData(formDataObj) {
   try {
-    const praramDataObj = {
-      spreadSheetId: contactSpreadsheetId,
-      sheetName: contactSheet,
-    }
-
-    const paramsDocIdObj = {
-      spreadSheetId: controlDocumentSpreadsheetId,
-      sheetName: controlDocument2024Sheet,
-    }
-    const paramsComapanyObj = {
-      spreadSheetId: companySpreadsheetId,
-      sheetName: companySheet,
-    }
-    const paramsTouchPointsObj = {
-      spreadSheetId: touchPointListSpreadsheetId,
-      sheetName: touchPointList,
-    }
     const mainKey = formDataObj.formType
-    let idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
+    console.log('main key', mainKey)
+    const {
+      contact: {
+        paramsObj: {
+          praramDataObj,
+          paramsDocIdObj,
+          paramsContactFolder: { folderName },
+        },
+      },
+    } = getHeaderTableName(mainKey)
+    const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
 
     const keyOrder = getHeaderTableName(mainKey)
     const keyDocControlOrder = getHeaderTableName('docControl')
@@ -37,11 +41,44 @@ function appendContactData(formDataObj) {
     formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
     formDataObj[keyOrder[mainKey].objKey[keyOrderLength]] = idInfo.createAt =
       new Date()
-    const folder = DriveApp.getFolderById(contactUploadFolder)
+
     let sortedObj = {}
     let sortIdObj = {}
 
-    let inputFields = Object.entries(formDataObj).reduce(
+    let inputFields = dataSheetColumnFormating(formDataObj, folderName)
+
+    keyOrder[mainKey].objKey.forEach((key) => {
+      if (inputFields.hasOwnProperty(key)) {
+        sortedObj[key] = inputFields[key] === 'เพศ' ? '' : inputFields[key]
+      } else {
+        sortedObj[key] = ''
+      }
+    })
+
+    idInfo.docFor =
+      inputFields.contactName === ''
+        ? inputFields.contactLineName
+        : inputFields.contactName
+
+    sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj)
+
+    // บันทึก เลข ID ที่สร้างใหม่
+    createData(paramsDocIdObj, sortIdObj)
+    // บันทึก Form Data ลง Sheet
+    createData(praramDataObj, sortedObj)
+  } catch (error) {
+    catchError()
+  }
+}
+
+/**
+ * แปลงข้อมูล เพื่อให้สามารถนำไปบันทึก และแสดง
+ */
+
+function dataSheetColumnFormating(formDataObj, folderConstant) {
+  try {
+    const folder = DriveApp.getFolderById(folderConstant)
+    const inputDataWithFormating = Object.entries(formDataObj).reduce(
       (acc, [key, value]) => {
         if (key.includes('File')) {
           value.contents === ''
@@ -62,30 +99,24 @@ function appendContactData(formDataObj) {
       {}
     )
 
-    keyOrder[mainKey].objKey.forEach((key) => {
-      if (inputFields.hasOwnProperty(key)) {
-        sortedObj[key] = inputFields[key] === 'เพศ' ? '' : inputFields[key]
-      } else {
-        sortedObj[key] = ''
-      }
-    })
+    return inputDataWithFormating
+  } catch (error) {
+    catchError(error)
+  }
+}
 
-    idInfo.docFor =
-      inputFields.contactName === ''
-        ? inputFields.contactLineName
-        : inputFields.contactName
+/**
+ * จัดเรียงข้อมูลตาม Column ใน Sheet
+ */
 
+function sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj) {
+  try {
     keyDocControlOrder.objKey.forEach((key) => {
       if (idInfo.hasOwnProperty(key)) {
         sortIdObj[key] = idInfo[key]
       }
     })
-
-    // บันทึก เลข ID ที่สร้างใหม่
-    createData(paramsDocIdObj, sortIdObj)
-    // บันทึก Form Data ลง Sheet
-    createData(praramDataObj, sortedObj)
   } catch (error) {
-    catchError()
+    catchError(error)
   }
 }
