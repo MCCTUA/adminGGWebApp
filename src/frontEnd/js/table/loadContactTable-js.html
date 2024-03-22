@@ -9,40 +9,17 @@
           targetIndexShowImage: [3, 15],
         }
         const { data } = await googelScriptrun('getContactData')
-        const { data: compantyData } = await googelScriptrun('getCompanyData')
+        const { data: companyData } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
 
-        const dataModify = data.slice(1).map((row) =>
-          row.map((el, index) => {
-            if (index === 12 && el !== '') {
-              const companyList = []
-              const indexCompanyArray = compantyData.findIndex(
-                (item) => item[0] === el
-              )
-              companyList.push(compantyData[indexCompanyArray][4])
-              row[index] = companyList.join(', ')
-            } else if (index === 13 && el !== '') {
-              const touchPointList = []
-              const touchPointArray = el.split(', ')
-              touchPointArray.map((touchPointId) =>
-                touchPoint.map((point, index) => {
-                  if (point[0] === touchPointId) {
-                    touchPointList.push(touchPoint[index][1])
-                  }
-                })
-              )
-              row[index] = touchPointList.join(', ')
-            } else {
-              return el
-            }
-          })
-        )
+        processData(data, companyData, 12, processList, 4)
+        processData(data, touchPoint, 13, processList, 1)
 
+        console.log('data modify is :', data)
         const { contact } = await googelScriptrun(
           'getHeaderTableName',
           'contact'
         )
-
         const columnLenght = data.shift().length - 4
         const res = {}
 
@@ -52,7 +29,6 @@
         } else {
           console.log('header length not equal to data in column length')
         }
-
         if (!updateDataTable) {
           const table = loadDataTable(res, tableExtraOptions)
         } else {
@@ -66,5 +42,51 @@
       }
     }
     loadContactDataTable()
+  }
+
+  function processData(data, dataArray, elIndex, callback, columnIndex) {
+    const processedData = []
+    const dataNoHeader = data.slice(1)
+    dataNoHeader.forEach((row, indexData) => {
+      console.log('row with index data :', indexData, row)
+      const newRow = row.map((el, indexRow) => {
+        if (indexRow === elIndex && el !== '') {
+          return callback(
+            dataNoHeader,
+            dataArray,
+            el,
+            columnIndex,
+            indexData,
+            elIndex
+          )
+        } else {
+          return el
+        }
+      })
+      processedData.push(newRow)
+    })
+    return processedData
+  }
+
+  function processList(
+    dataNoHeader,
+    dataArray,
+    dataItems,
+    columnIndex,
+    indexData,
+    elIndex
+  ) {
+    const list = []
+    if (typeof dataItems === 'string') {
+      dataItems = dataItems.split(', ')
+      dataItems.forEach((dataItem) => {
+        const matchingItem = dataArray.filter((item) => item[0] === dataItem)
+        if (matchingItem) {
+          list.push(matchingItem[0][columnIndex])
+        }
+      })
+    }
+    dataNoHeader[indexData][elIndex] = list.join(', ')
+    return list.join(', ')
   }
 </script>

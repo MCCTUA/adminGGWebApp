@@ -1,6 +1,8 @@
 <script>
-  // Add form template
-  function appendForm(formName) {
+
+// Add form template
+async function appendForm(formName) {
+  try {
     let thisTemplate = document.getElementById(`${formName}FormTemplate`)
     if (!thisTemplate) {
       console.error(`Template for ${formName} form not found`)
@@ -10,35 +12,58 @@
     let copyThisTemplate = thisTemplate.content.cloneNode(true)
     document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-    getData(formName)
-  }
-
-  async function getData(formName) {
     const {
       contact: { select2EndpointAndOptions },
     } = await googelScriptrun('getHeaderTableName', formName)
 
+    getData(formName, select2EndpointAndOptions)
+  } catch (error) {
+    catchError(error)
+  }
+}
+
+async function getData(formName, select2EndpointAndOptions, selectedValues) {
+  try {
+    let index = 0
+    console.log('out', $(`#touchPointListSelect2`).has('option').length)
     for (const [endpoint, config] of Object.entries(
       select2EndpointAndOptions
     )) {
       const { data } = await googelScriptrun(endpoint)
       const dataWithoutHeader = data.slice(1)
-      getSelect2Opions(
-        config?.select2Id,
-        dataWithoutHeader,
-        config?.valueIndex,
-        config?.textIndex,
-        'staticBackdrop'
-      )
+      // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
+      console.log('in',index ,$(`#${config?.select2Id}`).has('option').length)
+      if ($(`#${config?.select2Id}`).has('option').length === 1) {
+        getSelect2Opions(
+          config?.select2Id,
+          dataWithoutHeader,
+          config?.valueIndex,
+          config?.textIndex,
+          'staticBackdrop'
+        )
+        if(selectedValues){
+          const selectedValue = selectedValues[index]
+          $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
+        }
+      } 
+      index++
     }
+  } catch (error) {
+    catchError(error)
   }
+}
 
-  function removeForm(formName) {
+function removeForm(formName) {
+  try {
     let thisTemplate = document.getElementById(`${formName}Form`)
     thisTemplate.parentNode.removeChild(thisTemplate)
+  } catch (error) {
+    catchError(error)
   }
+}
 
-  function submmitForm(formDataObj) {
+function submmitForm(formDataObj) {
+  try {
     event.preventDefault()
     let targetFunction = document.getElementById('targetFunc').value
     let formInput = new FormData(formDataObj)
@@ -62,128 +87,123 @@
         console.log('edit data')
         break
     }
+  } catch (error) {
+    catchError(error)
   }
+}
 
-  function sendDataToServer(formDataObj) {
-    return new Promise((resolve, reject) => {
-      showSwal()
-      googelScriptrun('serverFormInput', formDataObj)
-        .then((result) => {
-          hideSwal('บันทึกข้อมูลสำเร็จ')
-          const textareas = formDataObj.querySelectorAll('textarea')
-          // รีเซ็ตค่าใน textarea
-          textareas.forEach((textarea) => {
-            textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
-          })
-          formDataObj.reset()
-          console.log('Success:', result)
-          resolve(result)
+function sendDataToServer(formDataObj) {
+  return new Promise((resolve, reject) => {
+    showSwal()
+    googelScriptrun('serverFormInput', formDataObj)
+      .then((result) => {
+        hideSwal('บันทึกข้อมูลสำเร็จ')
+        const textareas = formDataObj.querySelectorAll('textarea')
+        // รีเซ็ตค่าใน textarea
+        textareas.forEach((textarea) => {
+          textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
         })
-        .catch((error) => {
-          failSwal('บันทึกข้อมูลไม่สำเร็จ')
-          catchError(error)
-          reject(error)
-        })
-    })
-  }
+        formDataObj.reset()
+        console.log('Success:', result)
+        resolve(result)
+      })
+      .catch((error) => {
+        failSwal('บันทึกข้อมูลไม่สำเร็จ')
+        catchError(error)
+        reject(error)
+      })
+  })
+}
 
-  function editData(el) {
-    try {
-      async function fillDataToInputForUpdate() {
-        let rowData = table.row(el.parentNode.parentNode).data()
-        const tableId = table.row(el.parentNode.parentNode.parentNode)
-          .context[0]['sTableId']
-        const formType = tableId.split('-')[0]
-        const contactId = rowData[0]
-        let { contact } = await googelScriptrun('getHeaderTableName', formType)
-        let company = await googelScriptrun(
-          'getContactWithCompanyData',
-          contactId
-        )
+function editData(el) {
+  try {
+    async function fillDataToInputForUpdate() {
+      let rowData = table.row(el.parentNode.parentNode).data()
+      const tableId = table.row(el.parentNode.parentNode.parentNode).context[0][
+        'sTableId'
+      ]
+      const formType = tableId.split('-')[0]
+      const contactId = rowData[0]
+      const dataObj = {}
+      const regexFile = /File/i
+      const fileList = []
+      const formModal = new bootstrap.Modal(
+        document.getElementById('staticBackdrop')
+      )
+      const { contact } = await googelScriptrun('getHeaderTableName', formType)
+      const { data: company } = await googelScriptrun('getCompanyData')
+      const { data: touchPoint } = await googelScriptrun('getTochPointList')
+      formModal.show()
+      // getData(formType, contact.select2EndpointAndOptions)
+      
+      const companyList = rowData[12].split(', ')
+      const touchPointList = rowData[13].split(', ')
+      const companySelectedValues = []
+      const touchPointSelectedValues = []
 
-        const dataObj = {}
-        const regexFile = /File/i
-        const fileList = []
-        const formModal = new bootstrap.Modal(
-          document.getElementById('staticBackdrop')
-        )
-        formModal.show()
+      const index = companyList.map(list => company.findIndex(item => item[4] === list))
+      const indexT = touchPointList.map(list => touchPoint.findIndex(item => item[1] === list))
+      index.map(i => companySelectedValues.push(company[i][0]))
+      indexT.map(i => touchPointSelectedValues.push(touchPoint[i][0]))
 
-        // const selectedValues = [
-        //   '1',
-        //   'ggismo.com',
-        //   '2',
-        //   'ledonsale.com',
-        //   '3',
-        //   'geniusgismo',
-        // ]
-        // // กำหนดค่าให้กับ <select> element
-        // $('#touchPointListSelect2').val(selectedValues).trigger('change')
-        const endpointsSelect2Options = {
-          getCompanyData: {
-            select2Id: 'companyNameSelect2',
-            valueIndex: 0,
-            textIndex: 4,
-          },
-          getTochPointList: {
-            select2Id: 'touchPointListSelect2',
-            valueIndex: 0,
-            textIndex: 1,
-          },
+      appendForm(formType)
+      const {
+        contact: { select2EndpointAndOptions },
+      } = await googelScriptrun('getHeaderTableName', formType)
+
+      getData(formType, select2EndpointAndOptions, [companySelectedValues, touchPointSelectedValues])
+      setFormFunction('editData', 'แก้ไขข้อมูล')
+      const formInput = document.querySelectorAll('.formInput')
+      const previewDiv = document.querySelectorAll('.preview')
+      const documentId = document.getElementById('docId')
+      // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
+      rowData.forEach((el, index) => {
+        dataObj[contact.objKey[index]] = el
+        if (startsWithHttps(el)) {
+          fileList.push(el)
         }
+      })
 
-        appendForm(formType)
-        setFormFunction('editData', 'แก้ไขข้อมูล')
-        const formInput = document.querySelectorAll('.formInput')
-        const previewDiv = document.querySelectorAll('.preview')
-        const documentId = document.getElementById('docId')
-        // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
-        rowData.forEach((el, index) => {
-          dataObj[contact.objKey[index]] = el
-          if (startsWithHttps(el)) {
-            fileList.push(el)
-          }
-        })
-
-        // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
-        formInput.forEach((el, index) => {
-          if (containsParameterKeyword(regexFile, el.name)) {
-            previewDiv.forEach((div, index) => {
-              if (fileList[index] !== undefined) {
-                div.setAttribute('src', fileList[index])
-              }
-            })
-          } else if (el.name === 'docId') {
-            documentId.setAttribute('value', dataObj[`${formType}Id`])
-          } else if (dataObj[el.name] === undefined) {
-            el.value = ''
-          } else {
-            el.value = dataObj[el.name]
-          }
-        })
-      }
-      fillDataToInputForUpdate()
-    } catch (error) {
-      catchError()
+      // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
+      formInput.forEach((el, index) => {
+        if (containsParameterKeyword(regexFile, el.name)) {
+          previewDiv.forEach((div, index) => {
+            if (fileList[index] !== undefined) {
+              div.setAttribute('src', fileList[index])
+            }
+          })
+        } else if (el.name === 'docId') {
+          documentId.setAttribute('value', dataObj[`${formType}Id`])
+        } else if (dataObj[el.name] === undefined) {
+          el.value = ''
+        } else {
+          el.value = dataObj[el.name]
+        }
+      })
     }
+    fillDataToInputForUpdate()
+  } catch (error) {
+    catchError()
   }
+}
 
-  function containsParameterKeyword(regex, name) {
-    return regex.test(name)
-  }
+function containsParameterKeyword(regex, name) {
+  return regex.test(name)
+}
 
-  function startsWithHttps(value) {
-    return value.startsWith('https://')
-  }
+function startsWithHttps(value) {
+  return value.startsWith('https://')
+}
 
-  function setFormFunction(functionName, modalTitle) {
-    const callFunction = document.getElementById('targetFunc')
-    const showModalTitle = document.querySelector('.modal-title')
-    callFunction.setAttribute('value', functionName)
-    showModalTitle.textContent = modalTitle
-  }
+function setFormFunction(functionName, modalTitle) {
+  const callFunction = document.getElementById('targetFunc')
+  const showModalTitle = document.querySelector('.modal-title')
+  callFunction.setAttribute('value', functionName)
+  showModalTitle.textContent = modalTitle
+}
 
-  function preview(event) {
-    console.log('event : ', event)
-  }
+function preview(event) {
+  console.log('event : ', event)
+}
+
 </script>

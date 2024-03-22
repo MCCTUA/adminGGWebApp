@@ -15,14 +15,20 @@
     //   selectElement.appendChild(elemOption)
     // })
 
-    data.forEach((item) => {
-      $(`#${select2Id}`).append(
-        $('<option>', {
-          value: item[valueIndex],
-          text: item[textIndex],
-        })
-      )
-    })
+    console.log(
+      'get select2 opionts function :',
+      $(`#${select2Id} option`).length
+    )
+    if ($(`#${select2Id} option`).length === 1) {
+      data.forEach((item) => {
+        $(`#${select2Id}`).append(
+          $('<option>', {
+            value: item[valueIndex],
+            text: item[textIndex],
+          })
+        )
+      })
+    }
 
     $(`#${select2Id}`).select2({
       theme: 'bootstrap-5',
