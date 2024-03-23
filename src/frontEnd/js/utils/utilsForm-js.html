@@ -29,16 +29,7 @@
       )) {
         const { data } = await googelScriptrun(endpoint)
         const dataWithoutHeader = data.slice(1)
-        console.log(
-          'end point : ',
-          endpoint,
-          'config :',
-          config,
-          'index',
-          index,
-          'selected values list :',
-          selectedValues[index]
-        )
+
         // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
         if (Array.isArray(config)) {
           config.forEach((item, itemIndex) => {
@@ -51,7 +42,7 @@
                 'staticBackdrop'
               )
               if (selectedValues) {
-                const selectedValue = selectedValues[index][itemIndex]
+                const selectedValue = selectedValues[endpoint][itemIndex]
                 $(`#${item?.select2Id}`).val(selectedValue).trigger('change')
               }
             }
@@ -66,7 +57,7 @@
               'staticBackdrop'
             )
             if (selectedValues) {
-              const selectedValue = selectedValues[index]
+              const selectedValue = selectedValues[endpoint]
               $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
             }
           }
@@ -163,18 +154,15 @@
 
         formModal.show()
 
-        const contactNameThisRow = rowData[contact.sheetColumn.name].split(', ')
-        const contactLineNameThisRow =
-          rowData[contact.sheetColumn.lineName].split(', ')
+        const contactNameThisRow =
+          rowData[contact.sheetColumn.contactId].split(', ')
         const companyList = rowData[contact.sheetColumn.companyId].split(', ')
         const touchPointList =
           rowData[contact.sheetColumn.touchPointId].split(', ')
-        const contactSelectedValues = [
-          contactNameThisRow,
-          contactLineNameThisRow,
-        ]
+        const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
         const companySelectedValues = []
         const touchPointSelectedValues = []
+        const selected2Value = {}
 
         const indexCompany = companyList.map((list) =>
           company.findIndex((item) => item[4] === list)
@@ -193,11 +181,11 @@
           contact: { select2EndpointAndOptions },
         } = await googelScriptrun('getHeaderTableName', formType)
 
-        getData(formType, select2EndpointAndOptions, [
-          contactSelectedValues,
-          companySelectedValues,
-          touchPointSelectedValues,
-        ])
+        selected2Value['getContactData'] = contactSelectedValues
+        selected2Value['getCompanyData'] = companySelectedValues
+        selected2Value['getTochPointList'] = touchPointSelectedValues
+
+        getData(formType, select2EndpointAndOptions, selected2Value)
         setFormFunction('editData', 'แก้ไขข้อมูล')
         const formInput = document.querySelectorAll('.formInput')
         const previewDiv = document.querySelectorAll('.preview')
