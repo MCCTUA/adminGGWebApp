@@ -21,12 +21,14 @@
     )
     if ($(`#${select2Id} option`).length === 1) {
       data.forEach((item) => {
-        $(`#${select2Id}`).append(
-          $('<option>', {
-            value: item[valueIndex],
-            text: item[textIndex],
-          })
-        )
+        if (item[textIndex] !== '') {
+          $(`#${select2Id}`).append(
+            $('<option>', {
+              value: item[valueIndex],
+              text: item[textIndex],
+            })
+          )
+        }
       })
     }
 

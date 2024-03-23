@@ -11,20 +11,28 @@
         const { data } = await googelScriptrun('getContactData')
         const { data: companyData } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
-
-        // contact name
-
-        // line name
-
-        // company name
-        processData(data, companyData, 12, processList, 4)
-        // touch point name
-        processData(data, touchPoint, 13, processList, 1)
-
         const { contact } = await googelScriptrun(
           'getHeaderTableName',
           'contact'
         )
+
+        // company name
+        processData(
+          data,
+          companyData,
+          contact.sheetColumn.companyId,
+          processList,
+          contact.sheetColumn.companyTbCompanyName
+        )
+        // touch point name
+        processData(
+          data,
+          touchPoint,
+          contact.sheetColumn.touchPointId,
+          processList,
+          contact.sheetColumn.touchPointTbTouchPointName
+        )
+
         const columnLenght = data.shift().length - 4
         const res = {}
 
@@ -49,9 +57,16 @@
     loadContactDataTable()
   }
 
+  /**
+   * function name: processData
+   * Task : ใช้สำหรับการเปลี่ยน id เป็น name เช่่น CS2403001 -> "company name 1" เมื่อมีการ
+   *         loadxxxxTable-js.html (เช่น loadContactTable-js.html)
+   */
+
   function processData(data, dataArray, elIndex, callback, columnIndex) {
     const processedData = []
     const dataNoHeader = data.slice(1)
+
     dataNoHeader.forEach((row, indexData) => {
       const newRow = row.map((el, indexRow) => {
         if (indexRow === elIndex && el !== '') {

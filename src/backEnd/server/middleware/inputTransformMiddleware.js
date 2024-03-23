@@ -55,6 +55,8 @@ function appendContactData(formDataObj) {
       }
     })
 
+    console.log('form data obj sortedObj:', sortedObj)
+
     idInfo.docFor =
       inputFields.contactName === ''
         ? inputFields.contactLineName

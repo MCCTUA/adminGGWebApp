@@ -29,18 +29,46 @@
       )) {
         const { data } = await googelScriptrun(endpoint)
         const dataWithoutHeader = data.slice(1)
+        console.log(
+          'end point : ',
+          endpoint,
+          'config :',
+          config,
+          'index',
+          index,
+          'selected values list :',
+          selectedValues[index]
+        )
         // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
-        if ($(`#${config?.select2Id}`).has('option').length === 1) {
-          getSelect2Opions(
-            config?.select2Id,
-            dataWithoutHeader,
-            config?.valueIndex,
-            config?.textIndex,
-            'staticBackdrop'
-          )
-          if (selectedValues) {
-            const selectedValue = selectedValues[index]
-            $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
+        if (Array.isArray(config)) {
+          config.forEach((item, itemIndex) => {
+            if ($(`#${item?.select2Id}`).has('option').length === 1) {
+              getSelect2Opions(
+                item?.select2Id,
+                dataWithoutHeader,
+                item?.valueIndex,
+                item?.textIndex,
+                'staticBackdrop'
+              )
+              if (selectedValues) {
+                const selectedValue = selectedValues[index][itemIndex]
+                $(`#${item?.select2Id}`).val(selectedValue).trigger('change')
+              }
+            }
+          })
+        } else {
+          if ($(`#${config?.select2Id}`).has('option').length === 1) {
+            getSelect2Opions(
+              config?.select2Id,
+              dataWithoutHeader,
+              config?.valueIndex,
+              config?.textIndex,
+              'staticBackdrop'
+            )
+            if (selectedValues) {
+              const selectedValue = selectedValues[index]
+              $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
+            }
           }
         }
         index++
@@ -132,22 +160,33 @@
         )
         const { data: company } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
-        formModal.show()
-        // getData(formType, contact.select2EndpointAndOptions)
 
-        const companyList = rowData[12].split(', ')
-        const touchPointList = rowData[13].split(', ')
+        formModal.show()
+
+        const contactNameThisRow = rowData[contact.sheetColumn.name].split(', ')
+        const contactLineNameThisRow =
+          rowData[contact.sheetColumn.lineName].split(', ')
+        const companyList = rowData[contact.sheetColumn.companyId].split(', ')
+        const touchPointList =
+          rowData[contact.sheetColumn.touchPointId].split(', ')
+        const contactSelectedValues = [
+          contactNameThisRow,
+          contactLineNameThisRow,
+        ]
         const companySelectedValues = []
         const touchPointSelectedValues = []
 
-        const index = companyList.map((list) =>
+        const indexCompany = companyList.map((list) =>
           company.findIndex((item) => item[4] === list)
         )
-        const indexT = touchPointList.map((list) =>
+        const indexTouchPoint = touchPointList.map((list) =>
           touchPoint.findIndex((item) => item[1] === list)
         )
-        index.map((i) => companySelectedValues.push(company[i][0]))
-        indexT.map((i) => touchPointSelectedValues.push(touchPoint[i][0]))
+
+        indexCompany.map((i) => companySelectedValues.push(company[i][0]))
+        indexTouchPoint.map((i) =>
+          touchPointSelectedValues.push(touchPoint[i][0])
+        )
 
         appendForm(formType)
         const {
@@ -155,6 +194,7 @@
         } = await googelScriptrun('getHeaderTableName', formType)
 
         getData(formType, select2EndpointAndOptions, [
+          contactSelectedValues,
           companySelectedValues,
           touchPointSelectedValues,
         ])

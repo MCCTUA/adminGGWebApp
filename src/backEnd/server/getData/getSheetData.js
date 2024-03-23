@@ -3,6 +3,7 @@ function getContactData() {
     spreadSheetId: contactSpreadsheetId,
     sheetName: contactSheet,
   }
+  console.log(readDataDisplayValues(paramObj))
   return readDataDisplayValues(paramObj)
 }
 

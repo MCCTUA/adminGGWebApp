@@ -51,10 +51,25 @@ function getHeaderTableName(indentifier) {
           sheetColumn: {
             name: 1,
             lineName: 4,
+            contactId: 0,
             companyId: 12,
             touchPointId: 13,
+            companyTbCompanyName: 4,
+            touchPointTbTouchPointName: 1,
           },
           select2EndpointAndOptions: {
+            getContactData: [
+              {
+                select2Id: 'contactName',
+                valueIndex: 0,
+                textIndex: 1,
+              },
+              {
+                select2Id: 'contactLineName',
+                valueIndex: 0,
+                textIndex: 4,
+              },
+            ],
             getCompanyData: {
               select2Id: 'companyNameSelect2',
               valueIndex: 0,
