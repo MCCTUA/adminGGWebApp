@@ -12,10 +12,15 @@
         const { data: companyData } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
 
+        // contact name
+
+        // line name
+
+        // company name
         processData(data, companyData, 12, processList, 4)
+        // touch point name
         processData(data, touchPoint, 13, processList, 1)
 
-        console.log('data modify is :', data)
         const { contact } = await googelScriptrun(
           'getHeaderTableName',
           'contact'
@@ -48,7 +53,6 @@
     const processedData = []
     const dataNoHeader = data.slice(1)
     dataNoHeader.forEach((row, indexData) => {
-      console.log('row with index data :', indexData, row)
       const newRow = row.map((el, indexRow) => {
         if (indexRow === elIndex && el !== '') {
           return callback(

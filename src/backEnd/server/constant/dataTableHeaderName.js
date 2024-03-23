@@ -1,3 +1,9 @@
+/**
+ * objKey : ใช้สำหรับจัดเรียงข้อมูล (Sort) ให้ลำดับจัดเรียงตาม column (headerTableName) ใน google sheet
+ * select2EndpointAndOptions : สำหรับ select2 jquery
+ *    • โดย valueIndex คือ ID ใน table ที่ดึงข้อมูลมา และ
+ *    • textIndex คือ ชื่อตาม valueIndex
+ */
 function getHeaderTableName(indentifier) {
   switch (indentifier) {
     case 'contact':
@@ -42,6 +48,12 @@ function getHeaderTableName(indentifier) {
             'contactDocumentFile',
             'createAt',
           ],
+          sheetColumn: {
+            name: 1,
+            lineName: 4,
+            companyId: 12,
+            touchPointId: 13,
+          },
           select2EndpointAndOptions: {
             getCompanyData: {
               select2Id: 'companyNameSelect2',
