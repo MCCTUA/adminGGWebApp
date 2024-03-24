@@ -7,8 +7,8 @@
 
 function serverFormInput(formDataObj) {
   try {
-    // console.log('serverFormInput :', formDataObj)
-    appendContactData(formDataObj)
+    console.log('serverFormInput :', formDataObj)
+    // appendContactData(formDataObj)
     return true
   } catch (error) {
     catchError(error)

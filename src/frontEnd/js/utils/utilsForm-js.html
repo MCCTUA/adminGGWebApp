@@ -101,6 +101,15 @@
 
         case 'editData':
           console.log('edit data')
+          sendDataToServer(formDataObj)
+            .then(() => {
+              $('#staticBackdrop').modal('hide')
+              removeForm(inputFields.formType)
+              loadContactTable(true)
+            })
+            .catch((error) => {
+              console.log('error', error)
+            })
           break
       }
     } catch (error) {
