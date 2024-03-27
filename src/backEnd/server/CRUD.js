@@ -19,13 +19,16 @@ function ternaryOperatorTypeOfIfUndefined_(params, ifTrue, ifFalse) {
 /** Check row number ใน google sheet จาก id */
 function getRowNumberFromId_(paramsObj, id) {
   const ws = getWorkSheet_(paramsObj)
-  let data = readData(paramsObj).map((el) => el[0].toString().toLowerCase())
-  const posIndex = data.indexOf(id.toString().toLowerCase())
+  let data = readData(paramsObj)
+  let docIdData = data.map((el) => el[0].toString().toLowerCase())
+  const posIndex = docIdData.indexOf(id.toString().toLowerCase())
   const rowNumber = posIndex === -1 ? 0 : posIndex + 2
+  const currentRowData = data[posIndex]
 
   let dataObj = {
     rowNumber,
     ws,
+    currentRowData,
   }
 
   return dataObj
@@ -67,43 +70,84 @@ function readData(paramsObj) {
   return data
 }
 
-function readDataDisplayValues(paramsObj) {
+function readDataDisplayValues(paramsObj, rowNumber) {
   const ws = getWorkSheet_(paramsObj)
-  const firstCell = ws.getRange('A1')
-  const firstRowNumber = firstCell.getRow()
-  const dataRange = firstCell.getDataRegion()
-  const data = dataRange.getDisplayValues()
+  if (!rowNumber) {
+    const firstCell = ws.getRange('A1')
+    const firstRowNumber = firstCell.getRow()
+    const dataRange = firstCell.getDataRegion()
+    const data = dataRange.getDisplayValues()
 
-  return { data, firstRowNumber }
-}
-
-function updateData(paramsObj, id, dataArray) {
-  let { ws, rowNumber } = getRowNumberFromId_(paramsObj, id)
-
-  if (rowNumber === 0) {
-    return false
+    return { data, firstRowNumber }
   } else {
     ws.getRange(rowNumber, 1, 1, ws.getLastColumn()).setValues(dataArray)
-    return true
+  }
+}
+
+function updateData(
+  paramsObj,
+  id,
+  dataArray,
+  controlIndex,
+  indexFileDataColumn
+) {
+  try {
+    let { ws, rowNumber, currentRowData } = getRowNumberFromId_(paramsObj, id)
+    console.log('data array before :', dataArray)
+    if (rowNumber === 0) {
+      return false
+    } else {
+      controlIndex.map(
+        (col) =>
+          (dataArray[0][col] =
+            dataArray[0][col] === dataArray[0][0]
+              ? currentRowData[col]
+              : dataArray[0][col])
+      )
+
+      if (indexFileDataColumn) {
+        indexFileDataColumn.map(
+          (col) =>
+            (dataArray[0][col] =
+              dataArray[0][col].length > 0
+                ? dataArray[0][col]
+                : currentRowData[col])
+        )
+      }
+      console.log('data array after :', dataArray)
+      ws.getRange(rowNumber, 1, 1, ws.getLastColumn()).setValues(dataArray)
+
+      return true
+    }
+  } catch (error) {
+    catchError(error)
   }
 }
 
 function deleteData(paramsObj, id) {
-  let { ws, rowNumber } = getRowNumberFromId_(paramsObj, id)
+  try {
+    let { ws, rowNumber } = getRowNumberFromId_(paramsObj, id)
 
-  if (rowNumber === 0) {
-    return false
-  } else {
-    ws.deleteRow(rowNumber)
-    return true
+    if (rowNumber === 0) {
+      return false
+    } else {
+      ws.deleteRow(rowNumber)
+      return true
+    }
+  } catch (error) {
+    catchError(error)
   }
 }
 
 function getPageUrl(queryString) {
-  if (queryString) {
-    let url = ScriptApp.getService().getUrl()
-    return `${url}?v=${queryString}`
-  } else {
-    return
+  try {
+    if (queryString) {
+      let url = ScriptApp.getService().getUrl()
+      return `${url}?v=${queryString}`
+    } else {
+      return
+    }
+  } catch (error) {
+    catchError(error)
   }
 }

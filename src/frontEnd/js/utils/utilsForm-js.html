@@ -2,7 +2,10 @@
   // Add form template
   async function appendForm(formName) {
     try {
-      let thisTemplate = document.getElementById(`${formName}FormTemplate`)
+      const {
+        contact: { select2EndpointAndOptions },
+      } = await googelScriptrun('getHeaderTableName', formName)
+      const thisTemplate = document.getElementById(`${formName}FormTemplate`)
       if (!thisTemplate) {
         console.error(`Template for ${formName} form not found`)
         return
@@ -11,17 +14,18 @@
       let copyThisTemplate = thisTemplate.content.cloneNode(true)
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-      const {
-        contact: { select2EndpointAndOptions },
-      } = await googelScriptrun('getHeaderTableName', formName)
-
-      getData(formName, select2EndpointAndOptions)
+      getData(formName, false, select2EndpointAndOptions)
     } catch (error) {
       catchError(error)
     }
   }
 
-  async function getData(formName, select2EndpointAndOptions, selectedValues) {
+  async function getData(
+    formName,
+    isEdit,
+    select2EndpointAndOptions,
+    selectedValues = false
+  ) {
     try {
       let index = 0
       for (const [endpoint, config] of Object.entries(
@@ -101,6 +105,12 @@
 
         case 'editData':
           console.log('edit data')
+          let editDataIs = new FormData(formDataObj)
+          let contactNameValue = document.getElementById('contactName').value
+          let contactNameText =
+            document.getElementById('contactName').textContent
+          console.log('contactNameValue is', contactNameValue)
+          console.log('contactNameText', contactNameText)
           sendDataToServer(formDataObj)
             .then(() => {
               $('#staticBackdrop').modal('hide')
@@ -194,7 +204,7 @@
         selected2Value['getCompanyData'] = companySelectedValues
         selected2Value['getTochPointList'] = touchPointSelectedValues
 
-        getData(formType, select2EndpointAndOptions, selected2Value)
+        getData(formType, true, select2EndpointAndOptions, selected2Value)
         setFormFunction('editData', 'แก้ไขข้อมูล')
         const formInput = document.querySelectorAll('.formInput')
         const previewDiv = document.querySelectorAll('.preview')

@@ -48,6 +48,7 @@ function getHeaderTableName(indentifier) {
             'contactDocumentFile',
             'createAt',
           ],
+          indexFileDataColumn: [3, 15],
           sheetColumn: {
             name: 1,
             lineName: 4,
@@ -63,22 +64,26 @@ function getHeaderTableName(indentifier) {
                 select2Id: 'contactName',
                 valueIndex: 0,
                 textIndex: 1,
+                editForm: true,
               },
               {
                 select2Id: 'contactLineName',
                 valueIndex: 0,
                 textIndex: 4,
+                editForm: true,
               },
             ],
             getCompanyData: {
               select2Id: 'companyNameSelect2',
               valueIndex: 0,
               textIndex: 4,
+              editForm: false,
             },
             getTochPointList: {
               select2Id: 'touchPointListSelect2',
               valueIndex: 0,
               textIndex: 1,
+              editForm: false,
             },
           },
           paramsObj: {

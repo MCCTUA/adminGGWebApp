@@ -7,8 +7,7 @@
 
 function serverFormInput(formDataObj) {
   try {
-    console.log('serverFormInput :', formDataObj)
-    // appendContactData(formDataObj)
+    appendContactData(formDataObj)
     return true
   } catch (error) {
     catchError(error)
@@ -23,7 +22,7 @@ function serverFormInput(formDataObj) {
 function appendContactData(formDataObj) {
   try {
     const mainKey = formDataObj.formType
-    console.log('main key', mainKey)
+    const functionName = formDataObj.functionName
     const {
       contact: {
         paramsObj: {
@@ -31,14 +30,26 @@ function appendContactData(formDataObj) {
           paramsDocIdObj,
           paramsContactFolder: { folderName },
         },
+        select2EndpointAndOptions: { getContactData },
+        indexFileDataColumn,
       },
     } = getHeaderTableName(mainKey)
-    const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
 
     const keyOrder = getHeaderTableName(mainKey)
+    console.log(getContactData)
+    // const uddateControlIndex = getContactData.map(el => el.textIndex)
+    // console.log('uddateControlIndex', uddateControlIndex)
+
     const keyDocControlOrder = getHeaderTableName('docControl')
     const keyOrderLength = keyOrder[mainKey].objKey.length - 1
-    formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
+    const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
+
+    if (functionName === 'addData') {
+      formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
+    } else if (functionName === 'editData') {
+      formDataObj[keyOrder[mainKey].objKey[0]] = formDataObj.docId
+    }
+
     formDataObj[keyOrder[mainKey].objKey[keyOrderLength]] = idInfo.createAt =
       new Date()
 
@@ -55,8 +66,6 @@ function appendContactData(formDataObj) {
       }
     })
 
-    console.log('form data obj sortedObj:', sortedObj)
-
     idInfo.docFor =
       inputFields.contactName === ''
         ? inputFields.contactLineName
@@ -64,14 +73,39 @@ function appendContactData(formDataObj) {
 
     sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj)
 
-    // บันทึก เลข ID ที่สร้างใหม่
-    createData(paramsDocIdObj, sortIdObj)
-    // บันทึก Form Data ลง Sheet
-    createData(praramDataObj, sortedObj)
+    if (functionName === 'addData') {
+      // บันทึก เลข ID ที่สร้างใหม่
+      createData(paramsDocIdObj, sortIdObj)
+      // บันทึก Form Data ลง Sheet
+      createData(praramDataObj, sortedObj)
+    } else if (functionName === 'editData') {
+      try {
+        const doctId = formDataObj.docId
+        let sortedArray = Object.values(sortedObj)
+        let updateAt = sortedArray.pop()
+        let sortedArrayFixedDataLength = [...sortedArray, '', '', updateAt, '']
+        let dataArray = []
+        dataArray.push(sortedArrayFixedDataLength)
+        const uddateControlIndex = getContactData.map((el) => el.textIndex)
+        updateData(
+          praramDataObj,
+          doctId,
+          dataArray,
+          uddateControlIndex,
+          indexFileDataColumn
+        )
+      } catch (error) {
+        catchError(error)
+      }
+    }
   } catch (error) {
     catchError()
   }
 }
+
+/**
+ * Edit Data : Save ข้อมูลแก้ไขลง Google Sheet ที่ แถวเดิม
+ */
 
 /**
  * แปลงข้อมูล เพื่อให้สามารถนำไปบันทึก และแสดง
