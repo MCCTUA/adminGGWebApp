@@ -2,9 +2,16 @@
   // Add form template
   async function appendForm(formName) {
     try {
-      const {
-        contact: { select2EndpointAndOptions },
-      } = await googelScriptrun('getHeaderTableName', formName)
+      
+      let select2EndpointAndOptions;
+      switch (formName) {
+        case 'contact':
+          const response = await googelScriptrun('getHeaderTableName', formName);
+          select2EndpointAndOptions = response.contact.select2EndpointAndOptions;
+          break;
+        // เพิ่ม case อื่น ๆ ตามต้องการ
+      }
+
       const thisTemplate = document.getElementById(`${formName}FormTemplate`)
       if (!thisTemplate) {
         console.error(`Template for ${formName} form not found`)
@@ -77,6 +84,7 @@
     try {
       let thisTemplate = document.getElementById(`${formName}Form`)
       thisTemplate.parentNode.removeChild(thisTemplate)
+      $('.btn-table').prop("disabled", false)
     } catch (error) {
       catchError(error)
     }
@@ -88,6 +96,8 @@
       let targetFunction = document.getElementById('targetFunc').value
       let formInput = new FormData(formDataObj)
       let inputFields = Object.fromEntries(formInput)
+
+      $('.btn-table').prop("disabled", false)
 
       switch (targetFunction) {
         case 'addData':
@@ -153,6 +163,7 @@
   function editData(el) {
     try {
       async function fillDataToInputForUpdate() {
+        $('.btn-table').prop("disabled", true)
         let rowData = table.row(el.parentNode.parentNode).data()
         const tableId = table.row(el.parentNode.parentNode.parentNode)
           .context[0]['sTableId']
@@ -205,6 +216,7 @@
         selected2Value['getTochPointList'] = touchPointSelectedValues
 
         getData(formType, true, select2EndpointAndOptions, selected2Value)
+
         setFormFunction('editData', 'แก้ไขข้อมูล')
         const formInput = document.querySelectorAll('.formInput')
         const previewDiv = document.querySelectorAll('.preview')
@@ -249,10 +261,13 @@
   }
 
   function setFormFunction(functionName, modalTitle) {
-    const callFunction = document.getElementById('targetFunc')
-    const showModalTitle = document.querySelector('.modal-title')
-    callFunction.setAttribute('value', functionName)
-    showModalTitle.textContent = modalTitle
+    // const callFunction = document.getElementById('targetFunc')
+
+    // const showModalTitle = document.querySelector('.modal-title')
+    // callFunction.setAttribute('value', functionName)
+    // showModalTitle.textContent = modalTitle
+    $('#targetFunc').attr('value', functionName)
+    $('.modal-title').text(modalTitle)
   }
 
   function preview(event) {
