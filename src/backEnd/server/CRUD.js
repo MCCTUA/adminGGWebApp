@@ -99,19 +99,19 @@ function updateData(
     } else {
       controlIndex.map(
         (col) =>
-        (dataArray[0][col] =
-          dataArray[0][col] === dataArray[0][0]
-            ? currentRowData[col]
-            : dataArray[0][col])
+          (dataArray[0][col] =
+            dataArray[0][col] === dataArray[0][0]
+              ? currentRowData[col]
+              : dataArray[0][col])
       )
 
       if (indexFileDataColumn) {
         indexFileDataColumn.map(
           (col) =>
-          (dataArray[0][col] =
-            dataArray[0][col].length > 0
-              ? dataArray[0][col]
-              : currentRowData[col])
+            (dataArray[0][col] =
+              dataArray[0][col].length > 0
+                ? dataArray[0][col]
+                : currentRowData[col])
         )
       }
       console.log('data array after :', dataArray)

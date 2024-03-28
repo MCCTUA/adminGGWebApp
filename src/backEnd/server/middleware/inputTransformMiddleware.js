@@ -119,7 +119,8 @@ function dataSheetColumnFormating(formDataObj, folderConstant) {
         if (key.includes('File')) {
           value.contents === ''
             ? acc[key] === value.contents
-            : (acc[key] = `https://lh3.googleUserContent.com/d/${folder.createFile(formDataObj[key]).getUrl().split('/')[5]
+            : (acc[key] = `https://lh3.googleUserContent.com/d/${
+                folder.createFile(formDataObj[key]).getUrl().split('/')[5]
               }`)
         } else if (key.includes('Mobile') || key.includes('Phone')) {
           acc[key] = `'${value}`

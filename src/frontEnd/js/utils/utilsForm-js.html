@@ -2,31 +2,28 @@
   // Add form template
   async function appendForm(formName) {
     try {
+      
       let select2EndpointAndOptions;
       switch (formName) {
-        case "contact":
-          const response = await googelScriptrun(
-            "getHeaderTableName",
-            formName
-          );
-          select2EndpointAndOptions =
-            response.contact.select2EndpointAndOptions;
+        case 'contact':
+          const response = await googelScriptrun('getHeaderTableName', formName);
+          select2EndpointAndOptions = response.contact.select2EndpointAndOptions;
           break;
         // เพิ่ม case อื่น ๆ ตามต้องการ
       }
 
-      const thisTemplate = document.getElementById(`${formName}FormTemplate`);
+      const thisTemplate = document.getElementById(`${formName}FormTemplate`)
       if (!thisTemplate) {
-        console.error(`Template for ${formName} form not found`);
-        return;
+        console.error(`Template for ${formName} form not found`)
+        return
       }
       // คัดลอก template content และนำมาวางใน DOM
-      let copyThisTemplate = thisTemplate.content.cloneNode(true);
-      document.querySelector(".modal-body").appendChild(copyThisTemplate);
+      let copyThisTemplate = thisTemplate.content.cloneNode(true)
+      document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-      getData(formName, false, select2EndpointAndOptions);
+      getData(formName, false, select2EndpointAndOptions)
     } catch (error) {
-      catchError(error);
+      catchError(error)
     }
   }
 
@@ -37,230 +34,230 @@
     selectedValues = false
   ) {
     try {
-      let index = 0;
+      let index = 0
       for (const [endpoint, config] of Object.entries(
         select2EndpointAndOptions
       )) {
-        const { data } = await googelScriptrun(endpoint);
-        const dataWithoutHeader = data.slice(1);
+        const { data } = await googelScriptrun(endpoint)
+        const dataWithoutHeader = data.slice(1)
 
         // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
         if (Array.isArray(config)) {
           config.forEach((item, itemIndex) => {
-            if ($(`#${item?.select2Id}`).has("option").length === 1) {
+            if ($(`#${item?.select2Id}`).has('option').length === 1) {
               getSelect2Opions(
                 item?.select2Id,
                 dataWithoutHeader,
                 item?.valueIndex,
                 item?.textIndex,
-                "staticBackdrop"
-              );
+                'staticBackdrop'
+              )
               if (selectedValues) {
-                const selectedValue = selectedValues[endpoint][itemIndex];
-                $(`#${item?.select2Id}`).val(selectedValue).trigger("change");
+                const selectedValue = selectedValues[endpoint][itemIndex]
+                $(`#${item?.select2Id}`).val(selectedValue).trigger('change')
               }
             }
-          });
+          })
         } else {
-          if ($(`#${config?.select2Id}`).has("option").length === 1) {
+          if ($(`#${config?.select2Id}`).has('option').length === 1) {
             getSelect2Opions(
               config?.select2Id,
               dataWithoutHeader,
               config?.valueIndex,
               config?.textIndex,
-              "staticBackdrop"
-            );
+              'staticBackdrop'
+            )
             if (selectedValues) {
-              const selectedValue = selectedValues[endpoint];
-              $(`#${config?.select2Id}`).val(selectedValue).trigger("change");
+              const selectedValue = selectedValues[endpoint]
+              $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
             }
           }
         }
-        index++;
+        index++
       }
     } catch (error) {
-      catchError(error);
+      catchError(error)
     }
   }
 
   function removeForm(formName) {
     try {
-      let thisTemplate = document.getElementById(`${formName}Form`);
-      thisTemplate.parentNode.removeChild(thisTemplate);
-      $(".btn-table").prop("disabled", false);
+      let thisTemplate = document.getElementById(`${formName}Form`)
+      thisTemplate.parentNode.removeChild(thisTemplate)
+      $('.btn-table').prop("disabled", false)
     } catch (error) {
-      catchError(error);
+      catchError(error)
     }
   }
 
   function submmitForm(formDataObj) {
     try {
-      event.preventDefault();
-      let targetFunction = document.getElementById("targetFunc").value;
-      let formInput = new FormData(formDataObj);
-      let inputFields = Object.fromEntries(formInput);
+      event.preventDefault()
+      let targetFunction = document.getElementById('targetFunc').value
+      let formInput = new FormData(formDataObj)
+      let inputFields = Object.fromEntries(formInput)
 
-      $(".btn-table").prop("disabled", false);
+      $('.btn-table').prop("disabled", false)
 
       switch (targetFunction) {
-        case "addData":
-          console.log("add data");
+        case 'addData':
+          console.log('add data')
           sendDataToServer(formDataObj)
             .then(() => {
-              $("#staticBackdrop").modal("hide");
-              removeForm(inputFields.formType);
-              loadContactTable(true);
+              $('#staticBackdrop').modal('hide')
+              removeForm(inputFields.formType)
+              loadContactTable(true)
             })
             .catch((error) => {
-              console.log("error", error);
-            });
-          break;
+              console.log('error', error)
+            })
+          break
 
-        case "editData":
-          console.log("edit data");
-          let editDataIs = new FormData(formDataObj);
-          let contactNameValue = document.getElementById("contactName").value;
+        case 'editData':
+          console.log('edit data')
+          let editDataIs = new FormData(formDataObj)
+          let contactNameValue = document.getElementById('contactName').value
           let contactNameText =
-            document.getElementById("contactName").textContent;
-          console.log("contactNameValue is", contactNameValue);
-          console.log("contactNameText", contactNameText);
+            document.getElementById('contactName').textContent
+          console.log('contactNameValue is', contactNameValue)
+          console.log('contactNameText', contactNameText)
           sendDataToServer(formDataObj)
             .then(() => {
-              $("#staticBackdrop").modal("hide");
-              removeForm(inputFields.formType);
-              loadContactTable(true);
+              $('#staticBackdrop').modal('hide')
+              removeForm(inputFields.formType)
+              loadContactTable(true)
             })
             .catch((error) => {
-              console.log("error", error);
-            });
-          break;
+              console.log('error', error)
+            })
+          break
       }
     } catch (error) {
-      catchError(error);
+      catchError(error)
     }
   }
 
   function sendDataToServer(formDataObj) {
     return new Promise((resolve, reject) => {
-      showSwal();
-      googelScriptrun("serverFormInput", formDataObj)
+      showSwal()
+      googelScriptrun('serverFormInput', formDataObj)
         .then((result) => {
-          hideSwal("บันทึกข้อมูลสำเร็จ");
-          const textareas = formDataObj.querySelectorAll("textarea");
+          hideSwal('บันทึกข้อมูลสำเร็จ')
+          const textareas = formDataObj.querySelectorAll('textarea')
           // รีเซ็ตค่าใน textarea
           textareas.forEach((textarea) => {
-            textarea.textContent = ""; // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
-          });
-          formDataObj.reset();
-          console.log("Success:", result);
-          resolve(result);
+            textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
+          })
+          formDataObj.reset()
+          console.log('Success:', result)
+          resolve(result)
         })
         .catch((error) => {
-          failSwal("บันทึกข้อมูลไม่สำเร็จ");
-          catchError(error);
-          reject(error);
-        });
-    });
+          failSwal('บันทึกข้อมูลไม่สำเร็จ')
+          catchError(error)
+          reject(error)
+        })
+    })
   }
 
   function editData(el) {
     try {
       async function fillDataToInputForUpdate() {
-        $(".btn-table").prop("disabled", true);
-        let rowData = table.row(el.parentNode.parentNode).data();
+        $('.btn-table').prop("disabled", true)
+        let rowData = table.row(el.parentNode.parentNode).data()
         const tableId = table.row(el.parentNode.parentNode.parentNode)
-          .context[0]["sTableId"];
-        const formType = tableId.split("-")[0];
-        const contactId = rowData[0];
-        const dataObj = {};
-        const regexFile = /File/i;
-        const fileList = [];
+          .context[0]['sTableId']
+        const formType = tableId.split('-')[0]
+        const contactId = rowData[0]
+        const dataObj = {}
+        const regexFile = /File/i
+        const fileList = []
         const formModal = new bootstrap.Modal(
-          document.getElementById("staticBackdrop")
-        );
+          document.getElementById('staticBackdrop')
+        )
         const { contact } = await googelScriptrun(
-          "getHeaderTableName",
+          'getHeaderTableName',
           formType
-        );
-        const { data: company } = await googelScriptrun("getCompanyData");
-        const { data: touchPoint } = await googelScriptrun("getTochPointList");
+        )
+        const { data: company } = await googelScriptrun('getCompanyData')
+        const { data: touchPoint } = await googelScriptrun('getTochPointList')
 
-        formModal.show();
+        formModal.show()
 
         const contactNameThisRow =
-          rowData[contact.sheetColumn.contactId].split(", ");
-        const companyList = rowData[contact.sheetColumn.companyId].split(", ");
+          rowData[contact.sheetColumn.contactId].split(', ')
+        const companyList = rowData[contact.sheetColumn.companyId].split(', ')
         const touchPointList =
-          rowData[contact.sheetColumn.touchPointId].split(", ");
-        const contactSelectedValues = [contactNameThisRow, contactNameThisRow];
-        const companySelectedValues = [];
-        const touchPointSelectedValues = [];
-        const selected2Value = {};
+          rowData[contact.sheetColumn.touchPointId].split(', ')
+        const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
+        const companySelectedValues = []
+        const touchPointSelectedValues = []
+        const selected2Value = {}
 
         const indexCompany = companyList.map((list) =>
           company.findIndex((item) => item[4] === list)
-        );
+        )
         const indexTouchPoint = touchPointList.map((list) =>
           touchPoint.findIndex((item) => item[1] === list)
-        );
+        )
 
-        indexCompany.map((i) => companySelectedValues.push(company[i][0]));
+        indexCompany.map((i) => companySelectedValues.push(company[i][0]))
         indexTouchPoint.map((i) =>
           touchPointSelectedValues.push(touchPoint[i][0])
-        );
+        )
 
-        appendForm(formType);
+        appendForm(formType)
         const {
           contact: { select2EndpointAndOptions },
-        } = await googelScriptrun("getHeaderTableName", formType);
+        } = await googelScriptrun('getHeaderTableName', formType)
 
-        selected2Value["getContactData"] = contactSelectedValues;
-        selected2Value["getCompanyData"] = companySelectedValues;
-        selected2Value["getTochPointList"] = touchPointSelectedValues;
+        selected2Value['getContactData'] = contactSelectedValues
+        selected2Value['getCompanyData'] = companySelectedValues
+        selected2Value['getTochPointList'] = touchPointSelectedValues
 
-        getData(formType, true, select2EndpointAndOptions, selected2Value);
+        getData(formType, true, select2EndpointAndOptions, selected2Value)
 
-        setFormFunction("editData", "แก้ไขข้อมูล");
-        const formInput = document.querySelectorAll(".formInput");
-        const previewDiv = document.querySelectorAll(".preview");
-        const documentId = document.getElementById("docId");
+        setFormFunction('editData', 'แก้ไขข้อมูล')
+        const formInput = document.querySelectorAll('.formInput')
+        const previewDiv = document.querySelectorAll('.preview')
+        const documentId = document.getElementById('docId')
         // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
         rowData.forEach((el, index) => {
-          dataObj[contact.objKey[index]] = el;
+          dataObj[contact.objKey[index]] = el
           if (startsWithHttps(el)) {
-            fileList.push(el);
+            fileList.push(el)
           }
-        });
+        })
 
         // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
         formInput.forEach((el, index) => {
           if (containsParameterKeyword(regexFile, el.name)) {
             previewDiv.forEach((div, index) => {
               if (fileList[index] !== undefined) {
-                div.setAttribute("src", fileList[index]);
+                div.setAttribute('src', fileList[index])
               }
-            });
-          } else if (el.name === "docId") {
-            documentId.setAttribute("value", dataObj[`${formType}Id`]);
+            })
+          } else if (el.name === 'docId') {
+            documentId.setAttribute('value', dataObj[`${formType}Id`])
           } else if (dataObj[el.name] === undefined) {
-            el.value = "";
+            el.value = ''
           } else {
-            el.value = dataObj[el.name];
+            el.value = dataObj[el.name]
           }
-        });
+        })
       }
-      fillDataToInputForUpdate();
+      fillDataToInputForUpdate()
     } catch (error) {
-      catchError();
+      catchError()
     }
   }
 
   function containsParameterKeyword(regex, name) {
-    return regex.test(name);
+    return regex.test(name)
   }
 
   function startsWithHttps(value) {
-    return value.startsWith("https://");
+    return value.startsWith('https://')
   }
 
   function setFormFunction(functionName, modalTitle) {
@@ -269,11 +266,11 @@
     // const showModalTitle = document.querySelector('.modal-title')
     // callFunction.setAttribute('value', functionName)
     // showModalTitle.textContent = modalTitle
-    $("#targetFunc").attr("value", functionName);
-    $(".modal-title").text(modalTitle);
+    $('#targetFunc').attr('value', functionName)
+    $('.modal-title').text(modalTitle)
   }
 
   function preview(event) {
-    console.log("event : ", event);
+    console.log('event : ', event)
   }
 </script>

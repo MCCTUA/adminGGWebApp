@@ -2,19 +2,19 @@
   function loadContactTable(updateDataTable = false) {
     async function loadContactDataTable() {
       try {
-        showSwal();
+        showSwal()
         const tableExtraOptions = {
-          tableId: "contact-table",
+          tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
           targetIndexShowImage: [3, 15],
-        };
-        const { data } = await googelScriptrun("getContactData");
-        const { data: companyData } = await googelScriptrun("getCompanyData");
-        const { data: touchPoint } = await googelScriptrun("getTochPointList");
+        }
+        const { data } = await googelScriptrun('getContactData')
+        const { data: companyData } = await googelScriptrun('getCompanyData')
+        const { data: touchPoint } = await googelScriptrun('getTochPointList')
         const { contact } = await googelScriptrun(
-          "getHeaderTableName",
-          "contact"
-        );
+          'getHeaderTableName',
+          'contact'
+        )
 
         // company name
         processData(
@@ -23,7 +23,7 @@
           contact.sheetColumn.companyId,
           processList,
           contact.sheetColumn.companyTbCompanyName
-        );
+        )
         // touch point name
         processData(
           data,
@@ -31,29 +31,29 @@
           contact.sheetColumn.touchPointId,
           processList,
           contact.sheetColumn.touchPointTbTouchPointName
-        );
+        )
 
-        const columnLenght = data.shift().length - 4;
-        const res = {};
+        const columnLenght = data.shift().length - 4
+        const res = {}
 
         if (columnLenght + 2 === contact.headerTableName.length) {
-          res.data = data.map((row) => row.slice(0, columnLenght));
-          res.headersAll = contact.headerTableName;
+          res.data = data.map((row) => row.slice(0, columnLenght))
+          res.headersAll = contact.headerTableName
         } else {
-          console.log("header length not equal to data in column length");
+          console.log('header length not equal to data in column length')
         }
         if (!updateDataTable) {
-          const table = loadDataTable(res, tableExtraOptions);
+          const table = loadDataTable(res, tableExtraOptions)
         } else {
-          let table = $(`#${tableExtraOptions.tableId}`).DataTable();
-          table.clear().rows.add(data).draw();
+          let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+          table.clear().rows.add(data).draw()
         }
       } catch (error) {
-        catchError(error);
+        catchError(error)
       } finally {
-        hideSwal("พร้อมใช้งาน");
+        hideSwal('พร้อมใช้งาน')
       }
     }
-    loadContactDataTable();
+    loadContactDataTable()
   }
 </script>
