@@ -1,31 +1,32 @@
 <script>
-  let table
+  let table;
 
   document
-    .getElementById('navigation')
-    .addEventListener('click', navClickEventHandler)
+    .getElementById("navigation")
+    .addEventListener("click", navClickEventHandler);
 
   document
-    .getElementById('add-new-company')
-    .addEventListener('click', loadCompanyListPage)
+    .getElementById("add-new-company")
+    .addEventListener("click", loadCompanyListPage);
 
   document
-    .getElementById('add-new-contact')
-    .addEventListener('click', loadContactListPage)
+    .getElementById("add-new-contact")
+    .addEventListener("click", loadContactListPage);
 
   //=========================================================
 
   function loadCompanyListPage() {
     loadPartialsContent({
-      func: 'loadCompanyListPage',
-    })
+      func: "loadCompanyListPage",
+      callback: loadCompanyTable,
+    });
   }
 
   function loadContactListPage() {
     loadPartialsContent({
-      func: 'loadContactListPage',
+      func: "loadContactListPage",
       callback: loadContactTable,
-    })
+    });
   }
 
   /**
@@ -34,5 +35,5 @@
    * ******************************************
    */
   // Load Search Inquiry หลัง Dom Load เสร็จแล้ว
-  document.addEventListener('DOMContentLoaded', loadContactListPage)
+  document.addEventListener("DOMContentLoaded", loadContactListPage);
 </script>

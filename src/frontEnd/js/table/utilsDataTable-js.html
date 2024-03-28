@@ -1,0 +1,53 @@
+<script>
+  /**
+   * function name: processData
+   * Task : ใช้สำหรับการเปลี่ยน id เป็น name เช่่น CS2403001 -> "company name 1" เมื่อมีการ
+   *         loadxxxxTable-js.html (เช่น loadContactTable-js.html)
+   */
+
+  function processData(data, dataArray, elIndex, callback, columnIndex) {
+    const processedData = [];
+    const dataNoHeader = data.slice(1);
+
+    dataNoHeader.forEach((row, indexData) => {
+      const newRow = row.map((el, indexRow) => {
+        if (indexRow === elIndex && el !== "") {
+          return callback(
+            dataNoHeader,
+            dataArray,
+            el,
+            columnIndex,
+            indexData,
+            elIndex
+          );
+        } else {
+          return el;
+        }
+      });
+      processedData.push(newRow);
+    });
+    return processedData;
+  }
+
+  function processList(
+    dataNoHeader,
+    dataArray,
+    dataItems,
+    columnIndex,
+    indexData,
+    elIndex
+  ) {
+    const list = [];
+    if (typeof dataItems === "string") {
+      dataItems = dataItems.split(", ");
+      dataItems.forEach((dataItem) => {
+        const matchingItem = dataArray.filter((item) => item[0] === dataItem);
+        if (matchingItem) {
+          list.push(matchingItem[0][columnIndex]);
+        }
+      });
+    }
+    dataNoHeader[indexData][elIndex] = list.join(", ");
+    return list.join(", ");
+  }
+</script>

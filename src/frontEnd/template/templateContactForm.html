@@ -1,14 +1,23 @@
 <template id="contactFormTemplate">
   <form id="contactForm" class="row g-3" onsubmit="submmitForm(this)">
     <div class="row">
-      <div class="col-md mb-3">
-        <input
+      <div class="col-md mb-3 input-group">
+        <!-- <input
           type="text"
-          class="form-control formInput"
+          class="form-control form-select  formInput"
           id="contactName"
           name="contactName"
           placeholder="ชื่อ-นามสกุล"
-        />
+          multiple
+        /> -->
+        <select
+          id="contactName"
+          class="form-select formInput"
+          name="contactName"
+          data-placeholder="ชื่อ-นามสกุล"
+        >
+          <option value=""></option>
+        </select>
       </div>
 
       <div class="col-md mb-3">
@@ -33,17 +42,15 @@
           placeholder="รูป Line Profile"
         />
       </div>
-      <div class="col-md mb-3">
-        <div class="mb-3 autocomplete">
-          <input
-            type="text"
-            class="form-control formInput contactLineName"
-            id="contactLineName"
-            name="contactLineName"
-            placeholder="ชื่อ Line"
-          />
-          <ul class="autocomplete-keywords-sugguestion-area"></ul>
-        </div>
+      <div class="col-md mb-3 input-group">
+        <select
+          id="contactLineName"
+          class="form-select formInput"
+          name="contactLineName"
+          data-placeholder="ชื่อ Line"
+        >
+          <option value=""></option>
+        </select>
       </div>
     </div>
     <div class="row">
@@ -127,6 +134,7 @@
           class="form-select formInput"
           name="companyName"
           data-placeholder="เลือกชื่อบริษัท"
+          multiple
         >
           <option value=""></option>
         </select>
@@ -190,7 +198,7 @@
       </div>
       <div>
         <input name="docId" , id="docId" class="formInput" hidden />
-        <input name="functionName" id="targetFunc" hidden />
+        <input name="functionName" id="targetFunc" class="targetFunc" hidden />
       </div>
     </div>
     <div class="modal-footer">

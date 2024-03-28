@@ -1,1 +1,43 @@
 <h1>load company list page</h1>
+
+<div class="mb-3">
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="staticBackdrop"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">
+            เพิ่มข้อมูล company
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            onclick="removeForm('company')"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Javascript Content -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <table
+    id="company-table"
+    class="table table-striped nowrap"
+    style="width: 100%"
+  >
+    <thead class="table-dark"></thead>
+  </table>
+</div>
