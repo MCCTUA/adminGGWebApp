@@ -1,5 +1,5 @@
-<template id="contactFormTemplate">
-  <form id="contactForm" class="row g-3" onsubmit="submmitForm(this)">
+<template id="companyFormTemplate">
+  <form id="companyForm" class="row g-3" onsubmit="submmitForm(this)">
     <div class="row">
       <div class="col-md mb-3 input-group">
         <select
@@ -233,14 +233,17 @@
     <div class="row">
       <div class="col-md mb-3">
         <textarea
-          class="form-control formInput contactNote"
-          id="contactNote"
-          name="contactNote"
+          class="form-control formInput companyNote"
+          id="companyNote"
+          name="companyNote"
           placeholder="หมายเหตุ (ถ้ามี)"
         ></textarea>
       </div>
     </div>
     <div class="row">
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
       <div class="col-md-6">
         <img class="preview" width="100px" class="mx-auto" />
       </div>
@@ -255,12 +258,10 @@
           class="form-check-input"
           id="form-name"
           name="formType"
-          value="contact"
+          value="company"
           checked
         />
-        <label class="form-check-label" for="form-name"
-          >Contact Line Form</label
-        >
+        <label class="form-check-label" for="form-name">Company Form</label>
       </div>
       <div>
         <input name="docId" , id="docId" class="formInput" hidden />
@@ -272,7 +273,7 @@
         type="button"
         class="btn btn-secondary"
         data-bs-dismiss="modal"
-        onclick="removeForm('contact')"
+        onclick="removeForm('company')"
       >
         ปิด
       </button>
