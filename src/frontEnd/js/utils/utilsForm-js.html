@@ -1,14 +1,13 @@
 <script>
   // Add form template
-  async function appendForm(formName) {
+  async function appendForm(formName, selectedValues) {
     try {
-      
-      let select2EndpointAndOptions;
+      let select2EndpointAndOptions
       switch (formName) {
         case 'contact':
-          const response = await googelScriptrun('getHeaderTableName', formName);
-          select2EndpointAndOptions = response.contact.select2EndpointAndOptions;
-          break;
+          const response = await googelScriptrun('getHeaderTableName', formName)
+          select2EndpointAndOptions = response.contact.select2EndpointAndOptions
+          break
         // เพิ่ม case อื่น ๆ ตามต้องการ
       }
 
@@ -21,7 +20,9 @@
       let copyThisTemplate = thisTemplate.content.cloneNode(true)
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-      getData(formName, false, select2EndpointAndOptions)
+      if (!selectedValues) {
+        getData(formName, select2EndpointAndOptions)
+      }
     } catch (error) {
       catchError(error)
     }
@@ -29,12 +30,12 @@
 
   async function getData(
     formName,
-    isEdit,
     select2EndpointAndOptions,
     selectedValues = false
   ) {
     try {
       let index = 0
+
       for (const [endpoint, config] of Object.entries(
         select2EndpointAndOptions
       )) {
@@ -84,7 +85,7 @@
     try {
       let thisTemplate = document.getElementById(`${formName}Form`)
       thisTemplate.parentNode.removeChild(thisTemplate)
-      $('.btn-table').prop("disabled", false)
+      $('.btn-table').prop('disabled', false)
     } catch (error) {
       catchError(error)
     }
@@ -97,7 +98,7 @@
       let formInput = new FormData(formDataObj)
       let inputFields = Object.fromEntries(formInput)
 
-      $('.btn-table').prop("disabled", false)
+      $('.btn-table').prop('disabled', false)
 
       switch (targetFunction) {
         case 'addData':
@@ -115,12 +116,7 @@
 
         case 'editData':
           console.log('edit data')
-          let editDataIs = new FormData(formDataObj)
-          let contactNameValue = document.getElementById('contactName').value
-          let contactNameText =
-            document.getElementById('contactName').textContent
-          console.log('contactNameValue is', contactNameValue)
-          console.log('contactNameText', contactNameText)
+
           sendDataToServer(formDataObj)
             .then(() => {
               $('#staticBackdrop').modal('hide')
@@ -163,92 +159,94 @@
   function editData(el) {
     try {
       async function fillDataToInputForUpdate() {
-        $('.btn-table').prop("disabled", true)
+        $('.btn-table').prop('disabled', true)
+
         let rowData = table.row(el.parentNode.parentNode).data()
         const tableId = table.row(el.parentNode.parentNode.parentNode)
           .context[0]['sTableId']
         const formType = tableId.split('-')[0]
-        const contactId = rowData[0]
-        const dataObj = {}
-        const regexFile = /File/i
-        const fileList = []
-        const formModal = new bootstrap.Modal(
-          document.getElementById('staticBackdrop')
-        )
-        const { contact } = await googelScriptrun(
-          'getHeaderTableName',
-          formType
-        )
-        const { data: company } = await googelScriptrun('getCompanyData')
-        const { data: touchPoint } = await googelScriptrun('getTochPointList')
 
-        formModal.show()
+        $('#staticBackdrop').modal('show')
 
-        const contactNameThisRow =
-          rowData[contact.sheetColumn.contactId].split(', ')
-        const companyList = rowData[contact.sheetColumn.companyId].split(', ')
-        const touchPointList =
-          rowData[contact.sheetColumn.touchPointId].split(', ')
-        const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
-        const companySelectedValues = []
-        const touchPointSelectedValues = []
-        const selected2Value = {}
-
-        const indexCompany = companyList.map((list) =>
-          company.findIndex((item) => item[4] === list)
-        )
-        const indexTouchPoint = touchPointList.map((list) =>
-          touchPoint.findIndex((item) => item[1] === list)
-        )
-
-        indexCompany.map((i) => companySelectedValues.push(company[i][0]))
-        indexTouchPoint.map((i) =>
-          touchPointSelectedValues.push(touchPoint[i][0])
-        )
-
-        appendForm(formType)
-        const {
-          contact: { select2EndpointAndOptions },
-        } = await googelScriptrun('getHeaderTableName', formType)
-
-        selected2Value['getContactData'] = contactSelectedValues
-        selected2Value['getCompanyData'] = companySelectedValues
-        selected2Value['getTochPointList'] = touchPointSelectedValues
-
-        getData(formType, true, select2EndpointAndOptions, selected2Value)
-
+        appendForm(formType, true)
         setFormFunction('editData', 'แก้ไขข้อมูล')
-        const formInput = document.querySelectorAll('.formInput')
-        const previewDiv = document.querySelectorAll('.preview')
-        const documentId = document.getElementById('docId')
-        // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
-        rowData.forEach((el, index) => {
-          dataObj[contact.objKey[index]] = el
-          if (startsWithHttps(el)) {
-            fileList.push(el)
-          }
-        })
-
-        // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
-        formInput.forEach((el, index) => {
-          if (containsParameterKeyword(regexFile, el.name)) {
-            previewDiv.forEach((div, index) => {
-              if (fileList[index] !== undefined) {
-                div.setAttribute('src', fileList[index])
-              }
-            })
-          } else if (el.name === 'docId') {
-            documentId.setAttribute('value', dataObj[`${formType}Id`])
-          } else if (dataObj[el.name] === undefined) {
-            el.value = ''
-          } else {
-            el.value = dataObj[el.name]
-          }
-        })
+        switch (formType) {
+          case 'contact':
+            editContactSelect2Form(formType, rowData)
+            break
+        }
       }
       fillDataToInputForUpdate()
     } catch (error) {
       catchError()
+    }
+  }
+
+  async function editContactSelect2Form(formType, rowData) {
+    const contactId = rowData[0]
+    const { contact } = await googelScriptrun('getHeaderTableName', formType)
+    const { data: company } = await googelScriptrun('getCompanyData')
+    const { data: touchPoint } = await googelScriptrun('getTochPointList')
+    const selected2Value = {}
+    const contactNameThisRow =
+      rowData[contact.sheetColumn.contactId].split(', ')
+    const companyList = rowData[contact.sheetColumn.companyId].split(', ')
+    const touchPointList = rowData[contact.sheetColumn.touchPointId].split(', ')
+    const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
+
+    const companySelectedValues = companyList.map((data) => {
+      const foundItem = company.find((item) => item[4] === data)
+      return foundItem ? foundItem[0] : null
+    })
+    const touchPointSelectedValues = touchPointList.map((data) => {
+      const foundItem = touchPoint.find((item) => item[1] === data)
+      return foundItem ? foundItem[0] : null
+    })
+    selected2Value['getContactData'] = contactSelectedValues
+    selected2Value['getCompanyData'] = companySelectedValues
+    selected2Value['getTochPointList'] = touchPointSelectedValues
+
+    getData(formType, contact.select2EndpointAndOptions, selected2Value)
+
+    fillCurrentRowDataForEdit(formType, rowData, contact)
+  }
+
+  function fillCurrentRowDataForEdit(formType, rowData, obj) {
+    try {
+      const dataObj = {}
+      const regexFile = /File/i
+      const fileList = []
+
+      const formInput = document.querySelectorAll('.formInput')
+      const previewDiv = document.querySelectorAll('.preview')
+      const documentId = document.getElementById('docId')
+
+      // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
+      rowData.forEach((el, index) => {
+        dataObj[obj.objKey[index]] = el
+        if (startsWithHttps(el)) {
+          fileList.push(el)
+        }
+      })
+
+      // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
+      formInput.forEach((el, index) => {
+        if (containsParameterKeyword(regexFile, el.name)) {
+          previewDiv.forEach((div, index) => {
+            if (fileList[index] !== undefined) {
+              div.setAttribute('src', fileList[index])
+            }
+          })
+        } else if (el.name === 'docId') {
+          documentId.setAttribute('value', dataObj[`${formType}Id`])
+        } else if (dataObj[el.name] === undefined) {
+          el.value = ''
+        } else {
+          el.value = dataObj[el.name]
+        }
+      })
+    } catch (error) {
+      catchError(error)
     }
   }
 
