@@ -109,7 +109,7 @@ function getHeaderTableName(indentifier) {
                 spreadSheetId: touchPointListSpreadsheetId,
                 sheetName: touchPointList,
               },
-              paramsContactFolder: {
+              paramsFolder: {
                 folderName: contactUploadFolder,
               },
             },
@@ -184,7 +184,27 @@ function getHeaderTableName(indentifier) {
               creditTerm: 17,
             },
             select2EndpointAndOptions: {},
-            paramsObj: { ...endPointParams },
+            paramsObj: {
+              praramDataObj: {
+                spreadSheetId: companySpreadsheetId,
+                sheetName: companySheet,
+              },
+              paramsDocIdObj: {
+                spreadSheetId: controlDocumentSpreadsheetId,
+                sheetName: controlDocument2024Sheet,
+              },
+              praramCompanyObj: {
+                spreadSheetId: contactSpreadsheetId,
+                sheetName: contactSheet,
+              },
+              paramsTouchPointsObj: {
+                spreadSheetId: touchPointListSpreadsheetId,
+                sheetName: touchPointList,
+              },
+              paramsFolder: {
+                folderName: contactUploadFolder,
+              },
+            },
           },
         }
         break

@@ -28,7 +28,7 @@ function appendContactData(formDataObj) {
         paramsObj: {
           praramDataObj,
           paramsDocIdObj,
-          paramsContactFolder: { folderName },
+          paramstFolder: { folderName },
         },
         select2EndpointAndOptions: { getContactData },
         indexFileDataColumn,

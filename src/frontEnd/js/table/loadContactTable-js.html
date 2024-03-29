@@ -50,14 +50,13 @@
 
         // นำข้อมูลไปแสดงในตาราง
         arrageDataForDataTable(data, contact, res)
-
         // การแสดงข้อมูลในตาราง ในกรณีที่เป็นข้อมูลใหม่ และกรณี Update ข้อมูล (updateDataTable === true)
-        if (!updateDataTable) {
-          const table = loadDataTable(res, tableExtraOptions)
-        } else {
-          let table = $(`#${tableExtraOptions.tableId}`).DataTable()
-          table.clear().rows.add(data).draw()
-        }
+        showNewDataToDataTableAfterEdit(
+          updateDataTable,
+          tableExtraOptions,
+          data,
+          res
+        )
       } catch (error) {
         catchError(error)
       } finally {
