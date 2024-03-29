@@ -41,8 +41,6 @@
     if (typeof dataItems === 'string') {
       dataItems = dataItems.split(', ')
       dataItems.forEach((dataItem) => {
-        console.log('dataArray :', dataArray)
-        console.log('dataItem :', dataItem)
         const matchingItem = dataArray.filter((item) => item[0] === dataItem)
         if (matchingItem) {
           list.push(matchingItem[0][columnIndex])

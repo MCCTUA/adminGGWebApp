@@ -22,22 +22,31 @@
 
         // Middleware แปลงข้อมูลเพื่อนำไปแสดงในตาราง (เปลี่ยน Id เป็นชื่อแทน) (processList เป็น callback function)
 
-        // company name
-        processData(
-          processListCallback,
-          data,
-          companyData,
-          contact.sheetColumn.companyId,
-          contact.sheetColumn.companyTbCompanyName
-        )
-        // touch point name
-        processData(
-          processListCallback,
-          data,
-          touchPoint,
-          contact.sheetColumn.touchPointId,
-          contact.sheetColumn.touchPointTbTouchPointName
-        )
+        const convertIdToNameList = [
+          {
+            data: data,
+            mainDB: companyData,
+            idIndex: contact.sheetColumn.companyId,
+            valueIndex: contact.sheetColumn.companyTbCompanyName,
+          },
+          {
+            data: data,
+            mainDB: touchPoint,
+            idIndex: contact.sheetColumn.touchPointId,
+            valueIndex: contact.sheetColumn.touchPointTbTouchPointName,
+          },
+        ]
+
+        // แปลงข้อมูลเลข ID ใน google sheet เป็น ชื่อ เพื่อแสดงให้อ่านง่ายใน data table
+        convertIdToNameList.forEach((list) => {
+          processData(
+            processListCallback,
+            list.data,
+            list.mainDB,
+            list.idIndex,
+            list.valueIndex
+          )
+        })
 
         // นำข้อมูลไปแสดงในตาราง
         arrageDataForDataTable(data, contact, res)
