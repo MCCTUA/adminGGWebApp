@@ -20,7 +20,6 @@
       let copyThisTemplate = thisTemplate.content.cloneNode(true)
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-
       if (!selectedValues) {
         await getData(formName, select2EndpointAndOptions)
       }
@@ -100,8 +99,6 @@
       let inputFields = Object.fromEntries(formInput)
 
       $('.btn-table').prop('disabled', false)
-
-      console.log('targetFunction', targetFunction)
 
       switch (targetFunction) {
         case 'addData':
@@ -262,12 +259,12 @@
   }
 
   function setFormFunction(functionName, modalTitle) {
-    waitForElementToExist('#targetFunc').then((domElement => {
+    waitForElementToExist('#targetFunc').then((domElement) => {
       const callFunction = document.getElementById('targetFunc')
       const showModalTitle = document.querySelector('.modal-title')
       callFunction.setAttribute('value', functionName)
       showModalTitle.textContent = modalTitle
-    }))
+    })
   }
 
   function preview(event) {

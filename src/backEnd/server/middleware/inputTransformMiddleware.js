@@ -26,9 +26,9 @@ function appendContactData(formDataObj) {
     const {
       contact: {
         paramsObj: {
-          praramDataObj,
+          paramsDataObj,
           paramsDocIdObj,
-          paramstFolder: { folderName },
+          paramsFolder: { folderName },
         },
         select2EndpointAndOptions: { getContactData },
         indexFileDataColumn,
@@ -36,7 +36,7 @@ function appendContactData(formDataObj) {
     } = getHeaderTableName(mainKey)
 
     const keyOrder = getHeaderTableName(mainKey)
-    console.log(getContactData)
+
     // const uddateControlIndex = getContactData.map(el => el.textIndex)
     // console.log('uddateControlIndex', uddateControlIndex)
 
@@ -58,6 +58,8 @@ function appendContactData(formDataObj) {
 
     let inputFields = dataSheetColumnFormating(formDataObj, folderName)
 
+    console.log('input fields :', inputFields)
+
     keyOrder[mainKey].objKey.forEach((key) => {
       if (inputFields.hasOwnProperty(key)) {
         sortedObj[key] = inputFields[key] === 'เพศ' ? '' : inputFields[key]
@@ -77,7 +79,7 @@ function appendContactData(formDataObj) {
       // บันทึก เลข ID ที่สร้างใหม่
       createData(paramsDocIdObj, sortIdObj)
       // บันทึก Form Data ลง Sheet
-      createData(praramDataObj, sortedObj)
+      createData(paramsDataObj, sortedObj)
     } else if (functionName === 'editData') {
       try {
         const doctId = formDataObj.docId
@@ -88,7 +90,7 @@ function appendContactData(formDataObj) {
         dataArray.push(sortedArrayFixedDataLength)
         const uddateControlIndex = getContactData.map((el) => el.textIndex)
         updateData(
-          praramDataObj,
+          paramsDataObj,
           doctId,
           dataArray,
           uddateControlIndex,

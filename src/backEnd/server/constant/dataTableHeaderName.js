@@ -93,7 +93,7 @@ function getHeaderTableName(indentifier) {
               },
             },
             paramsObj: {
-              praramDataObj: {
+              paramsDataObj: {
                 spreadSheetId: contactSpreadsheetId,
                 sheetName: contactSheet,
               },
@@ -101,7 +101,7 @@ function getHeaderTableName(indentifier) {
                 spreadSheetId: controlDocumentSpreadsheetId,
                 sheetName: controlDocument2024Sheet,
               },
-              paramsComapanyObj: {
+              paramsCompanyObj: {
                 spreadSheetId: companySpreadsheetId,
                 sheetName: companySheet,
               },
@@ -185,7 +185,7 @@ function getHeaderTableName(indentifier) {
             },
             select2EndpointAndOptions: {},
             paramsObj: {
-              praramDataObj: {
+              paramsDataObj: {
                 spreadSheetId: companySpreadsheetId,
                 sheetName: companySheet,
               },
@@ -193,7 +193,7 @@ function getHeaderTableName(indentifier) {
                 spreadSheetId: controlDocumentSpreadsheetId,
                 sheetName: controlDocument2024Sheet,
               },
-              praramCompanyObj: {
+              paramsCompanyObj: {
                 spreadSheetId: contactSpreadsheetId,
                 sheetName: contactSheet,
               },
