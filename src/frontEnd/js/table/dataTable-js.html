@@ -121,5 +121,16 @@
     }
   }
 
+  function arrageDataForDataTable(data, objData, res) {
+    // นำข้อมูลไปแสดงในตาราง
+    const columnLenght = data.shift().length - 4
+
+    if (columnLenght + 2 === objData.headerTableName.length) {
+      res.data = data.map((row) => row.slice(0, columnLenght))
+      res.headersAll = objData.headerTableName
+    } else {
+      console.log('header length not equal to data in column length')
+    }
+  }
   //=========================================================
 </script>

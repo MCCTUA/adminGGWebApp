@@ -5,7 +5,7 @@
    *         loadxxxxTable-js.html (เช่น loadContactTable-js.html)
    */
 
-  function processData(data, dataArray, elIndex, callback, columnIndex) {
+  function processData(callback, data, dataArray, elIndex, columnIndex) {
     const processedData = []
     const dataNoHeader = data.slice(1)
 
@@ -29,7 +29,7 @@
     return processedData
   }
 
-  function processList(
+  function processListCallback(
     dataNoHeader,
     dataArray,
     dataItems,

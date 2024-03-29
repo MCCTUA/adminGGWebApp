@@ -1,59 +1,58 @@
 <script>
   function loadCompanyTable(updateDataTable = false) {
-    async function loadContactDataTable() {
-      try {
-        showSwal()
-        const tableExtraOptions = {
-          tableId: 'company-table',
-          // hideColumns: [13, 14, 15, 16]
-          targetIndexShowImage: [3, 15],
-        }
-        const { data } = await googelScriptrun('getContactData')
-        const { data: companyData } = await googelScriptrun('getCompanyData')
-        const { data: touchPoint } = await googelScriptrun('getTochPointList')
-        const { contact } = await googelScriptrun(
-          'getHeaderTableName',
-          'contact'
-        )
+    loadCompanyDataTable(updateDataTable)
+  }
 
-        // company name
-        processData(
-          data,
-          companyData,
-          contact.sheetColumn.companyId,
-          processList,
-          contact.sheetColumn.companyTbCompanyName
-        )
-        // touch point name
-        processData(
-          data,
-          touchPoint,
-          contact.sheetColumn.touchPointId,
-          processList,
-          contact.sheetColumn.touchPointTbTouchPointName
-        )
-
-        const columnLenght = data.shift().length - 4
-        const res = {}
-
-        if (columnLenght + 2 === contact.headerTableName.length) {
-          res.data = data.map((row) => row.slice(0, columnLenght))
-          res.headersAll = contact.headerTableName
-        } else {
-          console.log('header length not equal to data in column length')
-        }
-        if (!updateDataTable) {
-          const table = loadDataTable(res, tableExtraOptions)
-        } else {
-          let table = $(`#${tableExtraOptions.tableId}`).DataTable()
-          table.clear().rows.add(data).draw()
-        }
-      } catch (error) {
-        catchError(error)
-      } finally {
-        hideSwal('พร้อมใช้งาน')
+  async function loadCompanyDataTable(updateDataTable) {
+    try {
+      showSwal()
+      const tableExtraOptions = {
+        tableId: 'company-table',
+        // hideColumns: [26, 27, 28],
+        targetIndexShowImage: [18, 19, 20],
       }
+      const { data } = await googelScriptrun('getCompanyData')
+      // const { data: companyData } = await googelScriptrun('getCompanyData')
+      // const { data: touchPoint } = await googelScriptrun('getTochPointList')
+      const { company } = await googelScriptrun('getHeaderTableName', 'company')
+
+      // // company name
+      // processData(
+      //   processListCallback,
+      //   data,
+      //   companyData,
+      //   contact.sheetColumn.companyId,
+      //   contact.sheetColumn.companyTbCompanyName
+      // )
+      // // touch point name
+      // processData(
+      //   processListCallback,
+      //   data,
+      //   touchPoint,
+      //   contact.sheetColumn.touchPointId,
+      //   contact.sheetColumn.touchPointTbTouchPointName
+      // )
+
+      const columnLenght = data.shift().length - 5
+      const res = {}
+
+      if (columnLenght + 2 === company.headerTableName.length) {
+        res.data = data.map((row) => row.slice(0, columnLenght))
+        res.headersAll = company.headerTableName
+      } else {
+        console.log('header length not equal to data in column length')
+      }
+
+      if (!updateDataTable) {
+        const table = loadDataTable(res, tableExtraOptions)
+      } else {
+        let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+        table.clear().rows.add(data).draw()
+      }
+    } catch (error) {
+      catchError(error)
+    } finally {
+      hideSwal('พร้อมใช้งาน')
     }
-    loadContactDataTable()
   }
 </script>
