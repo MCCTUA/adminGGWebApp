@@ -21,7 +21,7 @@
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
       if (!selectedValues) {
-        getData(formName, select2EndpointAndOptions)
+        await getData(formName, select2EndpointAndOptions)
       }
     } catch (error) {
       catchError(error)
@@ -99,6 +99,8 @@
       let inputFields = Object.fromEntries(formInput)
 
       $('.btn-table').prop('disabled', false)
+
+      console.log('targetFunction', targetFunction)
 
       switch (targetFunction) {
         case 'addData':
@@ -195,7 +197,7 @@
     const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
 
     const companySelectedValues = companyList.map((data) => {
-      const foundItem = company.find((item) => item[4] === data)
+      const foundItem = company.find((item) => item[1] === data)
       return foundItem ? foundItem[0] : null
     })
     const touchPointSelectedValues = touchPointList.map((data) => {
@@ -259,13 +261,12 @@
   }
 
   function setFormFunction(functionName, modalTitle) {
-    // const callFunction = document.getElementById('targetFunc')
-
-    // const showModalTitle = document.querySelector('.modal-title')
-    // callFunction.setAttribute('value', functionName)
-    // showModalTitle.textContent = modalTitle
-    $('#targetFunc').attr('value', functionName)
-    $('.modal-title').text(modalTitle)
+    waitForElementToExist('#targetFunc').then((domElement) => {
+      const callFunction = document.getElementById('targetFunc')
+      const showModalTitle = document.querySelector('.modal-title')
+      callFunction.setAttribute('value', functionName)
+      showModalTitle.textContent = modalTitle
+    })
   }
 
   function preview(event) {

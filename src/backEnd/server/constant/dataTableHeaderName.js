@@ -5,6 +5,28 @@
  *    • textIndex คือ ชื่อตาม valueIndex
  */
 function getHeaderTableName(indentifier) {
+  const endPointParams = {
+    paramsDocIdObj: {
+      spreadSheetId: controlDocumentSpreadsheetId,
+      sheetName: controlDocument2024Sheet,
+    },
+    praramContactObj: {
+      spreadSheetId: contactSpreadsheetId,
+      sheetName: contactSheet,
+    },
+    paramsComapanyObj: {
+      spreadSheetId: companySpreadsheetId,
+      sheetName: companySheet,
+    },
+    paramsTouchPointsObj: {
+      spreadSheetId: touchPointListSpreadsheetId,
+      sheetName: touchPointList,
+    },
+    paramsFolder: {
+      contactUploadFolder: contactUploadFolder,
+      companyUploadFolder: companyUploadFolder,
+    },
+  }
   switch (indentifier) {
     case 'docControl':
       return {
@@ -60,7 +82,7 @@ function getHeaderTableName(indentifier) {
             contactId: 0,
             companyId: 12,
             touchPointId: 13,
-            companyTbCompanyName: 4,
+            companyTbCompanyName: 1,
             touchPointTbTouchPointName: 1,
           },
           select2EndpointAndOptions: {
@@ -81,7 +103,7 @@ function getHeaderTableName(indentifier) {
             getCompanyData: {
               select2Id: 'companyNameSelect2',
               valueIndex: 0,
-              textIndex: 4,
+              textIndex: 1,
               editForm: false,
             },
             getTochPointList: {
@@ -176,7 +198,7 @@ function getHeaderTableName(indentifier) {
             companyId: 0,
             companyTaxId: 1,
             branchId: 2,
-            companyName: 4,
+            companyName: 1,
             contactCategory: 14,
             endCustomerCategory: 15,
             businessCategory: 16,
