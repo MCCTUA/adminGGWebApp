@@ -20,8 +20,21 @@
       let copyThisTemplate = thisTemplate.content.cloneNode(true)
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
+      getAutoCompleteOnInput(
+        'company',
+        [0, 2],
+        'getCompanyData',
+        '.companyTaxId'
+      )
+      // getAutoCompleteOnInput(
+      //   formParams.formType,
+      //   requiredFields,
+      //   paramKey.endpoint,
+      //   elementName,
+      // )
+
       if (!selectedValues) {
-        await getData(formName, select2EndpointAndOptions)
+        // await getData(formName, select2EndpointAndOptions)
       }
     } catch (error) {
       catchError(error)
@@ -76,6 +89,7 @@
         }
         index++
       }
+      hideSwal('พร้อมใช้งาน')
     } catch (error) {
       catchError(error)
     }
@@ -172,6 +186,7 @@
         setFormFunction('editData', 'แก้ไขข้อมูล')
         switch (formType) {
           case 'contact':
+            showSwal()
             editContactSelect2Form(formType, rowData)
             break
         }
@@ -245,6 +260,7 @@
           el.value = dataObj[el.name]
         }
       })
+      // hideSwal('พร้อมแก้ไขข้อมูล')
     } catch (error) {
       catchError(error)
     }

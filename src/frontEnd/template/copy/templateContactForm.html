@@ -1,0 +1,218 @@
+<template id="contactFormTemplate">
+  <form id="contactForm" class="row g-3" onsubmit="submmitForm(this)">
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <!-- <input
+          type="text"
+          class="form-control form-select  formInput"
+          id="contactName"
+          name="contactName"
+          placeholder="ชื่อ-นามสกุล"
+          multiple
+        /> -->
+        <select
+          id="contactName"
+          class="form-select formInput"
+          name="contactName"
+          data-placeholder="ชื่อ-นามสกุล"
+        >
+          <option value=""></option>
+        </select>
+      </div>
+
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="contactNickName"
+          name="contactNickName"
+          placeholder="ชื่อเล่น"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="file"
+          class="form-control formInput contactLineProfileFile"
+          name="contactLineProfileFile"
+          id="contactLineProfileFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
+          placeholder="รูป Line Profile"
+        />
+      </div>
+      <div class="col-md mb-3 input-group">
+        <select
+          id="contactLineName"
+          class="form-select formInput"
+          name="contactLineName"
+          data-placeholder="ชื่อ Line"
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <select class="form-select formInput" name="contactSex">
+          <option>เพศ</option>
+          <option value="man">ชาย</option>
+          <option value="women">หญิง</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput mobileInput"
+          id="contactMobile1"
+          name="contactMobile1"
+          placeholder="เบอร์โทรศัพท์มือถือหลัก"
+        />
+        <span class="error-message-mobile-0 text-danger"></span>
+      </div>
+
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput mobileInput"
+          id="contactMobile2"
+          name="contactMobile2"
+          placeholder="เบอร์โทรศัพท์มือถืออื่นๆ"
+        />
+        <span class="error-message-mobile-1 text-danger"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="email"
+          class="form-control formInput"
+          id="contactEmail"
+          name="contactEmail"
+          placeholder="Email"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="contactPosition"
+          name="contactPosition"
+          placeholder="ตำแหน่งงาน"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-group col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput homeInput"
+          id="phone"
+          name="companyPhone1"
+          placeholder="เบอร์โทรสำนักงาน"
+        />
+        <span class="input-group-text">#</span>
+        <input
+          type="text"
+          class="form-control formInput"
+          id="ext"
+          name="extensionNo"
+          placeholder="เบอร์ต่อภายใน"
+        />
+
+        <span class="error-message-home-0 text-danger"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <div class="input-group-text" id="companyNameNumber">0</div>
+        <select
+          id="companyNameSelect2"
+          class="form-select formInput"
+          name="companyName"
+          data-placeholder="เลือกชื่อบริษัท"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="file"
+          class="form-control formInput contactDocumentFile"
+          name="contactDocumentFile"
+          id="contactDocumentFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <div class="input-group-text" id="touchPointListNumber">0</div>
+        <select
+          id="touchPointListSelect2"
+          class="form-select formInput"
+          name="touchPointList"
+          data-placeholder="เลือกช่องทางที่ลูกค้าติดต่อ"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <textarea
+          class="form-control formInput contactNote"
+          id="contactNote"
+          name="contactNote"
+          placeholder="หมายเหตุ (ถ้ามี)"
+        ></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3 form-check">
+        <input
+          type="radio"
+          class="form-check-input"
+          id="form-name"
+          name="formType"
+          value="contact"
+          checked
+        />
+        <label class="form-check-label" for="form-name"
+          >Contact Line Form</label
+        >
+      </div>
+      <div>
+        <input name="docId" , id="docId" class="formInput" hidden />
+        <input name="functionName" id="targetFunc" class="targetFunc" hidden />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+        onclick="removeForm('contact')"
+      >
+        ปิด
+      </button>
+      <!-- <button type="submit" class="btn btn-primary" onclick="submmitForm(event, this.form)">บันทึกข้อมูล</button>
+    </div> -->
+      <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+    </div>
+  </form>
+</template>

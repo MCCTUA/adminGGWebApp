@@ -1,0 +1,277 @@
+<script>
+  /**
+   * ฟังก์ชันที่ใช้สำหรับดึงข้อมูลจากฐานข้อมูลเพื่อ autocomplete ในฟอร์ม
+   * @function
+   * @name getAutoCompleteOnInput
+   * @param {Array} requiredColumnField - ลำดับของ input fields ที่ต้องการ autocomplete
+   * @param {string} dataEndpoint - ชื่อ function endpoint ที่ให้ข้อมูล
+   * @param {string} selector - เลือก element (เป็นชื่อ class) ที่ต้องการให้ autocomplete
+   * @param {NodeList} inputElements - NodeList ของ input elements ทั้งหมดในฟอร์ม ที่ต้องการ disable ขณะ form ประมวลผล
+   * @returns {void}
+   * @databaseConnection ต้องมีการเชื่อมต่อกับฐานข้อมูล
+   */
+
+  async function getAutoCompleteOnInput(
+    formType,
+    requiredColumnField,
+    dataEndpoint,
+    selector
+  ) {
+    try {
+      showSwal()
+      let dataList = await googelScriptrun(dataEndpoint)
+      hideSwal('พร้อมใช้งาน')
+
+      const inputName = document.querySelectorAll(selector)
+
+      inputName.forEach((eachInput, index) => {
+        eachInput.addEventListener(
+          'keyup',
+          getKeywordsList.bind(
+            // null เพื่อผูก this ไว้กับ object -> eachInput
+            null,
+            formType,
+            dataList,
+            requiredColumnField,
+            index,
+            inputName
+          )
+        )
+      })
+    } catch (error) {
+      // Handle errors during data retrieval
+      console.error(error)
+      failSwal('พบข้อผิดพลาด')
+    }
+  }
+
+  /**
+   * ฟังก์ชันที่ใช้สำหรับดึงข้อมูลจากฐานข้อมูลเพื่อ สร้าง dropdown list สำหรับให้เลือก autocomplete ในฟอร์ม
+   * @function
+   * @name getKeywordsList
+   * @param {Array of Object} dataList เป็น data set อยู่ในรูป
+   *  [{data: [[],[],...], headerAll: {[]}, fistRowNumber: x}]
+   * @param {Number} index เป็น index ของ node List ของช่อง input ที่ต้องการให้ autocomplete แสดง
+   * @param {Node List} inputField เป็น input[type='text'] สำหรับพิมพิ์ข้อมูลและให้ autocomplete แสดง
+   * @returns {void}
+   * @databaseConnection ต้องมีการเชื่อมต่อกับฐานข้อมูล
+   */
+
+  function getKeywordsList(
+    formType,
+    dataList,
+    requiredColumnField,
+    index,
+    inputField
+  ) {
+    try {
+      let dataSetWithSpecificColumn = getOnlyrequiredFields(
+        dataList,
+        requiredColumnField
+      )
+      let dataArray = dataList.data
+      let inputAutoComplete = inputField[index]
+      removeElements()
+
+      const ulLists = document.querySelectorAll(
+        '.autocomplete-keywords-sugguestion-area'
+      )
+
+      ulLists.forEach((ul, ulIndex) => {
+        for (const list of dataSetWithSpecificColumn) {
+          // convert input to lowercase and compare with each string
+          const inputValue = inputAutoComplete.value.toLowerCase()
+          const listValue = list[1].toLowerCase()
+
+          if (listValue.includes(inputValue) && inputValue !== '') {
+            const listItem = createListItem(
+              formType,
+              list,
+              index,
+              inputAutoComplete,
+              dataArray
+            )
+            if (ulIndex === index) {
+              const checkUl = inputAutoComplete.closest('.mb-3')
+              const siblingUl = inputAutoComplete
+                .closest('.autocomplete')
+                .querySelector('.autocomplete-keywords-sugguestion-area')
+
+              siblingUl.appendChild(listItem)
+            }
+          }
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  function removeElements() {
+    try {
+      //clear all the item
+      let items = document.querySelectorAll('.list-items')
+      items.forEach((item, index) => {
+        item.remove()
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  function createListItem(formType, value, index, inputTarget, dataArray) {
+    try {
+      // create li element
+      let listItem = document.createElement('li')
+      listItem.style.listStyleType = 'none'
+      // One common class name
+      listItem.classList.add('list-items')
+      listItem.style.cursor = 'pointer'
+      listItem.setAttribute('data-id', value[0])
+
+      // Pass the inputAutoComplete variable to displayNames function
+      listItem.addEventListener('click', function () {
+        displayNames(formType, value, `${index}`, inputTarget, dataArray)
+      })
+
+      // Display matched part in bold
+      const boldPart = `<b>${value[1].substr(0, inputTarget.value.length)}</b>`
+      const remainingPart = value[1].substr(inputTarget.value.length)
+
+      listItem.innerHTML = boldPart + remainingPart
+
+      // display the value in array
+      return listItem
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  /**
+   * ฟังก์ชันที่ใช้สำหรับกดเลือก autocomplete ไปแสดงในช่อง input ของฟอร์ม
+   * @function
+   * @name displayNames
+   * @param {string} value - ลำดับของ input fields ที่ต้องการ autocomplete
+   * @param {number} index - index ของ nodeList ที่ต้องการให้ autocomplete ไปแสดง
+   * @param {์nodeList} inputElements - NodeList ของ input elements ที่ต้องการให้ autocomplete ไปแสดง
+   * @returns {void}
+   * @databaseConnection ต้องมีการเชื่อมต่อกับฐานข้อมูล
+   */
+
+  function displayNames(
+    formType,
+    value,
+    index,
+    inputTarget,
+    dataArray = undefined
+  ) {
+    try {
+      inputTarget.value = value[1]
+      removeElements()
+      inputTarget.setAttribute('data-id', value[0])
+      inputTarget.setAttribute('value', value[0])
+      fillExistedDataOnInputFieldAfterClickAutocomplete(
+        formType,
+        value,
+        dataArray
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  /**
+   * @function
+   * @name : fillExistedDataOnInputFieldAfterClickAutocomplete
+   * {string} : dataInputField : คือค่า id (value[0]) ของค่าที่ถูกเลือกจาก autoComplete
+   * {Array} : dataArray เป็นข้อมูลของค่าที่ถูกเลือกทั้งหมดของ dataInputField
+   * กำหนด class ให้ input เพื่อนำ nodeList มา loop
+   */
+
+  function fillExistedDataOnInputFieldAfterClickAutocomplete(
+    formType,
+    dataInputFieldArray,
+    dataArray = undefined
+    // skipIndexArray
+  ) {
+    const arrayIndex = getFormParams(formType).omitAutoCompleteInputIndex
+    const indexContactFields = getFormParams(formType).indexContactInputFields
+    const indexContactObject =
+      getFormParams(formType).indexConatactFormAutoComplete
+    const indexCompanyFields = getFormParams(formType).indexCompanyInputFields
+    const indexCompanyObject =
+      getFormParams(formType).indexCompanyFormAutocomplete
+
+    let existedData = dataArray.filter((data) =>
+      data.includes(dataInputFieldArray[0])
+    )
+    let inputNodeList = document.querySelectorAll('.formInput')
+    let inputNodeListLineName = document.querySelectorAll('.contactLineName')
+    let inputNodeListName = document.querySelectorAll('.contactName')
+    inputNodeList = Array.from(inputNodeList) // แปลง NodeList เป็นอาร์เรย์
+    let currentIndexOfDataInputField = inputNodeList.findIndex(
+      (el) => el.value === dataInputFieldArray[1]
+    )
+
+    let check = Array.from(inputNodeList)
+    let checkInputNodeListLineName = Array.from(inputNodeListLineName)
+    let checkInputNodeListName = Array.from(inputNodeListName)
+
+    if (
+      formType === 'company' &&
+      (checkInputNodeListLineName.length > 0 ||
+        checkInputNodeListName.length > 0)
+    ) {
+      return
+    } else {
+      inputNodeList.forEach((el, index) => {
+        // contact fields
+        if (
+          indexContactFields?.includes(index) &&
+          indexContactFields?.includes(currentIndexOfDataInputField)
+        ) {
+          if (el.value !== dataInputFieldArray[0]) {
+            if (el.value !== '') {
+              return
+            } else {
+              let i = indexContactObject[el.name]
+              el.value = existedData[0][i]
+            }
+          }
+        } else if (
+          indexCompanyFields?.includes(index) &&
+          indexCompanyFields?.includes(currentIndexOfDataInputField)
+        ) {
+          // company fields
+          if (el.value !== dataInputFieldArray[0]) {
+            if (el.value !== '') {
+              return
+            } else {
+              let i = indexCompanyObject[el.name]
+              el.value = existedData[0][i]
+            }
+          }
+        }
+      })
+    }
+  }
+
+  /**
+   * นำข้อมูลมาคัดเอาเฉพาะ Fields ที่ต้องการ ตาม index
+   * @ {Array} : data
+   * @ {Array} : arrayRequiredIndexFields เป็น array ของ index ที่ต้องการข้อมูล โดย
+   *    • หากมีความยาว = 0 คือให้เอาทุกค่า
+   *    • หามีสามาชิก array (เป็นเลข index) ให้เลือกเอาข้อมูลเฉพาะตำแหน่ง index นั้นๆ
+   */
+  function getOnlyrequiredFields(data, arrayRequiredIndexFields) {
+    return data.data.map((row) =>
+      row.filter((fields, index) => {
+        if (arrayRequiredIndexFields.length > 0) {
+          return arrayRequiredIndexFields.indexOf(index) !== -1
+        } else {
+          return arrayRequiredIndexFields.indexOf(index) === -1
+        }
+      })
+    )
+  }
+</script>

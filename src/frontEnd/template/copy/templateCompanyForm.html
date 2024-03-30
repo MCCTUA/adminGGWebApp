@@ -2,17 +2,14 @@
   <form id="companyForm" class="row g-3" onsubmit="submmitForm(this)">
     <div class="row">
       <div class="col-md mb-3 input-group">
-        <div class="mb-3 autocomplete">
-          <input
-            type="text"
-            class="form-control formInput companyTaxId"
-            id="companyTaxId"
-            name="companyTaxId"
-            placeholder="เลขผู้เสียภาษี 13 หลัก"
-          />
-          <span class="error-message-taxId text-danger"></span>
-          <ul class="autocomplete-keywords-sugguestion-area"></ul>
-        </div>
+        <select
+          id="companyTaxId"
+          class="form-select formInput"
+          name="companyTaxId"
+          data-placeholder="เลขผู้เสียภาษี"
+        >
+          <option value=""></option>
+        </select>
       </div>
 
       <div class="col-md mb-3">
@@ -21,7 +18,7 @@
           class="form-control formInput"
           id="brandId"
           name="brandId"
-          placeholder="รหัสสาขา 5 หลัก"
+          placeholder="รหัสสาขา"
         />
       </div>
     </div>
@@ -37,17 +34,14 @@
         </select>
       </div>
       <div class="col-md mb-3 input-group">
-        <div class="mb-3 autocomplete">
-          <input
-            type="text"
-            class="form-control formInput companyName"
-            id="companyName"
-            name="companyName"
-            placeholder="ประเภทจดทะเบียน"
-          />
-          <span class="error-message-taxId text-danger"></span>
-          <ul class="autocomplete-keywords-sugguestion-area"></ul>
-        </div>
+        <select
+          id="companyName"
+          class="form-select formInput"
+          name="companyName"
+          data-placeholder="ชื่อบริษัท"
+        >
+          <option value=""></option>
+        </select>
       </div>
     </div>
     <div class="row">
