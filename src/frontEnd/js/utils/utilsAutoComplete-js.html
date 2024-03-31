@@ -18,11 +18,10 @@
     selector
   ) {
     try {
-      showSwal()
       let dataList = await googelScriptrun(dataEndpoint)
-      hideSwal('พร้อมใช้งาน')
-
       const inputName = document.querySelectorAll(selector)
+
+      console.log('datalist', dataEndpoint, dataList)
 
       inputName.forEach((eachInput, index) => {
         eachInput.addEventListener(
@@ -170,11 +169,11 @@
       removeElements()
       inputTarget.setAttribute('data-id', value[0])
       inputTarget.setAttribute('value', value[0])
-      fillExistedDataOnInputFieldAfterClickAutocomplete(
-        formType,
-        value,
-        dataArray
-      )
+      // fillExistedDataOnInputFieldAfterClickAutocomplete(
+      //   formType,
+      //   value,
+      //   dataArray
+      // )
     } catch (error) {
       console.error(error)
     }

@@ -2,11 +2,19 @@
   // Add form template
   async function appendForm(formName, selectedValues) {
     try {
-      let select2EndpointAndOptions
+      let select2AndAutoCompleteOptions
       switch (formName) {
         case 'contact':
-          const response = await googelScriptrun('getHeaderTableName', formName)
-          select2EndpointAndOptions = response.contact.select2EndpointAndOptions
+          const {
+            contact: { select2EndpointAndOptions: contactOptions },
+          } = await googelScriptrun('getHeaderTableName', formName)
+          select2AndAutoCompleteOptions = contactOptions
+          break
+        case 'company':
+          const {
+            company: { select2EndpointAndOptions: companyOptions },
+          } = await googelScriptrun('getHeaderTableName', formName)
+          select2AndAutoCompleteOptions = companyOptions
           break
         // เพิ่ม case อื่น ๆ ตามต้องการ
       }
@@ -20,24 +28,15 @@
       let copyThisTemplate = thisTemplate.content.cloneNode(true)
       document.querySelector('.modal-body').appendChild(copyThisTemplate)
 
-      getAutoCompleteOnInput(
-        'company',
-        [0, 2],
-        'getCompanyData',
-        '.companyTaxId'
-      )
-      // getAutoCompleteOnInput(
-      //   formParams.formType,
-      //   requiredFields,
-      //   paramKey.endpoint,
-      //   elementName,
-      // )
+      showSwal()
 
       if (!selectedValues) {
-        // await getData(formName, select2EndpointAndOptions)
+        await getData(formName, select2AndAutoCompleteOptions)
       }
     } catch (error) {
       catchError(error)
+    } finally {
+      hideSwal('พร้อมใช้งาน')
     }
   }
 
@@ -58,40 +57,55 @@
         // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
         if (Array.isArray(config)) {
           config.forEach((item, itemIndex) => {
-            if ($(`#${item?.select2Id}`).has('option').length === 1) {
-              getSelect2Opions(
-                item?.select2Id,
-                dataWithoutHeader,
-                item?.valueIndex,
-                item?.textIndex,
-                'staticBackdrop'
-              )
-              if (selectedValues) {
-                const selectedValue = selectedValues[endpoint][itemIndex]
-                $(`#${item?.select2Id}`).val(selectedValue).trigger('change')
-              }
-            }
+            createAutoCompleteAndSelect2Options(
+              formName,
+              item,
+              endpoint,
+              dataWithoutHeader,
+              selectedValues
+            )
           })
         } else {
-          if ($(`#${config?.select2Id}`).has('option').length === 1) {
-            getSelect2Opions(
-              config?.select2Id,
-              dataWithoutHeader,
-              config?.valueIndex,
-              config?.textIndex,
-              'staticBackdrop'
-            )
-            if (selectedValues) {
-              const selectedValue = selectedValues[endpoint]
-              $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
-            }
-          }
+          createAutoCompleteAndSelect2Options(
+            formName,
+            config,
+            endpoint,
+            dataWithoutHeader,
+            selectedValues
+          )
         }
-        index++
       }
-      hideSwal('พร้อมใช้งาน')
+      index++
     } catch (error) {
       catchError(error)
+    }
+  }
+
+  function createAutoCompleteAndSelect2Options(
+    formName,
+    config,
+    endpoint,
+    dataWithoutHeader,
+    selectedValues
+  ) {
+    getAutoCompleteOnInput(
+      formName,
+      config.requiredFields,
+      endpoint,
+      config.className
+    )
+    if ($(`#${config?.select2Id}`).has('option').length === 1) {
+      getSelect2Opions(
+        config?.select2Id,
+        dataWithoutHeader,
+        config?.valueIndex,
+        config?.textIndex,
+        'staticBackdrop'
+      )
+      if (selectedValues) {
+        const selectedValue = selectedValues[endpoint]
+        $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
+      }
     }
   }
 
@@ -192,8 +206,11 @@
         }
       }
       fillDataToInputForUpdate()
+      hideSwal('พร้อมใช้งาน')
     } catch (error) {
       catchError()
+    } finally {
+      hideSwal('พร้อมใช้งาน')
     }
   }
 
@@ -260,7 +277,6 @@
           el.value = dataObj[el.name]
         }
       })
-      // hideSwal('พร้อมแก้ไขข้อมูล')
     } catch (error) {
       catchError(error)
     }

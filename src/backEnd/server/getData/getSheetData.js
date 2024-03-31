@@ -11,7 +11,39 @@ function getCompanyData() {
     spreadSheetId: companySpreadsheetId,
     sheetName: companySheet,
   }
+
   return readDataDisplayValues(paramObj)
+}
+
+function getNormalize() {
+  const paramObj = {
+    spreadSheetId: normalizeSpreadsheetId,
+    sheetCompanyJuristicType: companyJuristicType,
+    sheetCompanyEndCustomerCategory: companyEndCustomerCategory,
+    sheetCompanyBusinessCategory: companyBusinessCategory,
+  }
+  const ss = getSpreadSheet_(paramObj)
+
+  const juristicTypeData = getSheetDisplayData_(
+    ss,
+    paramObj.sheetCompanyJuristicType
+  )
+  const endCustomerCategoryData = getSheetDisplayData_(
+    ss,
+    paramObj.sheetCompanyEndCustomerCategory
+  )
+  const businessCategoryData = getSheetDisplayData_(
+    ss,
+    paramObj.sheetCompanyBusinessCategory
+  )
+
+  const data = {
+    juristicTypeData,
+    endCustomerCategoryData,
+    businessCategoryData,
+  }
+
+  return data
 }
 
 function getContactWithCompanyData(contactId) {

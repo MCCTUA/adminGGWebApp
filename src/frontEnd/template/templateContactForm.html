@@ -2,22 +2,17 @@
   <form id="contactForm" class="row g-3" onsubmit="submmitForm(this)">
     <div class="row">
       <div class="col-md mb-3 input-group">
-        <!-- <input
-          type="text"
-          class="form-control form-select  formInput"
-          id="contactName"
-          name="contactName"
-          placeholder="ชื่อ-นามสกุล"
-          multiple
-        /> -->
-        <select
-          id="contactName"
-          class="form-select formInput"
-          name="contactName"
-          data-placeholder="ชื่อ-นามสกุล"
-        >
-          <option value=""></option>
-        </select>
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput contactName"
+            id="contactName"
+            name="contactName"
+            placeholder="ชื่อ-นามสกุล"
+          />
+          <span class="error-message-taxId text-danger"></span>
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
       </div>
 
       <div class="col-md mb-3">
@@ -42,15 +37,19 @@
           placeholder="รูป Line Profile"
         />
       </div>
+
       <div class="col-md mb-3 input-group">
-        <select
-          id="contactLineName"
-          class="form-select formInput"
-          name="contactLineName"
-          data-placeholder="ชื่อ Line"
-        >
-          <option value=""></option>
-        </select>
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput contactLineName"
+            id="contactLineName"
+            name="contactLineName"
+            placeholder="ชื่อ Line"
+          />
+          <span class="error-message-taxId text-danger"></span>
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
       </div>
     </div>
     <div class="row">
@@ -128,16 +127,17 @@
     </div>
     <div class="row">
       <div class="col-md mb-3 input-group">
-        <div class="input-group-text" id="companyNameNumber">0</div>
-        <select
-          id="companyNameSelect2"
-          class="form-select formInput"
-          name="companyName"
-          data-placeholder="เลือกชื่อบริษัท"
-          multiple
-        >
-          <option value=""></option>
-        </select>
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput companyName"
+            id="companyName"
+            name="companyName"
+            placeholder="ชื่อบริษัท"
+          />
+          <span class="error-message-taxId text-danger"></span>
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
       </div>
       <div class="col-md mb-3">
         <input
@@ -155,7 +155,7 @@
         <div class="input-group-text" id="touchPointListNumber">0</div>
         <select
           id="touchPointListSelect2"
-          class="form-select formInput"
+          class="form-select formInpu touchPointList"
           name="touchPointList"
           data-placeholder="เลือกช่องทางที่ลูกค้าติดต่อ"
           multiple

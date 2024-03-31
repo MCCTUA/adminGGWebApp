@@ -34,11 +34,21 @@ function getRowNumberFromId_(paramsObj, id) {
   return dataObj
 }
 
+function getSpreadSheet_(paramsObj) {
+  return SpreadsheetApp.openById(paramsObj.spreadSheetId)
+}
+
 function getWorkSheet_(paramsObj) {
   const ss = SpreadsheetApp.openById(paramsObj.spreadSheetId)
   const ws = ss.getSheetByName(paramsObj.sheetName)
 
   return ws
+}
+
+function getSheetDisplayData_(ss, workSheetName) {
+  const workSheet = ss.getSheetByName(workSheetName)
+  const data = workSheet.getRange('A1').getDataRegion().getDisplayValues()
+  return data
 }
 
 function createData(paramsObj, dataObj) {

@@ -18,9 +18,9 @@ function getHeaderTableName(indentifier) {
             headerTableName: [
               'รหัสลูกค้า',
               'ชื่อ-สกุล',
-              'ชื่อเล่น',
-              'รูปไลน์ profile',
               'ชื่อ Line',
+              'รูปไลน์ profile',
+              'ชื่อเล่น',
               'เบอร์มือถือหลัก',
               'เบอร์มือถือสำรอง',
               'Email',
@@ -38,9 +38,9 @@ function getHeaderTableName(indentifier) {
             objKey: [
               'contactId',
               'contactName',
-              'contactNickName',
-              'contactLineProfileFile',
               'contactLineName',
+              'contactLineProfileFile',
+              'contactNickName',
               'contactMobile1',
               'contactMobile2',
               'contactEmail',
@@ -57,7 +57,7 @@ function getHeaderTableName(indentifier) {
             indexFileDataColumn: [3, 15],
             sheetColumn: {
               name: 1,
-              lineName: 4,
+              lineName: 2,
               contactId: 0,
               companyId: 12,
               touchPointId: 13,
@@ -68,28 +68,36 @@ function getHeaderTableName(indentifier) {
               getContactData: [
                 {
                   select2Id: 'contactName',
+                  className: '.contactName',
                   valueIndex: 0,
                   textIndex: 1,
                   editForm: true,
+                  requiredFields: [0, 1],
                 },
                 {
                   select2Id: 'contactLineName',
+                  className: '.contactLineName',
                   valueIndex: 0,
-                  textIndex: 4,
+                  textIndex: 2,
                   editForm: true,
+                  requiredFields: [0, 2],
                 },
               ],
               getCompanyData: {
                 select2Id: 'companyNameSelect2',
+                className: '.companyName',
                 valueIndex: 0,
                 textIndex: 1,
                 editForm: false,
+                requiredFields: [0, 1],
               },
               getTochPointList: {
                 select2Id: 'touchPointListSelect2',
+                className: '.touchPointList',
                 valueIndex: 0,
                 textIndex: 1,
                 editForm: false,
+                requiredFields: [0, 1],
               },
             },
             paramsObj: {
@@ -183,7 +191,53 @@ function getHeaderTableName(indentifier) {
               businessCategory: 16,
               creditTerm: 17,
             },
-            select2EndpointAndOptions: {},
+            select2EndpointAndOptions: {
+              getCompanyData: [
+                {
+                  select2Id: 'companyTaxId',
+                  className: '.companyTaxId',
+                  valueIndex: 0,
+                  textIndex: 2,
+                  requiredFields: [0, 2],
+                },
+                {
+                  select2Id: 'companyName',
+                  className: '.companyName',
+                  valueIndex: 0,
+                  textIndex: 1,
+                  requiredFields: [0, 1],
+                },
+              ],
+              getNormalize: {
+                workSheetList: true,
+                workSheet: {
+                  companyJuristicType: {
+                    sheetName: 'companyJuristicType',
+                    select2Id: 'juristicType',
+                    className: '.juristicType',
+                    valueIndex: 0,
+                    textIndex: 2,
+                    requiredFields: [0, 2],
+                  },
+                  companyEndCustomerCategory: {
+                    sheetName: 'companyEndCustomerCategory',
+                    select2Id: 'endCustomerCategory',
+                    className: '.endCustomerCategory',
+                    valueIndex: 0,
+                    textIndex: 2,
+                    requiredFields: [0, 2],
+                  },
+                  companyBusinessCategory: {
+                    sheetName: 'companyBusinessCategory',
+                    select2Id: 'businessCategory',
+                    className: '.businessCategory',
+                    valueIndex: 0,
+                    textIndex: 2,
+                    requiredFields: [0, 2],
+                  },
+                },
+              },
+            },
             paramsObj: {
               paramsDataObj: {
                 spreadSheetId: companySpreadsheetId,
@@ -197,12 +251,8 @@ function getHeaderTableName(indentifier) {
                 spreadSheetId: contactSpreadsheetId,
                 sheetName: contactSheet,
               },
-              paramsTouchPointsObj: {
-                spreadSheetId: touchPointListSpreadsheetId,
-                sheetName: touchPointList,
-              },
               paramsFolder: {
-                folderName: contactUploadFolder,
+                folderName: companyUploadFolder,
               },
             },
           },

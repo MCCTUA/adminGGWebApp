@@ -7,6 +7,7 @@
 
 function serverFormInput(formDataObj) {
   try {
+    // console.log('serverFormInput', formDataObj)
     appendContactData(formDataObj)
     return true
   } catch (error) {
@@ -36,13 +37,20 @@ function appendContactData(formDataObj) {
     } = getHeaderTableName(mainKey)
 
     const keyOrder = getHeaderTableName(mainKey)
-
-    // const uddateControlIndex = getContactData.map(el => el.textIndex)
-    // console.log('uddateControlIndex', uddateControlIndex)
-
     const keyDocControlOrder = getHeaderTableName('docControl')
     const keyOrderLength = keyOrder[mainKey].objKey.length - 1
     const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
+
+    // get company id แทนชื่อ
+    const currentCompanyInDB = getCompanyData()
+    formDataObj.companyName = currentCompanyInDB.data.filter(
+      (row) => row[1] === formDataObj.companyName
+    )[0][0]
+    formDataObj.touchPointList = formDataObj.touchPointList.filter(
+      (el) => el !== ''
+    )
+
+    console.log('formDataObj.touchPointList', formDataObj.touchPointList)
 
     if (functionName === 'addData') {
       formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
@@ -158,3 +166,5 @@ function sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj) {
     catchError(error)
   }
 }
+
+function convertNameToId() {}
