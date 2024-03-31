@@ -1,6 +1,6 @@
 <script>
   // Add form template
-  async function appendForm(formName, selectedValues) {
+  async function appendForm(formName, isEditData) {
     try {
       let select2AndAutoCompleteOptions
       switch (formName) {
@@ -30,7 +30,7 @@
 
       showSwal()
 
-      if (!selectedValues) {
+      if (!isEditData) {
         await getData(formName, select2AndAutoCompleteOptions)
       }
     } catch (error) {
@@ -43,7 +43,7 @@
   async function getData(
     formName,
     select2EndpointAndOptions,
-    selectedValues = false
+    isEditData = false
   ) {
     try {
       let index = 0
@@ -51,28 +51,46 @@
       for (const [endpoint, config] of Object.entries(
         select2EndpointAndOptions
       )) {
-        const { data } = await googelScriptrun(endpoint)
-        const dataWithoutHeader = data.slice(1)
+        if (config.workSheetList) {
+          const { data: ssData } = await googelScriptrun(endpoint)
 
-        // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
-        if (Array.isArray(config)) {
-          config.forEach((item, itemIndex) => {
+          for (const [endpointInner, configInner] of Object.entries(
+            config.workSheet
+          )) {
+            const dataOnly = ssData[`${configInner.select2Id}`].slice(1)
             createAutoCompleteAndSelect2Options(
               formName,
-              item,
+              configInner,
+              endpointInner,
+              dataOnly,
+              isEditData
+            )
+          }
+        } else {
+          const { data } = await googelScriptrun(endpoint)
+          console.log('data slice', endpoint, data)
+          const dataWithoutHeader = data.slice(1)
+
+          // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
+          if (Array.isArray(config)) {
+            config.forEach((item, itemIndex) => {
+              createAutoCompleteAndSelect2Options(
+                formName,
+                item,
+                endpoint,
+                dataWithoutHeader,
+                isEditData
+              )
+            })
+          } else {
+            createAutoCompleteAndSelect2Options(
+              formName,
+              config,
               endpoint,
               dataWithoutHeader,
-              selectedValues
+              isEditData
             )
-          })
-        } else {
-          createAutoCompleteAndSelect2Options(
-            formName,
-            config,
-            endpoint,
-            dataWithoutHeader,
-            selectedValues
-          )
+          }
         }
       }
       index++
@@ -86,12 +104,12 @@
     config,
     endpoint,
     dataWithoutHeader,
-    selectedValues
+    isEditData
   ) {
     getAutoCompleteOnInput(
       formName,
       config.requiredFields,
-      endpoint,
+      dataWithoutHeader,
       config.className
     )
     if ($(`#${config?.select2Id}`).has('option').length === 1) {
@@ -102,8 +120,9 @@
         config?.textIndex,
         'staticBackdrop'
       )
-      if (selectedValues) {
-        const selectedValue = selectedValues[endpoint]
+      if (isEditData) {
+        // endpoint เป็น key เพื่อ match value ใน object เท่านั้น โดย isEditData เป็น object จะถูกส่งมาตอน edit
+        const selectedValue = isEditData[endpoint]
         $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
       }
     }

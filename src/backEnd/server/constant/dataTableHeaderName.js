@@ -208,6 +208,24 @@ function getHeaderTableName(indentifier) {
                   requiredFields: [0, 1],
                 },
               ],
+              getContactData: [
+                {
+                  select2Id: 'contactName',
+                  className: '.contactName',
+                  valueIndex: 0,
+                  textIndex: 1,
+                  editForm: true,
+                  requiredFields: [0, 1],
+                },
+                {
+                  select2Id: 'contactLineName',
+                  className: '.contactLineName',
+                  valueIndex: 0,
+                  textIndex: 2,
+                  editForm: true,
+                  requiredFields: [0, 2],
+                },
+              ],
               getNormalize: {
                 workSheetList: true,
                 workSheet: {
@@ -231,6 +249,22 @@ function getHeaderTableName(indentifier) {
                     sheetName: 'companyBusinessCategory',
                     select2Id: 'businessCategory',
                     className: '.businessCategory',
+                    valueIndex: 0,
+                    textIndex: 2,
+                    requiredFields: [0, 2],
+                  },
+                  financeCreditTerm: {
+                    sheetName: 'financeCreditTerm',
+                    select2Id: 'creditTerm',
+                    className: '.creditTerm',
+                    valueIndex: 0,
+                    textIndex: 2,
+                    requiredFields: [0, 2],
+                  },
+                  companyContactType: {
+                    sheetName: 'companyContactType',
+                    select2Id: 'contactCategory',
+                    className: '.contactCategory',
                     valueIndex: 0,
                     textIndex: 2,
                     requiredFields: [0, 2],

@@ -86,6 +86,7 @@ const financeCreditTerm = 'financeCreditTerm'
 const companyJuristicType = 'companyJuristicType'
 const companyEndCustomerCategory = 'companyEndCustomerCategory'
 const companyBusinessCategory = 'companyBusinessCategory'
+const companyContactType = 'companyContactType'
 const productCategory = 'productCategory'
 
 /**

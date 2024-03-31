@@ -14,14 +14,12 @@
   async function getAutoCompleteOnInput(
     formType,
     requiredColumnField,
-    dataEndpoint,
+    dataList,
     selector
   ) {
     try {
-      let dataList = await googelScriptrun(dataEndpoint)
+      // let dataList = await googelScriptrun(dataEndpoint)
       const inputName = document.querySelectorAll(selector)
-
-      console.log('datalist', dataEndpoint, dataList)
 
       inputName.forEach((eachInput, index) => {
         eachInput.addEventListener(
@@ -68,7 +66,8 @@
         dataList,
         requiredColumnField
       )
-      let dataArray = dataList.data
+      // let dataArray = dataList.data
+      let dataArray = dataList
       let inputAutoComplete = inputField[index]
       removeElements()
 
@@ -263,7 +262,7 @@
    *    • หามีสามาชิก array (เป็นเลข index) ให้เลือกเอาข้อมูลเฉพาะตำแหน่ง index นั้นๆ
    */
   function getOnlyrequiredFields(data, arrayRequiredIndexFields) {
-    return data.data.map((row) =>
+    return data.map((row) =>
       row.filter((fields, index) => {
         if (arrayRequiredIndexFields.length > 0) {
           return arrayRequiredIndexFields.indexOf(index) !== -1

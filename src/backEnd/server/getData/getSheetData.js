@@ -21,29 +21,40 @@ function getNormalize() {
     sheetCompanyJuristicType: companyJuristicType,
     sheetCompanyEndCustomerCategory: companyEndCustomerCategory,
     sheetCompanyBusinessCategory: companyBusinessCategory,
+    sheetCompanyContactType: companyContactType,
+    sheetFinanceCreditTerm: financeCreditTerm,
   }
   const ss = getSpreadSheet_(paramObj)
 
-  const juristicTypeData = getSheetDisplayData_(
+  const juristicType = getSheetDisplayData_(
     ss,
     paramObj.sheetCompanyJuristicType
   )
-  const endCustomerCategoryData = getSheetDisplayData_(
+  const endCustomerCategory = getSheetDisplayData_(
     ss,
     paramObj.sheetCompanyEndCustomerCategory
   )
-  const businessCategoryData = getSheetDisplayData_(
+  const businessCategory = getSheetDisplayData_(
     ss,
     paramObj.sheetCompanyBusinessCategory
   )
+  const contactCategory = getSheetDisplayData_(
+    ss,
+    paramObj.sheetCompanyContactType
+  )
+  const creditTerm = getSheetDisplayData_(ss, paramObj.sheetFinanceCreditTerm)
 
   const data = {
-    juristicTypeData,
-    endCustomerCategoryData,
-    businessCategoryData,
+    juristicType,
+    endCustomerCategory,
+    businessCategory,
+    contactCategory,
+    creditTerm,
   }
 
-  return data
+  console.log(data)
+
+  return { data }
 }
 
 function getContactWithCompanyData(contactId) {
