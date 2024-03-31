@@ -1,0 +1,36 @@
+<template id="contactNameFieldTemplate">
+  <div id="company-nameContact" class="outer-main-div-for-clone">
+    <div class="main-company-nameContact main-div-for-clone">
+      <div class="row mb-3">
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn btn-outline-primary mb-3 btn-contactName"
+            name="btn-contactName"
+            onclick="addInputFields(this, 'company')"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary mb-3 deleteButton"
+          >
+            -
+          </button>
+        </div>
+        <div class="col">
+          <div class="mb-3 autocomplete">
+            <input
+              type="text"
+              class="form-control formInput contactName"
+              name="contactName-0"
+              placeholder="ชื่อ-นามสกุล"
+            />
+            <span class="error-message-taxId text-danger"></span>
+            <ul class="autocomplete-keywords-sugguestion-area"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

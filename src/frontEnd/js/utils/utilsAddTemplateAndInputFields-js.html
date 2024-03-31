@@ -1,0 +1,38 @@
+<script>
+  function addInputFieldsTemplate(el) {
+    console.log('add template', el)
+    const targetElement = findParentWithClass(el, 'main-div-for-clone')
+    const p1 = el.parentElement
+    console.log('p1', p1)
+    console.log('target element', targetElement)
+    // 1. เพิ่ม template โดยให้แต่ละ fields มี name ที่แตกต่างกัน
+    // 2. เพิ่ม autocomplete / select2
+  }
+
+  function addTemplate(templateName) {
+    let temp = document.getElementById(`${templateName}Template`)
+
+    console.log('temp ', temp)
+  }
+
+  /**
+   * Recussive function
+   */
+
+  function findParentWithClass(element, className) {
+    // ถ้า element ปัจจุบันมี class ที่ตรงกับที่เราร้องขอ
+
+    if (element.classList.contains(className)) {
+      return element
+    }
+
+    // ถ้าไม่ใช่ element ที่เราร้องขอ และยังมี parent element
+    if (element.parentElement) {
+      // เรียก recursive function ใน parent element
+      return findParentWithClass(element.parentElement, className)
+    }
+
+    // ถ้าไม่มี parent element แล้ว แสดงว่าไม่พบ element ที่ต้องการ
+    return null
+  }
+</script>
