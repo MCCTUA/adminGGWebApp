@@ -7,13 +7,13 @@
         case 'contact':
           const {
             contact: { select2EndpointAndOptions: contactOptions },
-          } = await googelScriptrun('getHeaderTableName', formName)
+          } = await googleScriptrun('getHeaderTableName', formName)
           select2AndAutoCompleteOptions = contactOptions
           break
         case 'company':
           const {
             company: { select2EndpointAndOptions: companyOptions },
-          } = await googelScriptrun('getHeaderTableName', formName)
+          } = await googleScriptrun('getHeaderTableName', formName)
           select2AndAutoCompleteOptions = companyOptions
           break
         // เพิ่ม case อื่น ๆ ตามต้องการ
@@ -52,7 +52,7 @@
         select2EndpointAndOptions
       )) {
         if (config.workSheetList) {
-          const { data: ssData } = await googelScriptrun(endpoint)
+          const { data: ssData } = await googleScriptrun(endpoint)
 
           for (const [endpointInner, configInner] of Object.entries(
             config.workSheet
@@ -67,7 +67,7 @@
             )
           }
         } else {
-          const { data } = await googelScriptrun(endpoint)
+          const { data } = await googleScriptrun(endpoint)
           console.log('data slice', endpoint, data)
           const dataWithoutHeader = data.slice(1)
 
@@ -183,7 +183,7 @@
   function sendDataToServer(formDataObj) {
     return new Promise((resolve, reject) => {
       showSwal()
-      googelScriptrun('serverFormInput', formDataObj)
+      googleScriptrun('serverFormInput', formDataObj)
         .then((result) => {
           hideSwal('บันทึกข้อมูลสำเร็จ')
           const textareas = formDataObj.querySelectorAll('textarea')
@@ -235,30 +235,29 @@
 
   async function editContactSelect2Form(formType, rowData) {
     const contactId = rowData[0]
-    const { contact } = await googelScriptrun('getHeaderTableName', formType)
-    const { data: company } = await googelScriptrun('getCompanyData')
-    const { data: touchPoint } = await googelScriptrun('getTochPointList')
     const selected2Value = {}
-    const contactNameThisRow =
-      rowData[contact.sheetColumn.contactId].split(', ')
-    const companyList = rowData[contact.sheetColumn.companyId].split(', ')
-    const touchPointList = rowData[contact.sheetColumn.touchPointId].split(', ')
-    const contactSelectedValues = [contactNameThisRow, contactNameThisRow]
 
-    const companySelectedValues = companyList.map((data) => {
-      const foundItem = company.find((item) => item[1] === data)
-      return foundItem ? foundItem[0] : null
+    const { contact } = await googleScriptrun('getHeaderTableName', formType)
+    const { data: companyId } = await googleScriptrun('getCompanyData')
+    const { data: touchPointId } = await googleScriptrun('getTochPointList')
+    const key = ['getCompanyData', 'getTochPointList']
+
+    const allData = { companyId, touchPointId }
+    let index = 0
+
+    Object.entries(allData).forEach(([endpoint, data]) => {
+      const selectedValues = rowData[contact.sheetColumn[endpoint]]
+        .split(', ')
+        .map((list) => {
+          const foundItem = data.find((item) => item[1] === list)
+          return foundItem ? foundItem[0] : null
+        })
+      console.log(key[index])
+      selected2Value[key[index]] = selectedValues
+      index++
     })
-    const touchPointSelectedValues = touchPointList.map((data) => {
-      const foundItem = touchPoint.find((item) => item[1] === data)
-      return foundItem ? foundItem[0] : null
-    })
-    selected2Value['getContactData'] = contactSelectedValues
-    selected2Value['getCompanyData'] = companySelectedValues
-    selected2Value['getTochPointList'] = touchPointSelectedValues
 
     getData(formType, contact.select2EndpointAndOptions, selected2Value)
-
     fillCurrentRowDataForEdit(formType, rowData, contact)
   }
 

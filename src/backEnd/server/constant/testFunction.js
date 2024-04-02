@@ -10,7 +10,7 @@
 //         select2EndpointAndOptions
 //       )) {
 //         if(endpoint.workSheetList){
-//           const ss = await googelScriptrun(endpoint)
+//           const ss = await googleScriptrun(endpoint)
 
 //           for (const [endpointInner, configInner] of Object.entries(endpointInner.workSheet)){
 //             const dataInner = await getSheetDisplayData(ss, configInner.sheetName)
@@ -19,7 +19,7 @@
 //           }
 
 //         } else {
-//             const { data } = await googelScriptrun(endpoint)
+//             const { data } = await googleScriptrun(endpoint)
 //             const dataWithoutHeader = data.slice(1)
 
 //             // ตรวจสอบว่า select2Id นั้นมี options หรือยัง

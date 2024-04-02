@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autocomplete with Multiple Selection</title>
+    <style>
+      .autocomplete-container {
+        position: relative;
+        display: inline-block;
+      }
+      .autocomplete-input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+      }
+      .autocomplete-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-top: none;
+      }
+      .autocomplete-dropdown-option {
+        padding: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HTML for displaying selected options -->
+    <div id="selected-options-container"></div>
+    <div class="autocomplete-container">
+      <input
+        type="text"
+        class="autocomplete-input"
+        placeholder="Search"
+        id="autocomplete-input"
+      />
+      <div class="autocomplete-dropdown" id="autocomplete-dropdown"></div>
+    </div>
+
+    <script>
+      const autocompleteInput = document.getElementById('autocomplete-input')
+      const autocompleteDropdown = document.getElementById(
+        'autocomplete-dropdown'
+      )
+      let selectedOptions = []
+
+      // Sample data
+      const options = [
+        'Apple',
+        'Banana',
+        'Orange',
+        'Grapes',
+        'Mango',
+        'Pineapple',
+      ]
+
+      // Function to render dropdown options
+      function renderDropdownOptions(options) {
+        autocompleteDropdown.innerHTML = ''
+        options.forEach((option) => {
+          const optionElement = document.createElement('div')
+          optionElement.classList.add('autocomplete-dropdown-option')
+          optionElement.textContent = option
+          optionElement.addEventListener('click', () => selectOption(option))
+          autocompleteDropdown.appendChild(optionElement)
+        })
+        autocompleteDropdown.style.display = 'block'
+      }
+
+      // Function to select an option
+      function selectOption(option) {
+        selectedOptions.push(option)
+        autocompleteInput.value = '' // Clear input after selection
+        autocompleteInput.focus()
+        autocompleteDropdown.style.display = 'none'
+        console.log('Selected Options:', selectedOptions)
+
+        // Display selected options
+        const selectedOptionsContainer = document.getElementById(
+          'selected-options-container'
+        )
+        selectedOptionsContainer.innerHTML = '' // Clear existing content
+        selectedOptions.forEach((selectedOption) => {
+          const optionElement = document.createElement('div')
+          optionElement.textContent = selectedOption
+          selectedOptionsContainer.appendChild(optionElement)
+        })
+      }
+
+      // Event listener for input changes
+      autocompleteInput.addEventListener('input', () => {
+        const searchText = autocompleteInput.value.toLowerCase()
+        const filteredOptions = options.filter((option) =>
+          option.toLowerCase().includes(searchText)
+        )
+        renderDropdownOptions(filteredOptions)
+      })
+
+      // Event listener for clicking outside the autocomplete dropdown
+      document.addEventListener('click', (event) => {
+        if (!autocompleteDropdown.contains(event.target)) {
+          autocompleteDropdown.style.display = 'none'
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -11,10 +11,10 @@
         }
 
         // แหล่งที่มา ของ Data ของแต่ละตาราง
-        const { data } = await googelScriptrun('getContactData')
-        const { data: companyData } = await googelScriptrun('getCompanyData')
-        const { data: touchPoint } = await googelScriptrun('getTochPointList')
-        const { contact } = await googelScriptrun(
+        const { data } = await googleScriptrun('getContactData')
+        const { data: companyData } = await googleScriptrun('getCompanyData')
+        const { data: touchPoint } = await googleScriptrun('getTochPointList')
+        const { contact } = await googleScriptrun(
           'getHeaderTableName',
           'contact'
         )

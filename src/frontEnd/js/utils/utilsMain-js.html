@@ -50,7 +50,7 @@
    * ******************************************
    */
 
-  function googelScriptrun(serverFunctionName, ...parameters) {
+  function googleScriptrun(serverFunctionName, ...parameters) {
     return new Promise((resolve, reject) => {
       const runFunction = google.script.run
         .withSuccessHandler(resolve)
