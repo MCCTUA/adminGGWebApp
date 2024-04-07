@@ -2,65 +2,23 @@
   function loadContactTable(updateDataTable = false) {
     async function loadContactDataTable() {
       try {
-        showSwal()
+        showSwal();
         // กำหนด Options เพิ่มเติมเฉพาะตาราง
         const tableExtraOptions = {
-          tableId: 'contact-table',
+          tableId: "contact-table",
           // hideColumns: [13, 14, 15, 16]
           targetIndexShowImage: [3, 15],
-        }
-<<<<<<< HEAD
-        const { data } = await googelScriptrun('getContactData')
-        const { data: companyData } = await googelScriptrun('getCompanyData')
-        const { data: touchPoint } = await googelScriptrun('getTochPointList')
-        const { contact } = await googelScriptrun(
-          'getHeaderTableName',
-          'contact'
-        )
-
-        // company name
-        processData(
-          data,
-          companyData,
-          contact.sheetColumn.companyId,
-          processList,
-          contact.sheetColumn.companyTbCompanyName
-        )
-        // touch point name
-        processData(
-          data,
-          touchPoint,
-          contact.sheetColumn.touchPointId,
-          processList,
-          contact.sheetColumn.touchPointTbTouchPointName
-        )
-
-        const columnLenght = data.shift().length - 4
-        const res = {}
-
-        if (columnLenght + 2 === contact.headerTableName.length) {
-          res.data = data.map((row) => row.slice(0, columnLenght))
-          res.headersAll = contact.headerTableName
-        } else {
-          console.log('header length not equal to data in column length')
-        }
-        if (!updateDataTable) {
-          const table = loadDataTable(res, tableExtraOptions)
-        } else {
-          let table = $(`#${tableExtraOptions.tableId}`).DataTable()
-          table.clear().rows.add(data).draw()
-        }
-=======
+        };
 
         // แหล่งที่มา ของ Data ของแต่ละตาราง
-        const { data } = await googleScriptrun('getContactData')
-        const { data: companyData } = await googleScriptrun('getCompanyData')
-        const { data: touchPoint } = await googleScriptrun('getTochPointList')
+        const { data } = await googleScriptrun("getContactData");
+        const { data: companyData } = await googleScriptrun("getCompanyData");
+        const { data: touchPoint } = await googleScriptrun("getTochPointList");
         const { contact } = await googleScriptrun(
-          'getHeaderTableName',
-          'contact'
-        )
-        const res = {}
+          "getHeaderTableName",
+          "contact"
+        );
+        const res = {};
 
         // Middleware แปลงข้อมูลเพื่อนำไปแสดงในตาราง (เปลี่ยน Id เป็นชื่อแทน) (processList เป็น callback function)
 
@@ -77,7 +35,7 @@
             idIndex: contact.sheetColumn.touchPointId,
             valueIndex: contact.sheetColumn.touchPointTbTouchPointName,
           },
-        ]
+        ];
 
         // แปลงข้อมูลเลข ID ใน google sheet เป็น ชื่อ เพื่อแสดงให้อ่านง่ายใน data table
         convertIdToNameList.forEach((list) => {
@@ -87,25 +45,24 @@
             list.mainDB,
             list.idIndex,
             list.valueIndex
-          )
-        })
+          );
+        });
 
         // นำข้อมูลไปแสดงในตาราง
-        arrageDataForDataTable(data, contact, res)
+        arrageDataForDataTable(data, contact, res);
         // การแสดงข้อมูลในตาราง ในกรณีที่เป็นข้อมูลใหม่ และกรณี Update ข้อมูล (updateDataTable === true)
         showNewDataToDataTableAfterEdit(
           updateDataTable,
           tableExtraOptions,
           data,
           res
-        )
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
+        );
       } catch (error) {
-        catchError(error)
+        catchError(error);
       } finally {
-        hideSwal('พร้อมใช้งาน')
+        hideSwal("พร้อมใช้งาน");
       }
     }
-    loadContactDataTable()
+    loadContactDataTable();
   }
 </script>

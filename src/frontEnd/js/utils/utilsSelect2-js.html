@@ -6,46 +6,27 @@
    */
 
   function getSelect2Opions(select2Id, data, valueIndex, textIndex, modalId) {
-    const selectElement = document.getElementById(select2Id)
+    const selectElement = document.getElementById(select2Id);
 
-<<<<<<< HEAD
-    console.log(
-      'get select2 opionts function :',
-      $(`#${select2Id} option`).length
-    )
-    if ($(`#${select2Id} option`).length === 1) {
-      data.forEach((item) => {
-        if (item[textIndex] !== '') {
-          $(`#${select2Id}`).append(
-            $('<option>', {
-              value: item[valueIndex],
-              text: item[textIndex],
-            })
-          )
-        }
-      })
-    }
-=======
     data.forEach((item) => {
-      if (item[textIndex] !== '') {
+      if (item[textIndex] !== "") {
         $(`#${select2Id}`).append(
-          $('<option>', {
+          $("<option>", {
             value: item[valueIndex],
             text: item[textIndex],
           })
-        )
+        );
       }
-    })
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
+    });
 
     $(`#${select2Id}`).select2({
-      theme: 'bootstrap-5',
-      width: $(this).data('width')
-        ? $(this).data('width')
-        : $(this).hasClass('w-100')
-        ? '100%'
-        : 'style',
-      placeholder: $(this).data('placeholder'),
+      theme: "bootstrap-5",
+      width: $(this).data("width")
+        ? $(this).data("width")
+        : $(this).hasClass("w-100")
+        ? "100%"
+        : "style",
+      placeholder: $(this).data("placeholder"),
       dropdownParent: $(`#${modalId}`),
 
       // add new option -------
@@ -55,24 +36,24 @@
           id: params.term,
           text: params.term,
           newOption: true,
-        }
+        };
       },
       templateResult: function (data) {
-        var $result = $('<span></span>')
+        var $result = $("<span></span>");
 
-        $result.text(data.text)
+        $result.text(data.text);
 
         if (data.newOption) {
-          $result.append(' <em>(new)</em>')
+          $result.append(" <em>(new)</em>");
         }
 
-        return $result
+        return $result;
       },
       language: {
         noResults: function () {
-          return `<span class='text-danger'> ไม่พบข้อมูล </span>`
+          return `<span class='text-danger'> ไม่พบข้อมูล </span>`;
         },
       },
-    })
+    });
   }
 </script>

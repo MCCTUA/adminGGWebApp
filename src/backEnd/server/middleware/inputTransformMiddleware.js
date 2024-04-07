@@ -7,10 +7,7 @@
 
 function serverFormInput(formDataObj) {
   try {
-<<<<<<< HEAD
-=======
     // console.log('serverFormInput', formDataObj)
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     appendContactData(formDataObj)
     return true
   } catch (error) {
@@ -40,16 +37,10 @@ function appendContactData(formDataObj) {
     } = getHeaderTableName(mainKey)
 
     const keyOrder = getHeaderTableName(mainKey)
-    console.log(getContactData)
-    // const uddateControlIndex = getContactData.map(el => el.textIndex)
-    // console.log('uddateControlIndex', uddateControlIndex)
-
     const keyDocControlOrder = getHeaderTableName('docControl')
     const keyOrderLength = keyOrder[mainKey].objKey.length - 1
     const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
 
-<<<<<<< HEAD
-=======
     // get company id แทนชื่อ
     const currentCompanyInDB = getCompanyData()
     formDataObj.companyName = currentCompanyInDB.data.filter(
@@ -61,7 +52,6 @@ function appendContactData(formDataObj) {
 
     console.log('formDataObj.touchPointList', formDataObj.touchPointList)
 
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     if (functionName === 'addData') {
       formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
     } else if (functionName === 'editData') {
@@ -97,11 +87,7 @@ function appendContactData(formDataObj) {
       // บันทึก เลข ID ที่สร้างใหม่
       createData(paramsDocIdObj, sortIdObj)
       // บันทึก Form Data ลง Sheet
-<<<<<<< HEAD
-      createData(praramDataObj, sortedObj)
-=======
       createData(paramsDataObj, sortedObj)
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     } else if (functionName === 'editData') {
       try {
         const doctId = formDataObj.docId
@@ -112,11 +98,7 @@ function appendContactData(formDataObj) {
         dataArray.push(sortedArrayFixedDataLength)
         const uddateControlIndex = getContactData.map((el) => el.textIndex)
         updateData(
-<<<<<<< HEAD
-          praramDataObj,
-=======
           paramsDataObj,
->>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
           doctId,
           dataArray,
           uddateControlIndex,
@@ -147,8 +129,7 @@ function dataSheetColumnFormating(formDataObj, folderConstant) {
         if (key.includes('File')) {
           value.contents === ''
             ? acc[key] === value.contents
-            : (acc[key] = `https://lh3.googleUserContent.com/d/${
-                folder.createFile(formDataObj[key]).getUrl().split('/')[5]
+            : (acc[key] = `https://lh3.googleUserContent.com/d/${folder.createFile(formDataObj[key]).getUrl().split('/')[5]
               }`)
         } else if (key.includes('Mobile') || key.includes('Phone')) {
           acc[key] = `'${value}`
@@ -185,4 +166,4 @@ function sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj) {
   }
 }
 
-function convertNameToId() {}
+function convertNameToId() { }
