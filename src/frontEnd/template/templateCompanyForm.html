@@ -1,0 +1,329 @@
+<template id="companyFormTemplate">
+  <form id="companyForm" class="row g-3" onsubmit="submmitForm(this)">
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput companyTaxId"
+            id="companyTaxId"
+            name="companyTaxId"
+            placeholder="เลขผู้เสียภาษี 13 หลัก"
+          />
+          <span class="error-message-taxId text-danger"></span>
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
+      </div>
+
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="brandId"
+          name="brandId"
+          placeholder="รหัสสาขา 5 หลัก"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <select
+          id="juristicType"
+          class="form-select formInput"
+          name="juristicType"
+          data-placeholder="ประเภทจดทะเบียน"
+        >
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="col-md mb-3 input-group">
+        <div class="mb-3 autocomplete">
+          <input
+            type="text"
+            class="form-control formInput companyName"
+            id="companyName"
+            name="companyName"
+            placeholder="ชื่อบริษัท"
+          />
+          <span class="error-message-taxId text-danger"></span>
+          <ul class="autocomplete-keywords-sugguestion-area"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="companyAddress"
+          name="companyAddress"
+          placeholder="ที่อยู่"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="zipCode"
+          name="zipCode"
+          placeholder="รหัสไปรษณีย์"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="tel"
+          class="form-control formInput"
+          id="phoneNumberMain"
+          name="phoneNumberMain"
+          placeholder="เบอร์โทรหลัก"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="tel"
+          class="form-control formInput"
+          id="phoneNumberOther"
+          name="phoneNumberOther"
+          placeholder="เบอร์โทรอื่นๆ"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="tel"
+          class="form-control formInput"
+          id="faxNumber"
+          name="faxNumber"
+          placeholder="เบอร์ Fax"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="tel"
+          class="form-control formInput"
+          id="companyWebsite"
+          name="companyWebsite"
+          placeholder="website"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="email"
+          class="form-control formInput"
+          id="companyEmail"
+          name="companyEmail"
+          placeholder="Email"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="companyLine"
+          name="companyLine"
+          placeholder="Line บริษัท"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <select
+          id="contactCategory"
+          class="form-select formInput"
+          name="contactCategory"
+          data-placeholder="ประเภทการติดต่อ"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="col-md mb-3 input-group">
+        <select
+          id="endCustomerCategory"
+          class="form-select formInput"
+          name="endCustomerCategory"
+          data-placeholder="กลุ่มลูกค้าหลัก"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3 input-group">
+        <select
+          id="businessCategory"
+          class="form-select formInput"
+          name="businessCategory"
+          data-placeholder="ประเภทธุรกิจ"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="col-md mb-3 input-group">
+        <select
+          id="creditTerm"
+          class="form-select formInput"
+          name="creditTerm"
+          data-placeholder="เครดิตเทอม"
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="file"
+          class="form-control formInput businessRegCertFile"
+          name="businessRegCertFile"
+          id="businessRegCertFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="file"
+          class="form-control formInput dbdFinancialStatementFile"
+          name="dbdFinancialStatementFile"
+          id="dbdFinancialStatementFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md mb-3">
+        <input
+          type="file"
+          class="form-control formInput billingRegulationsFile"
+          name="billingRegulationsFile"
+          id="billingRegulationsFile"
+          accept="application/pdf, image/*"
+          onchange="preview(event)"
+        />
+      </div>
+      <div class="col-md mb-3">
+        <input
+          type="text"
+          class="form-control formInput"
+          id="paymentScore"
+          name="paymentScore"
+          placeholder="payement score"
+          disabled
+        />
+      </div>
+    </div>
+    <!-- common form     -->
+    <div class="row">
+      <div class="col-md mb-3">
+        <textarea
+          class="form-control formInput companyNote"
+          id="companyNote"
+          name="companyNote"
+          placeholder="หมายเหตุ (ถ้ามี)"
+        ></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+      <div class="col-md-6">
+        <img class="preview" width="100px" class="mx-auto" />
+      </div>
+    </div>
+    <div
+      id="company-lineContact-input"
+      class="row mt-3 input-section companyAddLineContact"
+    >
+      <h4>เพิ่มราย Line ของผู้ติดต่อ</h4>
+      <!-- <div class="main-div-for-clone">
+        <button
+          type="button"
+          class="btn btn-outline-primary mb-3"
+          onclick="addTemplate('contactNameField')"
+        >
+          เพิ่มรายชื่อ Line ของผู้ติดต่อ
+        </button>
+      </div> -->
+      <div class="col-md mb-3 input-group">
+        <select
+          id="contactName"
+          class="form-select formInput"
+          name="contactName"
+          data-placeholder="ชื่อ-นามสกุล"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div
+      id="company-nameContact-input"
+      class="row mt-3 input-section companyAddNameContact"
+    >
+      <h4>เพิ่มราย ชื่อ-นามสกุล ของผู้ติดต่อ</h4>
+      <!-- <div class="main-div-for-clone">
+        <button
+          type="button"
+          class="btn btn-outline-primary mb-3"
+          onclick="addTemplate('company-nameContact', 'company')"
+        >
+          เพิ่มราย ชื่อ-นามสกุล ของผู้ติดต่อ
+        </button>
+      </div> -->
+      <div class="col-md mb-3 input-group">
+        <select
+          id="contactLineName"
+          class="form-select formInput"
+          name="contactLineName"
+          data-placeholder="ชื่อ Line"
+          multiple
+        >
+          <option value=""></option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3 form-check">
+        <input
+          type="radio"
+          class="form-check-input"
+          id="form-name"
+          name="formType"
+          value="company"
+          checked
+        />
+        <label class="form-check-label" for="form-name">Company Form</label>
+      </div>
+      <div>
+        <input name="docId" , id="docId" class="formInput" hidden />
+        <input name="functionName" id="targetFunc" class="targetFunc" hidden />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+        onclick="removeForm('company')"
+      >
+        ปิด
+      </button>
+      <!-- <button type="submit" class="btn btn-primary" onclick="submmitForm(event, this.form)">บันทึกข้อมูล</button>
+    </div> -->
+      <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+    </div>
+  </form>
+</template>

@@ -6,11 +6,6 @@
  */
 function getHeaderTableName(indentifier) {
   switch (indentifier) {
-    case 'docControl':
-      return {
-        objKey: ['sequence', 'abbrDocCat', 'docFor', 'createAt'],
-      }
-      break
     case 'contact':
       return {
         contact: {
@@ -53,42 +48,16 @@ function getHeaderTableName(indentifier) {
             'contactDocumentFile',
             'createAt',
           ],
-          indexFileDataColumn: [3, 15],
-          sheetColumn: {
-            name: 1,
-            lineName: 4,
-            contactId: 0,
-            companyId: 12,
-            touchPointId: 13,
-            companyTbCompanyName: 4,
-            touchPointTbTouchPointName: 1,
-          },
           select2EndpointAndOptions: {
-            getContactData: [
-              {
-                select2Id: 'contactName',
-                valueIndex: 0,
-                textIndex: 1,
-                editForm: true,
-              },
-              {
-                select2Id: 'contactLineName',
-                valueIndex: 0,
-                textIndex: 4,
-                editForm: true,
-              },
-            ],
             getCompanyData: {
               select2Id: 'companyNameSelect2',
               valueIndex: 0,
               textIndex: 4,
-              editForm: false,
             },
             getTochPointList: {
               select2Id: 'touchPointListSelect2',
               valueIndex: 0,
               textIndex: 1,
-              editForm: false,
             },
           },
           paramsObj: {
@@ -115,71 +84,10 @@ function getHeaderTableName(indentifier) {
         },
       }
       break
-    case 'company':
+    case 'docControl':
       return {
-        company: {
-          headerTableName: [
-            'รหัสลูกค้า',
-            'เลขผู้เสียภาษี',
-            'รหัสสาขา',
-            'ประเภททะเบียนนิติบุคคล',
-            'ชื่อบริษัท',
-            'ที่อยู่',
-            'รหัสไปรษณีย์',
-            'เบอร์โทรหลัก',
-            'เบอร์โทรอื่นๆ',
-            'เบอร์ Fax',
-            'website',
-            'email',
-            'line(บริษัท)',
-            'ประเภทการติดต่อ',
-            'กลุ่มลูกค้าหลัก',
-            'ทำธุรกิจเกี่ยวกับ',
-            'เครติด Term',
-            'เอกสารหนังสือรับรอง',
-            'ส่งงบการเงินล่าสุด',
-            'เอกสารวางบิลเก็บเช็ค',
-            'รายชื่อผู้ติดต่อ',
-          ],
-          objKey: [
-            'companyId',
-            'companyTaxId',
-            'brandId',
-            'juristicType',
-            'companyName',
-            'companyAddress',
-            'zipCode',
-            'phoneNumberMain',
-            'phoneNumberOther',
-            'faxNumber',
-            'companyWebsite',
-            'companyEmail',
-            'companyLine',
-            'contactCategory',
-            'endCustomerCategory',
-            'businessCategory',
-            'creditTerm',
-            'businessRegCertFile',
-            'dbdFinancialStatementFile',
-            'billingRegulationsFile',
-            'contactList',
-            'paymentScore',
-            'createAt',
-          ],
-          indexFileDataColumn: [18, 19, 20],
-          sheetColumn: {
-            companyId: 0,
-            companyTaxId: 1,
-            branchId: 2,
-            companyName: 4,
-            contactCategory: 14,
-            endCustomerCategory: 15,
-            businessCategory: 16,
-            creditTerm: 17,
-          },
-          select2EndpointAndOptions: {},
-          paramsObj: {},
-        },
+        objKey: ['sequence', 'abbrDocCat', 'docFor', 'createAt'],
       }
+      break
   }
 }

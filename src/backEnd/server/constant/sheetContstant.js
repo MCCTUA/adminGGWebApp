@@ -75,14 +75,26 @@ const touchPointList = 'touchPointList'
 /**
  * Product Sheet
  */
-const productSpreadshhetId = '1YGSmE9XPckxW_hIc4EeP9CQqHsGO2AhypTTWEykld8I'
+const productSpreadsheetId = '1YGSmE9XPckxW_hIc4EeP9CQqHsGO2AhypTTWEykld8I'
 const productCategorySheet = 'categoryId'
+
+/**
+ * Normalize Sheet
+ */
+const normalizeSpreadsheetId = '1EoJsqJapjLe04WmH2F7dBVXFovSKbzImXyoiex5hrwM'
+const financeCreditTerm = 'financeCreditTerm'
+const companyJuristicType = 'companyJuristicType'
+const companyEndCustomerCategory = 'companyEndCustomerCategory'
+const companyBusinessCategory = 'companyBusinessCategory'
+const companyContactType = 'companyContactType'
+const productCategory = 'productCategory'
 
 /**
  * Folder
  */
 
-const contactUploadFolder = '1qGUjVnppLtD2gl4QSNiPt2mP5YOFOwOE'
+const contactUploadFolder = '13OnfFXqxNkU5LPlG-axLg-uGf6IuNu9K'
+const companyUploadFolder = '124Ve08vapcolO81Qne2zUO3MYE514u3G'
 
 /**
  * CSS Color

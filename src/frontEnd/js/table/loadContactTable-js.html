@@ -3,11 +3,13 @@
     async function loadContactDataTable() {
       try {
         showSwal()
+        // กำหนด Options เพิ่มเติมเฉพาะตาราง
         const tableExtraOptions = {
           tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
           targetIndexShowImage: [3, 15],
         }
+<<<<<<< HEAD
         const { data } = await googelScriptrun('getContactData')
         const { data: companyData } = await googelScriptrun('getCompanyData')
         const { data: touchPoint } = await googelScriptrun('getTochPointList')
@@ -48,6 +50,56 @@
           let table = $(`#${tableExtraOptions.tableId}`).DataTable()
           table.clear().rows.add(data).draw()
         }
+=======
+
+        // แหล่งที่มา ของ Data ของแต่ละตาราง
+        const { data } = await googleScriptrun('getContactData')
+        const { data: companyData } = await googleScriptrun('getCompanyData')
+        const { data: touchPoint } = await googleScriptrun('getTochPointList')
+        const { contact } = await googleScriptrun(
+          'getHeaderTableName',
+          'contact'
+        )
+        const res = {}
+
+        // Middleware แปลงข้อมูลเพื่อนำไปแสดงในตาราง (เปลี่ยน Id เป็นชื่อแทน) (processList เป็น callback function)
+
+        const convertIdToNameList = [
+          {
+            data: data,
+            mainDB: companyData,
+            idIndex: contact.sheetColumn.companyId,
+            valueIndex: contact.sheetColumn.companyTbCompanyName,
+          },
+          {
+            data: data,
+            mainDB: touchPoint,
+            idIndex: contact.sheetColumn.touchPointId,
+            valueIndex: contact.sheetColumn.touchPointTbTouchPointName,
+          },
+        ]
+
+        // แปลงข้อมูลเลข ID ใน google sheet เป็น ชื่อ เพื่อแสดงให้อ่านง่ายใน data table
+        convertIdToNameList.forEach((list) => {
+          processData(
+            processListCallback,
+            list.data,
+            list.mainDB,
+            list.idIndex,
+            list.valueIndex
+          )
+        })
+
+        // นำข้อมูลไปแสดงในตาราง
+        arrageDataForDataTable(data, contact, res)
+        // การแสดงข้อมูลในตาราง ในกรณีที่เป็นข้อมูลใหม่ และกรณี Update ข้อมูล (updateDataTable === true)
+        showNewDataToDataTableAfterEdit(
+          updateDataTable,
+          tableExtraOptions,
+          data,
+          res
+        )
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
       } catch (error) {
         catchError(error)
       } finally {

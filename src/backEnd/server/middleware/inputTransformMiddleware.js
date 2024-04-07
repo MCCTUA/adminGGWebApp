@@ -7,6 +7,10 @@
 
 function serverFormInput(formDataObj) {
   try {
+<<<<<<< HEAD
+=======
+    // console.log('serverFormInput', formDataObj)
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     appendContactData(formDataObj)
     return true
   } catch (error) {
@@ -26,9 +30,9 @@ function appendContactData(formDataObj) {
     const {
       contact: {
         paramsObj: {
-          praramDataObj,
+          paramsDataObj,
           paramsDocIdObj,
-          paramsContactFolder: { folderName },
+          paramsFolder: { folderName },
         },
         select2EndpointAndOptions: { getContactData },
         indexFileDataColumn,
@@ -44,6 +48,20 @@ function appendContactData(formDataObj) {
     const keyOrderLength = keyOrder[mainKey].objKey.length - 1
     const idInfo = getDocSequenceAndCat(paramsDocIdObj, mainKey)
 
+<<<<<<< HEAD
+=======
+    // get company id แทนชื่อ
+    const currentCompanyInDB = getCompanyData()
+    formDataObj.companyName = currentCompanyInDB.data.filter(
+      (row) => row[1] === formDataObj.companyName
+    )[0][0]
+    formDataObj.touchPointList = formDataObj.touchPointList.filter(
+      (el) => el !== ''
+    )
+
+    console.log('formDataObj.touchPointList', formDataObj.touchPointList)
+
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     if (functionName === 'addData') {
       formDataObj[keyOrder[mainKey].objKey[0]] = idInfo.sequence
     } else if (functionName === 'editData') {
@@ -57,6 +75,8 @@ function appendContactData(formDataObj) {
     let sortIdObj = {}
 
     let inputFields = dataSheetColumnFormating(formDataObj, folderName)
+
+    console.log('input fields :', inputFields)
 
     keyOrder[mainKey].objKey.forEach((key) => {
       if (inputFields.hasOwnProperty(key)) {
@@ -77,7 +97,11 @@ function appendContactData(formDataObj) {
       // บันทึก เลข ID ที่สร้างใหม่
       createData(paramsDocIdObj, sortIdObj)
       // บันทึก Form Data ลง Sheet
+<<<<<<< HEAD
       createData(praramDataObj, sortedObj)
+=======
+      createData(paramsDataObj, sortedObj)
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
     } else if (functionName === 'editData') {
       try {
         const doctId = formDataObj.docId
@@ -88,7 +112,11 @@ function appendContactData(formDataObj) {
         dataArray.push(sortedArrayFixedDataLength)
         const uddateControlIndex = getContactData.map((el) => el.textIndex)
         updateData(
+<<<<<<< HEAD
           praramDataObj,
+=======
+          paramsDataObj,
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
           doctId,
           dataArray,
           uddateControlIndex,
@@ -156,3 +184,5 @@ function sortedDataFollowSheetColumn(keyDocControlOrder, idInfo, sortIdObj) {
     catchError(error)
   }
 }
+
+function convertNameToId() {}

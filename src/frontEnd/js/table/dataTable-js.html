@@ -73,7 +73,11 @@
               })
               formModal.show()
               // $('#staticBackdrop').modal('show')
+<<<<<<< HEAD
               appendForm(formType)
+=======
+              appendForm(formType, false)
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
               setFormFunction('addData', 'เพิ่มข้อมูล***')
             },
           },
@@ -121,5 +125,30 @@
     }
   }
 
+  function arrageDataForDataTable(data, objData, res) {
+    // นำข้อมูลไปแสดงในตาราง
+    const columnLenght = data.shift().length - 4
+
+    if (columnLenght + 2 === objData.headerTableName.length) {
+      res.data = data.map((row) => row.slice(0, columnLenght))
+      res.headersAll = objData.headerTableName
+    } else {
+      console.log('header length not equal to data in column length')
+    }
+  }
+
+  function showNewDataToDataTableAfterEdit(
+    updateDataTable,
+    tableExtraOptions,
+    data,
+    res
+  ) {
+    if (!updateDataTable) {
+      const table = loadDataTable(res, tableExtraOptions)
+    } else {
+      let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+      table.clear().rows.add(data).draw()
+    }
+  }
   //=========================================================
 </script>

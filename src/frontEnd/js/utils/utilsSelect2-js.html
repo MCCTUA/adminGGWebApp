@@ -8,6 +8,7 @@
   function getSelect2Opions(select2Id, data, valueIndex, textIndex, modalId) {
     const selectElement = document.getElementById(select2Id)
 
+<<<<<<< HEAD
     console.log(
       'get select2 opionts function :',
       $(`#${select2Id} option`).length
@@ -24,6 +25,18 @@
         }
       })
     }
+=======
+    data.forEach((item) => {
+      if (item[textIndex] !== '') {
+        $(`#${select2Id}`).append(
+          $('<option>', {
+            value: item[valueIndex],
+            text: item[textIndex],
+          })
+        )
+      }
+    })
+>>>>>>> 607158b64e0ead5bf2aef5e2b99e8d1287fbbe84
 
     $(`#${select2Id}`).select2({
       theme: 'bootstrap-5',
