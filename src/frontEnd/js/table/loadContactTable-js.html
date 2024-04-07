@@ -2,23 +2,23 @@
   function loadContactTable(updateDataTable = false) {
     async function loadContactDataTable() {
       try {
-        showSwal();
+        showSwal()
         // กำหนด Options เพิ่มเติมเฉพาะตาราง
         const tableExtraOptions = {
-          tableId: "contact-table",
+          tableId: 'contact-table',
           // hideColumns: [13, 14, 15, 16]
           targetIndexShowImage: [3, 15],
-        };
+        }
 
         // แหล่งที่มา ของ Data ของแต่ละตาราง
-        const { data } = await googleScriptrun("getContactData");
-        const { data: companyData } = await googleScriptrun("getCompanyData");
-        const { data: touchPoint } = await googleScriptrun("getTochPointList");
+        const { data } = await googleScriptrun('getContactData')
+        const { data: companyData } = await googleScriptrun('getCompanyData')
+        const { data: touchPoint } = await googleScriptrun('getTochPointList')
         const { contact } = await googleScriptrun(
-          "getHeaderTableName",
-          "contact"
-        );
-        const res = {};
+          'getHeaderTableName',
+          'contact'
+        )
+        const res = {}
 
         // Middleware แปลงข้อมูลเพื่อนำไปแสดงในตาราง (เปลี่ยน Id เป็นชื่อแทน) (processList เป็น callback function)
 
@@ -35,7 +35,7 @@
             idIndex: contact.sheetColumn.touchPointId,
             valueIndex: contact.sheetColumn.touchPointTbTouchPointName,
           },
-        ];
+        ]
 
         // แปลงข้อมูลเลข ID ใน google sheet เป็น ชื่อ เพื่อแสดงให้อ่านง่ายใน data table
         convertIdToNameList.forEach((list) => {
@@ -45,24 +45,25 @@
             list.mainDB,
             list.idIndex,
             list.valueIndex
-          );
-        });
+          )
+        })
 
         // นำข้อมูลไปแสดงในตาราง
-        arrageDataForDataTable(data, contact, res);
+        arrageDataForDataTable(data, contact, res)
         // การแสดงข้อมูลในตาราง ในกรณีที่เป็นข้อมูลใหม่ และกรณี Update ข้อมูล (updateDataTable === true)
         showNewDataToDataTableAfterEdit(
           updateDataTable,
           tableExtraOptions,
           data,
           res
-        );
+        )
       } catch (error) {
-        catchError(error);
+        catchError(error)
       } finally {
-        hideSwal("พร้อมใช้งาน");
+        hideSwal('พร้อมใช้งาน')
       }
     }
-    loadContactDataTable();
+    loadContactDataTable()
+    
   }
 </script>
