@@ -2,41 +2,41 @@
   // Add form template
   async function appendForm(formName, isEditData) {
     try {
-      let select2AndAutoCompleteOptions
+      let select2AndAutoCompleteOptions;
       switch (formName) {
-        case 'contact':
+        case "contact":
           const {
             contact: { select2EndpointAndOptions: contactOptions },
-          } = await googleScriptrun('getHeaderTableName', formName)
-          select2AndAutoCompleteOptions = contactOptions
-          break
-        case 'company':
+          } = await googleScriptrun("getHeaderTableName", formName);
+          select2AndAutoCompleteOptions = contactOptions;
+          break;
+        case "company":
           const {
             company: { select2EndpointAndOptions: companyOptions },
-          } = await googleScriptrun('getHeaderTableName', formName)
-          select2AndAutoCompleteOptions = companyOptions
-          break
+          } = await googleScriptrun("getHeaderTableName", formName);
+          select2AndAutoCompleteOptions = companyOptions;
+          break;
         // เพิ่ม case อื่น ๆ ตามต้องการ
       }
 
-      const thisTemplate = document.getElementById(`${formName}FormTemplate`)
+      const thisTemplate = document.getElementById(`${formName}FormTemplate`);
       if (!thisTemplate) {
-        console.error(`Template for ${formName} form not found`)
-        return
+        console.error(`Template for ${formName} form not found`);
+        return;
       }
       // คัดลอก template content และนำมาวางใน DOM
-      let copyThisTemplate = thisTemplate.content.cloneNode(true)
-      document.querySelector('.modal-body').appendChild(copyThisTemplate)
+      let copyThisTemplate = thisTemplate.content.cloneNode(true);
+      document.querySelector(".modal-body").appendChild(copyThisTemplate);
 
-      showSwal()
+      showSwal();
 
       if (!isEditData) {
-        await getData(formName, select2AndAutoCompleteOptions)
+        await getData(formName, select2AndAutoCompleteOptions);
       }
     } catch (error) {
-      catchError(error)
+      catchError(error);
     } finally {
-      hideSwal('พร้อมใช้งาน')
+      hideSwal("พร้อมใช้งาน");
     }
   }
 
@@ -46,30 +46,30 @@
     isEditData = false
   ) {
     try {
-      let index = 0
+      let index = 0;
 
       for (const [endpoint, config] of Object.entries(
         select2EndpointAndOptions
       )) {
         if (config.workSheetList) {
-          const { data: ssData } = await googleScriptrun(endpoint)
+          const { data: ssData } = await googleScriptrun(endpoint);
 
           for (const [endpointInner, configInner] of Object.entries(
             config.workSheet
           )) {
-            const dataOnly = ssData[`${configInner.select2Id}`].slice(1)
+            const dataOnly = ssData[`${configInner.select2Id}`].slice(1);
             createAutoCompleteAndSelect2Options(
               formName,
               configInner,
               endpointInner,
               dataOnly,
               isEditData
-            )
+            );
           }
         } else {
-          const { data } = await googleScriptrun(endpoint)
-          console.log('data slice', endpoint, data)
-          const dataWithoutHeader = data.slice(1)
+          const { data } = await googleScriptrun(endpoint);
+          console.log("data slice", endpoint, data);
+          const dataWithoutHeader = data.slice(1);
 
           // ตรวจสอบว่า select2Id นั้นมี options หรือยัง
           if (Array.isArray(config)) {
@@ -80,8 +80,8 @@
                 endpoint,
                 dataWithoutHeader,
                 isEditData
-              )
-            })
+              );
+            });
           } else {
             createAutoCompleteAndSelect2Options(
               formName,
@@ -89,13 +89,13 @@
               endpoint,
               dataWithoutHeader,
               isEditData
-            )
+            );
           }
         }
       }
-      index++
+      index++;
     } catch (error) {
-      catchError(error)
+      catchError(error);
     }
   }
 
@@ -111,149 +111,151 @@
       config.requiredFields,
       dataWithoutHeader,
       config.className
-    )
-    if ($(`#${config?.select2Id}`).has('option').length === 1) {
+    );
+    if ($(`#${config?.select2Id}`).has("option").length === 1) {
       getSelect2Opions(
         config?.select2Id,
         dataWithoutHeader,
         config?.valueIndex,
         config?.textIndex,
-        'staticBackdrop'
-      )
+        "staticBackdrop"
+      );
       if (isEditData) {
         // endpoint เป็น key เพื่อ match value ใน object เท่านั้น โดย isEditData เป็น object จะถูกส่งมาตอน edit
-        const selectedValue = isEditData[endpoint]
-        $(`#${config?.select2Id}`).val(selectedValue).trigger('change')
+        const selectedValue = isEditData[endpoint];
+        $(`#${config?.select2Id}`).val(selectedValue).trigger("change");
       }
     }
   }
 
   function removeForm(formName) {
     try {
-      let thisTemplate = document.getElementById(`${formName}Form`)
-      thisTemplate.parentNode.removeChild(thisTemplate)
-      $('.btn-table').prop('disabled', false)
+      let thisTemplate = document.getElementById(`${formName}Form`);
+      thisTemplate.parentNode.removeChild(thisTemplate);
+      $(".btn-table").prop("disabled", false);
     } catch (error) {
-      catchError(error)
+      catchError(error);
     }
   }
 
   function submmitForm(formDataObj) {
     try {
-      event.preventDefault()
-      let targetFunction = document.getElementById('targetFunc').value
-      let formInput = new FormData(formDataObj)
-      let inputFields = Object.fromEntries(formInput)
+      event.preventDefault();
+      let targetFunction = document.getElementById("targetFunc").value;
+      let formInput = new FormData(formDataObj);
+      let inputFields = Object.fromEntries(formInput);
 
-      $('.btn-table').prop('disabled', false)
+      $(".btn-table").prop("disabled", false);
 
       switch (targetFunction) {
-        case 'addData':
-          console.log('add data')
+        case "addData":
+          console.log("add data");
           sendDataToServer(formDataObj)
             .then(() => {
-              $('#staticBackdrop').modal('hide')
-              removeForm(inputFields.formType)
-              loadContactTable(true)
+              $("#staticBackdrop").modal("hide");
+              removeForm(inputFields.formType);
+              loadContactTable(true);
             })
             .catch((error) => {
-              console.log('error', error)
-            })
-          break
+              console.log("error", error);
+            });
+          break;
 
-        case 'editData':
-          console.log('edit data')
+        case "editData":
+          console.log("edit data");
 
           sendDataToServer(formDataObj)
             .then(() => {
-              $('#staticBackdrop').modal('hide')
-              removeForm(inputFields.formType)
-              loadContactTable(true)
+              $("#staticBackdrop").modal("hide");
+              removeForm(inputFields.formType);
+              loadContactTable(true);
             })
             .catch((error) => {
-              console.log('error', error)
-            })
-          break
+              console.log("error", error);
+            });
+          break;
       }
     } catch (error) {
-      catchError(error)
+      catchError(error);
     }
   }
 
   function sendDataToServer(formDataObj) {
     return new Promise((resolve, reject) => {
-      showSwal()
-      googleScriptrun('serverFormInput', formDataObj)
+      showSwal();
+      googleScriptrun("serverFormInput", formDataObj)
         .then((result) => {
-          hideSwal('บันทึกข้อมูลสำเร็จ')
-          const textareas = formDataObj.querySelectorAll('textarea')
+          hideSwal("บันทึกข้อมูลสำเร็จ");
+          const textareas = formDataObj.querySelectorAll("textarea");
           // รีเซ็ตค่าใน textarea
           textareas.forEach((textarea) => {
-            textarea.textContent = '' // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
-          })
-          formDataObj.reset()
-          console.log('Success:', result)
-          resolve(result)
+            textarea.textContent = ""; // รีเซ็ตค่าใน textarea เป็นข้อความว่าง
+          });
+          formDataObj.reset();
+          console.log("Success:", result);
+          resolve(result);
         })
         .catch((error) => {
-          failSwal('บันทึกข้อมูลไม่สำเร็จ')
-          catchError(error)
-          reject(error)
-        })
-    })
+          failSwal("บันทึกข้อมูลไม่สำเร็จ");
+          catchError(error);
+          reject(error);
+        });
+    });
   }
 
   function editData(el) {
     try {
       async function fillDataToInputForUpdate() {
-        $('.btn-table').prop('disabled', true)
+        $(".btn-table").prop("disabled", true);
 
-        let rowData = table.row(el.parentNode.parentNode).data()
+        let rowData = table.row(el.parentNode.parentNode).data();
         const tableId = table.row(el.parentNode.parentNode.parentNode)
-          .context[0]['sTableId']
-        const formType = tableId.split('-')[0]
+          .context[0]["sTableId"];
+        const formType = tableId.split("-")[0];
 
-        $('#staticBackdrop').modal('show')
+        $("#staticBackdrop").modal("show");
 
-        appendForm(formType, true)
-        setFormFunction('editData', 'แก้ไขข้อมูล')
+        appendForm(formType, true);
+        setFormFunction("editData", "แก้ไขข้อมูล");
         switch (formType) {
-          case 'contact':
-            showSwal()
-            editContactSelect2Form(formType, rowData)
-            break
+          case "contact":
+            showSwal();
+            editContactSelect2Form(formType, rowData);
+            break;
         }
       }
-      fillDataToInputForUpdate()
-      hideSwal('พร้อมใช้งาน')
+      fillDataToInputForUpdate();
+      hideSwal("พร้อมใช้งาน");
     } catch (error) {
-      catchError()
+      catchError();
     } finally {
-      hideSwal('พร้อมใช้งาน')
+      hideSwal("พร้อมใช้งาน");
     }
   }
 
   async function editContactSelect2Form(formType, rowData) {
-    const contactId = rowData[0]
-    const selected2Value = {}
+    const contactId = rowData[0];
+    const selected2Value = {};
 
-    const { contact } = await googleScriptrun('getHeaderTableName', formType)
-    const { data: companyId } = await googleScriptrun('getCompanyData')
-    const { data: touchPointId } = await googleScriptrun('getTochPointList')
-    const key = ['getCompanyData', 'getTochPointList']
+    const { contact } = await googleScriptrun("getHeaderTableName", formType);
+    const { data: companyId } = await googleScriptrun("getCompanyData");
+    const { data: touchPointId } = await googleScriptrun("getTochPointList");
+    const key = ["getCompanyData", "getTochPointList"];
 
-    const allData = {companyId, touchPointId}
-    let index = 0
-    
+    const allData = { companyId, touchPointId };
+    let index = 0;
+
     Object.entries(allData).forEach(([endpoint, data]) => {
-            const selectedValues = rowData[contact.sheetColumn[endpoint]].split(', ').map(list => {
-                const foundItem = data.find(item => item[1] === list);
-                return foundItem ? foundItem[0] : null;
-            })
-            console.log(key[index])
-            selected2Value[key[index]] = selectedValues;
-            index++
+      const selectedValues = rowData[contact.sheetColumn[endpoint]]
+        .split(", ")
+        .map((list) => {
+          const foundItem = data.find((item) => item[1] === list);
+          return foundItem ? foundItem[0] : null;
         });
+      console.log(key[index]);
+      selected2Value[key[index]] = selectedValues;
+      index++;
+    });
 
     getData(formType, contact.select2EndpointAndOptions, selected2Value);
     fillCurrentRowDataForEdit(formType, rowData, contact);
@@ -261,61 +263,61 @@
 
   function fillCurrentRowDataForEdit(formType, rowData, obj) {
     try {
-      const dataObj = {}
-      const regexFile = /File/i
-      const fileList = []
+      const dataObj = {};
+      const regexFile = /File/i;
+      const fileList = [];
 
-      const formInput = document.querySelectorAll('.formInput')
-      const previewDiv = document.querySelectorAll('.preview')
-      const documentId = document.getElementById('docId')
+      const formInput = document.querySelectorAll(".formInput");
+      const previewDiv = document.querySelectorAll(".preview");
+      const documentId = document.getElementById("docId");
 
       // คัดแยก data จาก datatable ที่มีข้อมูลเป็น link ของ file เพื่อนำไปแสดง ใน preview
       rowData.forEach((el, index) => {
-        dataObj[obj.objKey[index]] = el
+        dataObj[obj.objKey[index]] = el;
         if (startsWithHttps(el)) {
-          fileList.push(el)
+          fileList.push(el);
         }
-      })
+      });
 
       // นำ data จาก datatable มาใส่ในช่อง input ภายใน form
       formInput.forEach((el, index) => {
         if (containsParameterKeyword(regexFile, el.name)) {
           previewDiv.forEach((div, index) => {
             if (fileList[index] !== undefined) {
-              div.setAttribute('src', fileList[index])
+              div.setAttribute("src", fileList[index]);
             }
-          })
-        } else if (el.name === 'docId') {
-          documentId.setAttribute('value', dataObj[`${formType}Id`])
+          });
+        } else if (el.name === "docId") {
+          documentId.setAttribute("value", dataObj[`${formType}Id`]);
         } else if (dataObj[el.name] === undefined) {
-          el.value = ''
+          el.value = "";
         } else {
-          el.value = dataObj[el.name]
+          el.value = dataObj[el.name];
         }
-      })
+      });
     } catch (error) {
-      catchError(error)
+      catchError(error);
     }
   }
 
   function containsParameterKeyword(regex, name) {
-    return regex.test(name)
+    return regex.test(name);
   }
 
   function startsWithHttps(value) {
-    return value.startsWith('https://')
+    return value.startsWith("https://");
   }
 
   function setFormFunction(functionName, modalTitle) {
-    waitForElementToExist('#targetFunc').then((domElement) => {
-      const callFunction = document.getElementById('targetFunc')
-      const showModalTitle = document.querySelector('.modal-title')
-      callFunction.setAttribute('value', functionName)
-      showModalTitle.textContent = modalTitle
-    })
+    waitForElementToExist("#targetFunc").then((domElement) => {
+      const callFunction = document.getElementById("targetFunc");
+      const showModalTitle = document.querySelector(".modal-title");
+      callFunction.setAttribute("value", functionName);
+      showModalTitle.textContent = modalTitle;
+    });
   }
 
   function preview(event) {
-    console.log('event : ', event)
+    console.log("event : ", event);
   }
 </script>

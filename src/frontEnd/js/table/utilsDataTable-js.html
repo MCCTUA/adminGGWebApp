@@ -6,12 +6,12 @@
    */
 
   function processData(callback, data, dataArray, elIndex, columnIndex) {
-    const processedData = []
-    const dataNoHeader = data.slice(1)
+    const processedData = [];
+    const dataNoHeader = data.slice(1);
 
     dataNoHeader.forEach((row, indexData) => {
       const newRow = row.map((el, indexRow) => {
-        if (indexRow === elIndex && el !== '') {
+        if (indexRow === elIndex && el !== "") {
           return callback(
             dataNoHeader,
             dataArray,
@@ -19,14 +19,14 @@
             columnIndex,
             indexData,
             elIndex
-          )
+          );
         } else {
-          return el
+          return el;
         }
-      })
-      processedData.push(newRow)
-    })
-    return processedData
+      });
+      processedData.push(newRow);
+    });
+    return processedData;
   }
 
   function processListCallback(
@@ -37,17 +37,17 @@
     indexData,
     elIndex
   ) {
-    const list = []
-    if (typeof dataItems === 'string') {
-      dataItems = dataItems.split(', ')
+    const list = [];
+    if (typeof dataItems === "string") {
+      dataItems = dataItems.split(", ");
       dataItems.forEach((dataItem) => {
-        const matchingItem = dataArray.filter((item) => item[0] === dataItem)
+        const matchingItem = dataArray.filter((item) => item[0] === dataItem);
         if (matchingItem) {
-          list.push(matchingItem[0][columnIndex])
+          list.push(matchingItem[0][columnIndex]);
         }
-      })
+      });
     }
-    dataNoHeader[indexData][elIndex] = list.join(', ')
-    return list.join(', ')
+    dataNoHeader[indexData][elIndex] = list.join(", ");
+    return list.join(", ");
   }
 </script>
