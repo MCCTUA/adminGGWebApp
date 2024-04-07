@@ -8,42 +8,42 @@
 
     try {
       let { tableId, filterItem, rowIndex, hideColumns, targetIndexShowImage } =
-        filterObject;
-      const formType = tableId.split("-")[0];
-      console.log("form type :", formType);
-      let editButtonIndex = res.headersAll.length;
-      let headers;
-      let filteredData;
-      let hideColumnsOptions = [];
+        filterObject
+      const formType = tableId.split('-')[0]
+      console.log('form type :', formType)
+      let editButtonIndex = res.headersAll.length
+      let headers
+      let filteredData
+      let hideColumnsOptions = []
       let targetShowImage = targetIndexShowImage.map((el) => {
         return {
           target: el,
           render: (data) => {
-            if (data === "") {
-              return;
+            if (data === '') {
+              return
             } else {
-              return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`;
+              return `<a href='${data}' target=_blank> <img src=${data} width=50></a>`
             }
           },
-        };
-      });
+        }
+      })
 
       let options = {
         retrieve: true,
         responsive: true,
         destroy: true,
-        order: [[0, "desc"]],
+        order: [[0, 'desc']],
         pageLength: 25,
         language: {
-          url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json",
+          url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
         },
         columnDefs: [
           {
-            defaultContent: "-",
-            targets: "_all",
+            defaultContent: '-',
+            targets: '_all',
           },
           {
-            className: "control",
+            className: 'control',
             orderable: false,
             targets: 1, // Index of the column you want to toggle details on
           },
@@ -51,30 +51,30 @@
           {
             target: editButtonIndex - 2,
             render: (data) => {
-              return (data = `<button class="btn btn-warning btn-table" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`);
+              return (data = `<button class="btn btn-warning btn-table" onclick="editData(this)"> <i class="fa-solid fa-pencil"></i> </button>`)
             },
           },
           {
             target: editButtonIndex - 1,
             render: (data) => {
-              return (data = `<button class="btn btn-danger btn-table" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`);
+              return (data = `<button class="btn btn-danger btn-table" onclick=deleteRow(this)> <i class="fa-solid fa-trash-can"></i> </button>`)
             },
           },
         ],
         dom: '<<"row"<"col"l><"col-md-auto"B><"col"f>>>rtip',
         buttons: [
           {
-            text: "เพิ่มข้อมูล",
+            text: 'เพิ่มข้อมูล',
             action: function (e, dt, node, config) {
-              const modalId = document.getElementById("staticBackdrop");
+              const modalId = document.getElementById('staticBackdrop')
               const formModal = new bootstrap.Modal(modalId, {
                 keyboard: false,
-                backdrop: "static",
-              });
-              formModal.show();
+                backdrop: 'static',
+              })
+              formModal.show()
               // $('#staticBackdrop').modal('show')
-              appendForm(formType, false);
-              setFormFunction("addData", "เพิ่มข้อมูล***");
+              appendForm(formType, false)
+              setFormFunction('addData', 'เพิ่มข้อมูล***')
             },
           },
           // { extend: "copy", className: "btn-success" },
@@ -84,52 +84,52 @@
           // { extend: "print", className: "btn-warning" },
         ],
         lengthMenu: [5, 10, 25, 50, 100, 200, 500, 1000],
-      };
+      }
 
       if (filterItem) {
-        filteredData = res.data.filter((row) => row[rowIndex] === filterItem);
+        filteredData = res.data.filter((row) => row[rowIndex] === filterItem)
       } else {
-        filteredData = res.data;
+        filteredData = res.data
       }
 
       // Header
       headers = res.headersAll.map((header) => {
-        return { title: header };
-      });
+        return { title: header }
+      })
 
       // Hide Columns ที่ต้องการ
       if (hideColumns) {
         hideColumnsOptions = hideColumns.map((el) => {
-          let hideColumnsOptionsOjbect = {}; // เพื่อไม่ให้ output ออกมาเป็น array ของ object ตัวสุดท้าย หรือ clone ออกมาแทนก็ได้
-          hideColumnsOptionsOjbect.target = el;
-          hideColumnsOptionsOjbect.visible = false;
+          let hideColumnsOptionsOjbect = {} // เพื่อไม่ให้ output ออกมาเป็น array ของ object ตัวสุดท้าย หรือ clone ออกมาแทนก็ได้
+          hideColumnsOptionsOjbect.target = el
+          hideColumnsOptionsOjbect.visible = false
 
-          return hideColumnsOptionsOjbect;
-        });
-        options.data = filteredData;
-        options.columns = headers;
-        options.columnDefs = { ...options.columnDefs, ...hideColumnsOptions };
+          return hideColumnsOptionsOjbect
+        })
+        options.data = filteredData
+        options.columns = headers
+        options.columnDefs = { ...options.columnDefs, ...hideColumnsOptions }
       } else {
-        options.data = filteredData;
-        options.columns = headers;
+        options.data = filteredData
+        options.columns = headers
       }
       // ทำการสร้าง Table
-      table = new DataTable(`#${tableId}`, options);
-      return table;
+      table = new DataTable(`#${tableId}`, options)
+      return table
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error)
     }
   }
 
   function arrageDataForDataTable(data, objData, res) {
     // นำข้อมูลไปแสดงในตาราง
-    const columnLenght = data.shift().length - 4;
+    const columnLenght = data.shift().length - 4
 
     if (columnLenght + 2 === objData.headerTableName.length) {
-      res.data = data.map((row) => row.slice(0, columnLenght));
-      res.headersAll = objData.headerTableName;
+      res.data = data.map((row) => row.slice(0, columnLenght))
+      res.headersAll = objData.headerTableName
     } else {
-      console.log("header length not equal to data in column length");
+      console.log('header length not equal to data in column length')
     }
   }
 
@@ -140,10 +140,10 @@
     res
   ) {
     if (!updateDataTable) {
-      const table = loadDataTable(res, tableExtraOptions);
+      const table = loadDataTable(res, tableExtraOptions)
     } else {
-      let table = $(`#${tableExtraOptions.tableId}`).DataTable();
-      table.clear().rows.add(data).draw();
+      let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+      table.clear().rows.add(data).draw()
     }
   }
   //=========================================================

@@ -1,23 +1,20 @@
 <script>
   function loadCompanyTable(updateDataTable = false) {
-    loadCompanyDataTable(updateDataTable);
+    loadCompanyDataTable(updateDataTable)
   }
 
   async function loadCompanyDataTable(updateDataTable) {
     try {
-      showSwal();
+      showSwal()
       const tableExtraOptions = {
-        tableId: "company-table",
+        tableId: 'company-table',
         // hideColumns: [26, 27, 28],
         targetIndexShowImage: [18, 19, 20],
-      };
-      const { data } = await googleScriptrun("getCompanyData");
+      }
+      const { data } = await googleScriptrun('getCompanyData')
       // const { data: companyData } = await googleScriptrun('getCompanyData')
       // const { data: touchPoint } = await googleScriptrun('getTochPointList')
-      const { company } = await googleScriptrun(
-        "getHeaderTableName",
-        "company"
-      );
+      const { company } = await googleScriptrun('getHeaderTableName', 'company')
 
       // // company name
       // processData(
@@ -36,26 +33,26 @@
       //   contact.sheetColumn.touchPointTbTouchPointName
       // )
 
-      const columnLenght = data.shift().length - 5;
-      const res = {};
+      const columnLenght = data.shift().length - 5
+      const res = {}
 
       if (columnLenght + 2 === company.headerTableName.length) {
-        res.data = data.map((row) => row.slice(0, columnLenght));
-        res.headersAll = company.headerTableName;
+        res.data = data.map((row) => row.slice(0, columnLenght))
+        res.headersAll = company.headerTableName
       } else {
-        console.log("header length not equal to data in column length");
+        console.log('header length not equal to data in column length')
       }
 
       if (!updateDataTable) {
-        const table = loadDataTable(res, tableExtraOptions);
+        const table = loadDataTable(res, tableExtraOptions)
       } else {
-        let table = $(`#${tableExtraOptions.tableId}`).DataTable();
-        table.clear().rows.add(data).draw();
+        let table = $(`#${tableExtraOptions.tableId}`).DataTable()
+        table.clear().rows.add(data).draw()
       }
     } catch (error) {
-      catchError(error);
+      catchError(error)
     } finally {
-      hideSwal("พร้อมใช้งาน");
+      hideSwal('พร้อมใช้งาน')
     }
   }
 </script>

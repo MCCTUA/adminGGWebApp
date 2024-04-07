@@ -6,27 +6,27 @@
    */
 
   function getSelect2Opions(select2Id, data, valueIndex, textIndex, modalId) {
-    const selectElement = document.getElementById(select2Id);
+    const selectElement = document.getElementById(select2Id)
 
     data.forEach((item) => {
-      if (item[textIndex] !== "") {
+      if (item[textIndex] !== '') {
         $(`#${select2Id}`).append(
-          $("<option>", {
+          $('<option>', {
             value: item[valueIndex],
             text: item[textIndex],
           })
-        );
+        )
       }
-    });
+    })
 
     $(`#${select2Id}`).select2({
-      theme: "bootstrap-5",
-      width: $(this).data("width")
-        ? $(this).data("width")
-        : $(this).hasClass("w-100")
-        ? "100%"
-        : "style",
-      placeholder: $(this).data("placeholder"),
+      theme: 'bootstrap-5',
+      width: $(this).data('width')
+        ? $(this).data('width')
+        : $(this).hasClass('w-100')
+        ? '100%'
+        : 'style',
+      placeholder: $(this).data('placeholder'),
       dropdownParent: $(`#${modalId}`),
 
       // add new option -------
@@ -36,24 +36,24 @@
           id: params.term,
           text: params.term,
           newOption: true,
-        };
+        }
       },
       templateResult: function (data) {
-        var $result = $("<span></span>");
+        var $result = $('<span></span>')
 
-        $result.text(data.text);
+        $result.text(data.text)
 
         if (data.newOption) {
-          $result.append(" <em>(new)</em>");
+          $result.append(' <em>(new)</em>')
         }
 
-        return $result;
+        return $result
       },
       language: {
         noResults: function () {
-          return `<span class='text-danger'> ไม่พบข้อมูล </span>`;
+          return `<span class='text-danger'> ไม่พบข้อมูล </span>`
         },
       },
-    });
+    })
   }
 </script>
